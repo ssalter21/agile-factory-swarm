@@ -1,0 +1,433 @@
+<!-- Published as an Artifact: https://claude.ai/code/artifact/295808ce-b2ae-42b8-9bac-3846ca358358
+     To update that page, republish THIS file path with url= set to the link above. -->
+<title>Swarm Harness Feasibility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+:root{
+  --paper:#F3F6F4;
+  --surface:#FFFFFF;
+  --surface-2:#EAEFEC;
+  --ink:#10171A;
+  --ink-2:#3A4749;
+  --muted:#5B6B6C;
+  --line:#D3DCD8;
+  --line-strong:#B6C3BE;
+  --accent:#0E6E63;
+  --signal:#A0491B;
+  --signal-soft:#F5E5DA;
+  --shadow:0 1px 2px rgba(16,23,26,.05), 0 8px 24px -16px rgba(16,23,26,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1214;
+    --surface:#141B1D;
+    --surface-2:#1B2426;
+    --ink:#E0E7E5;
+    --ink-2:#B4C1BF;
+    --muted:#869896;
+    --line:#26312F;
+    --line-strong:#3A4745;
+    --accent:#58BCAB;
+    --signal:#DD8E5D;
+    --signal-soft:#33231A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1214;
+  --surface:#141B1D;
+  --surface-2:#1B2426;
+  --ink:#E0E7E5;
+  --ink-2:#B4C1BF;
+  --muted:#869896;
+  --line:#26312F;
+  --line-strong:#3A4745;
+  --accent:#58BCAB;
+  --signal:#DD8E5D;
+  --signal-soft:#33231A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 96px}
+.prose{max-width:70ch}
+
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in oklab, var(--accent) 40%, transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+.mast{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);font-weight:500;
+}
+h1{
+  font-family:"IBM Plex Serif", Georgia, serif;
+  font-weight:600;font-size:clamp(2.1rem,4.4vw,3.1rem);
+  line-height:1.1;letter-spacing:-.015em;margin:14px 0 0;text-wrap:balance;max-width:18ch;
+}
+.dek{margin:16px 0 0;max-width:62ch;font-size:1.08rem;color:var(--ink-2)}
+.meta{
+  margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 22px;
+  font-family:"IBM Plex Mono", monospace;font-size:12.5px;color:var(--muted);
+}
+.meta b{color:var(--ink-2);font-weight:500}
+
+.verdict{
+  margin:40px 0 0;background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--accent);border-radius:3px;padding:26px 28px;box-shadow:var(--shadow);
+}
+.verdict p{margin:0 0 12px;max-width:74ch}
+.verdict p:last-child{margin-bottom:0}
+.verdict strong{color:var(--ink)}
+
+section{padding-top:60px}
+h2{
+  font-family:"IBM Plex Serif", Georgia, serif;
+  font-size:1.62rem;font-weight:600;letter-spacing:-.01em;
+  margin:0;padding-top:14px;border-top:1px solid var(--line-strong);text-wrap:balance;
+}
+h2 .num{
+  font-family:"IBM Plex Mono", monospace;font-size:.7em;font-weight:500;
+  color:var(--accent);margin-right:.7em;letter-spacing:.05em;
+}
+h3{
+  font-family:"IBM Plex Sans", sans-serif;font-size:1.02rem;font-weight:600;
+  margin:34px 0 8px;letter-spacing:-.005em;
+}
+p{margin:0 0 15px}
+ul,ol{margin:0 0 15px;padding-left:1.15em;max-width:70ch}
+li{margin:0 0 7px}
+li::marker{color:var(--muted)}
+code{
+  font-family:"IBM Plex Mono", monospace;font-size:.86em;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:3px;
+  padding:.08em .34em;color:var(--ink-2);white-space:nowrap;
+}
+
+.tscroll{overflow-x:auto;margin:22px 0 8px;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{
+  font-family:"IBM Plex Mono", monospace;font-size:11.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;
+  background:var(--surface-2);border-bottom:1px solid var(--line-strong);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.mono{font-family:"IBM Plex Mono", monospace;font-size:13px;color:var(--ink-2)}
+.dim{color:var(--muted)}
+
+.tiers{display:grid;gap:18px;grid-template-columns:1fr;margin-top:26px}
+@media(min-width:900px){.tiers{grid-template-columns:repeat(3,1fr)}}
+.tier{
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);
+}
+.tier header{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.tier .step{
+  font-family:"IBM Plex Mono", monospace;font-size:13px;font-weight:600;
+  color:var(--surface);background:var(--accent);border-radius:2px;padding:2px 7px;
+}
+.tier h3{margin:0;font-size:1.05rem}
+.tier .cost{
+  font-family:"IBM Plex Mono", monospace;font-size:12px;color:var(--muted);
+  letter-spacing:.04em;margin-left:auto;white-space:nowrap;
+}
+.tier p{font-size:14.5px;margin:0}
+.tier ul{font-size:14px;margin:0;padding-left:1.1em}
+.tier .lbl{
+  font-family:"IBM Plex Mono", monospace;font-size:11px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);margin:2px 0 -6px;
+}
+.tier .gap{color:var(--signal)}
+
+.note{
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--signal);
+  border-radius:3px;padding:16px 20px;margin:22px 0;font-size:15px;
+}
+.note .lbl{
+  font-family:"IBM Plex Mono", monospace;font-size:11px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--signal);display:block;margin-bottom:6px;font-weight:500;
+}
+.note p:last-child{margin-bottom:0}
+
+.pipe{
+  display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin:24px 0 8px;
+  font-family:"IBM Plex Mono", monospace;font-size:12.5px;
+}
+.pipe .node{
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:12px 14px;flex:1 1 150px;min-width:140px;
+}
+.pipe .node b{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:14px;color:var(--ink);margin-bottom:4px}
+.pipe .node span{color:var(--muted);line-height:1.45;display:block}
+.pipe .gate{border-color:var(--signal);background:var(--signal-soft)}
+.pipe .gate b{color:var(--ink)}
+.pipe .arrow{align-self:center;color:var(--line-strong);font-size:18px;flex:0 0 auto}
+@media(max-width:700px){.pipe .arrow{display:none}}
+
+.roles{display:grid;gap:12px;grid-template-columns:1fr;margin:20px 0}
+@media(min-width:760px){.roles{grid-template-columns:1fr 1fr}}
+.role{border:1px solid var(--line);border-radius:3px;background:var(--surface);padding:14px 16px}
+.role b{font-size:14.5px}
+.role .k{
+  font-family:"IBM Plex Mono", monospace;font-size:11px;letter-spacing:.08em;
+  color:var(--accent);text-transform:uppercase;display:block;margin-bottom:3px;
+}
+.role p{font-size:14px;margin:4px 0 0;color:var(--ink-2)}
+
+footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer ul{padding-left:1.1em;max-width:none}
+footer li{margin-bottom:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">Feasibility &amp; build sizing</div>
+  <h1>Rebuilding swarm-forge inside the agent harness</h1>
+  <p class="dek">Can Uncle Bob's tmux swarm be rebuilt as sub-agents and harness orchestration — with a spec swarm, a human approval seam, and a web front end — on Claude and Copilot, without cloud sandboxes?</p>
+  <div class="meta">
+    <span><b>Prepared</b> 19 Aug 2026</span>
+    <span><b>Target</b> agile-factory-swarm</span>
+    <span><b>Host</b> Windows 11 · local-first</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <p><strong>Yes — and most of swarm-forge is now redundant.</strong> Nearly every mechanism Uncle Bob hand-built in Babashka and tmux (role prompts, worktree-per-agent, a handoff daemon, a terminal window per role, a layered constitution) ships natively in Claude Code today as subagents, agent teams, dynamic workflows, worktree isolation, and hooks. Porting means <em>deleting</em> infrastructure, not writing it.</p>
+  <p>The three things you actually have to build are: <strong>the spec swarm and its approval seam</strong> (a config format plus two orchestration scripts), <strong>the web front end</strong> (an event sink fed by HTTP hooks plus a transcript reader), and <strong>the vendor adapter</strong> if you genuinely want the same swarm running on Copilot.</p>
+  <p>A config-only version that works at your desk and drops into a work repo is <strong>two to four evenings</strong>. The version with your own web UI, live from anywhere, is <strong>six to ten weeks of side-project time</strong>. Nothing in the vision is blocked — but two constraints shape the build, and both are in §7.</p>
+</div>
+
+<section>
+  <h2><span class="num">01</span>What swarm-forge is, mechanically</h2>
+  <div class="prose">
+    <p>Strip the philosophy and swarm-forge is five moving parts: a <code>swarmforge.conf</code> declaring a topology of named roles; a <code>.prompt</code> file per role; a layered "constitution" of shared engineering articles that local files can override; a git worktree per role so agents never collide; and a handoff protocol — <code>swarm_handoff.sh</code>, <code>ready_for_next.sh</code>, <code>done_with_current.sh</code> feeding a Babashka daemon — that queues validated messages between roles. tmux gives each agent a visible window; the branch you check out (<code>two-pack</code>, <code>four-pack</code>, <code>six-pack</code>) picks the team.</p>
+    <p>The insight worth keeping is the <em>topology</em>: specifier → coder → cleaner → architect → hardener → QA, each with a narrow remit and a validated handoff rather than a shared chat. The implementation is a workaround for capabilities that didn't exist when it was written. It also assumes zsh, tmux and Babashka, which on Windows means WSL — a second reason to rebuild rather than port.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Every primitive already has a native equivalent</h2>
+  <div class="prose"><p>This is the core of the feasibility answer. Read the middle column as "what you don't have to build".</p></div>
+  <div class="tscroll">
+  <table>
+    <thead><tr><th>swarm-forge part</th><th>Claude Code native</th><th>Copilot equivalent</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Role definition</strong><br><span class="dim">roles/*.prompt</span></td><td class="mono">.claude/agents/&lt;role&gt;.md — frontmatter for tools, model, permissionMode, maxTurns, skills, memory</td><td class="mono">.github/agents/&lt;role&gt;.agent.md — name, description, instructions, tool allowlist</td></tr>
+      <tr><td><strong>Constitution</strong><br><span class="dim">layered articles with local overrides</span></td><td class="mono">CLAUDE.md + .claude/rules/*.md, loaded per directory; Skills for procedural articles</td><td class="mono">AGENTS.md + Agent Skills</td></tr>
+      <tr><td><strong>Worktree per role</strong></td><td class="mono">isolation: worktree in subagent frontmatter — the harness creates and reaps it</td><td class="dim">Manual git worktree</td></tr>
+      <tr><td><strong>Handoff daemon</strong><br><span class="dim">queue + validation</span></td><td class="mono">SendMessage between named agents; agent teams add per-agent JSON mailboxes and a lock-protected shared task list with dependencies</td><td class="dim">No peer messaging; parent/child only</td></tr>
+      <tr><td><strong>tmux window per agent</strong></td><td class="mono">Agent panel + /tasks; teammateMode: tmux or iterm2 for real split panes</td><td class="mono">/fleet parallel subagents</td></tr>
+      <tr><td><strong>Topology config</strong><br><span class="dim">swarmforge.conf, one per branch</span></td><td class="mono">A saved dynamic workflow in .claude/workflows/ — a JS script with agent(), pipeline(), parallel()</td><td class="dim">Script the CLI yourself</td></tr>
+      <tr><td><strong>Observability</strong></td><td class="mono">/workflows drill-in per agent; hooks (SubagentStart/Stop, PreToolUse, TaskCreated) with an http hook type that POSTs JSON to your server</td><td class="dim">Terminal output only</td></tr>
+      <tr><td><strong>Access from anywhere</strong></td><td class="mono">Remote Control — claude.ai/code and the mobile app drive your local session; subagent and workflow progress sync live</td><td class="dim">No equivalent</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <span class="lbl">Where the parity breaks</span>
+    <p>Copilot has custom agents, subagents with isolated context, and <code>/fleet</code> for parallel fan-out — enough to run the builder swarm. It has no documented equivalent of hooks-to-HTTP, worktree isolation as config, peer-to-peer agent messaging, or a workflow scripting layer. Treat Copilot as a <em>degraded execution target</em>, not a co-equal one, and design accordingly (§6).</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Three tiers, and what each one costs you</h2>
+  <div class="prose"><p>These are a genuine escalation: each tier is the previous one plus a layer. You can stop at any of them and have something that works.</p></div>
+
+  <div class="tiers">
+    <div class="tier">
+      <header><span class="step">A</span><h3>Config only</h3><span class="cost">2–4 evenings</span></header>
+      <p>A <code>.claude/</code> directory and nothing else. Roles as subagent files, constitution as CLAUDE.md and rules, two saved workflows (<code>/spec-swarm</code>, <code>/build-swarm</code>), a blackboard directory in the repo.</p>
+      <p class="lbl">You get</p>
+      <ul>
+        <li>Full builder swarm with worktree isolation</li>
+        <li>Spec swarm with a real approval gate</li>
+        <li>Live monitoring via <code>/workflows</code> and <code>/tasks</code> — drill into any agent's prompt, tool calls and result</li>
+        <li>Jump into a running agent and steer it (<code>SendMessage</code>, or Enter on its panel row)</li>
+        <li>Remote access via Remote Control, from browser or phone</li>
+        <li>Drops into a work repo as a skill with zero infrastructure</li>
+      </ul>
+      <p class="lbl">You don't get</p>
+      <ul><li class="gap">Your own UI, your own data model, or history that outlives the session</li><li class="gap">A cross-project swarm dashboard</li></ul>
+    </div>
+
+    <div class="tier">
+      <header><span class="step">B</span><h3>Local orchestrator + web UI</h3><span class="cost">4–7 weeks</span></header>
+      <p>A small TypeScript service on your machine: the Agent SDK drives the swarm, an HTTP hook endpoint receives every lifecycle event, SQLite stores runs, a React app streams it over WebSocket.</p>
+      <p class="lbl">Adds</p>
+      <ul>
+        <li>Swarm graph, per-agent transcript panes, shared-context viewer</li>
+        <li>Persistent history across sessions and projects</li>
+        <li>Approval gates as a real UI action, not a terminal keypress</li>
+        <li>Personality configuration as data, not markdown files</li>
+        <li>Reachable from anywhere over a Tailscale or Cloudflare tunnel</li>
+      </ul>
+      <p class="lbl">You don't get</p>
+      <ul><li class="gap">Copilot as a backend</li><li class="gap">Agents that outlive the orchestrator process</li></ul>
+    </div>
+
+    <div class="tier">
+      <header><span class="step">C</span><h3>Multi-CLI supervisor</h3><span class="cost">+3–4 weeks</span></header>
+      <p>Roles become processes behind an adapter. Each backend — <code>claude -p --output-format stream-json</code>, <code>copilot -p</code>, others — is normalised into one event envelope. A worktree pool and durable queue sit underneath.</p>
+      <p class="lbl">Adds</p>
+      <ul>
+        <li>True vendor portability; mix backends inside one swarm</li>
+        <li>Long-running agents that survive a restart</li>
+        <li>Runs on your existing CLI login rather than metered API keys</li>
+        <li>tmux attach as a debugging escape hatch</li>
+      </ul>
+      <p class="lbl">Cost</p>
+      <ul><li class="gap">You rebuild the process supervision swarm-forge exists to provide — pty handling, crash recovery, zombie reaping</li></ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>The spec swarm and the seam</h2>
+  <div class="prose">
+    <p>This is the part with no off-the-shelf answer, and the part most worth getting right. The requirement: a short human input, several configured personalities shaping it, and a reviewable artifact that becomes a contract for the builder swarm.</p>
+    <p>The critical design constraint comes from the runtime: <strong>a dynamic workflow cannot take user input mid-run.</strong> Only permission prompts pause it. So the approval seam is not a step inside one swarm — it is the boundary between two separately-invoked workflows. That constraint is a gift; it forces the artifact to be real.</p>
+  </div>
+
+  <div class="pipe">
+    <div class="node"><b>Brief</b><span>One paragraph from you. Optionally a repo path for context.</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Divergence</b><span>Personalities draft independently, in parallel. No shared context — that's the point.</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Debate</b><span>Each critiques the others. Agile Agent cuts scope. Risk agent attacks assumptions.</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Synthesis</b><span>One agent merges it into a single spec plus an explicit out-of-scope list.</span></div>
+    <div class="arrow">→</div>
+    <div class="node gate"><b>Seam · human</b><span>You read, edit, approve. Nothing proceeds without this.</span></div>
+    <div class="arrow">→</div>
+    <div class="node"><b>Builder swarm</b><span>Second workflow. The spec is its only input contract.</span></div>
+  </div>
+
+  <h3>Default personalities</h3>
+  <div class="roles">
+    <div class="role"><span class="k">Default · opinionated</span><b>Agile Agent</b><p>Ruthlessly minimal. Its job is to delete requirements and demand the smallest thing that could be shipped and learned from. Given veto weight in synthesis.</p></div>
+    <div class="role"><span class="k">Default</span><b>Player Voice</b><p>Speaks only as the person using the thing. Rejects anything phrased as a system capability rather than an experience.</p></div>
+    <div class="role"><span class="k">Default</span><b>Domain Modeller</b><p>Names the nouns and verbs. Produces the ubiquitous language the builder swarm is then held to.</p></div>
+    <div class="role"><span class="k">Default</span><b>Constraint Architect</b><p>States what must be true structurally — boundaries, dependency direction, what has to stay replaceable.</p></div>
+    <div class="role"><span class="k">Default · adversarial</span><b>Devil's Advocate</b><p>Attacks the spec. Its output is a ranked list of ways this fails. Nothing it raises may be silently dropped.</p></div>
+    <div class="role"><span class="k">Terminal</span><b>Spec Writer</b><p>Emits the artifact: acceptance criteria in Gherkin, task breakdown, explicit non-goals, open questions.</p></div>
+  </div>
+
+  <div class="prose">
+    <h3>The artifact is the seam</h3>
+    <p>Write it to <code>specs/&lt;slug&gt;/</code> in the repo: <code>spec.md</code>, <code>acceptance.feature</code>, <code>tasks.md</code>, <code>non-goals.md</code>, <code>open-questions.md</code>. Files, not a database — they diff in git, they survive every tier of this build, and every vendor's agent can read them. This same directory doubles as the <em>shared context</em> your front end renders. It replaces swarm-forge's handoff queue entirely: agents read and write the blackboard, and the queue is just file state.</p>
+    <p>Make one rule non-negotiable: <strong>the builder swarm's first action is to restate the spec as it understands it and fail loudly on any gap.</strong> Spec drift is the failure mode that kills multi-agent pipelines, and it is cheap to catch at the seam and expensive to catch at QA.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Tracking agents and the web front end</h2>
+  <div class="prose">
+    <p>You have four independent sources of truth, and a good UI uses three of them:</p>
+    <ul>
+      <li><strong>HTTP hooks</strong> — the backbone. A hook entry of <code>type: "http"</code> POSTs the event JSON to a URL you choose, carrying <code>session_id</code>, <code>agent_id</code>, <code>agent_type</code>, <code>transcript_path</code>, tool name and tool input. Register <code>SubagentStart</code>, <code>SubagentStop</code>, <code>PreToolUse</code>, <code>PostToolUse</code>, <code>TaskCreated</code>, <code>TaskCompleted</code> and <code>SessionEnd</code> and you have a complete live event stream into your own server without touching the SDK. Mark them <code>async: true</code> so they never block an agent.</li>
+      <li><strong>Session transcripts</strong> — JSONL under <code>~/.claude/projects/&lt;encoded-cwd&gt;/</code>, one file per session, with subagent transcripts stored separately. The SDK exposes <code>listSessions()</code> and <code>getSessionMessages()</code>, so "jump into this agent's conversation" is a file read, not a protocol.</li>
+      <li><strong>The SDK message stream</strong> — if the orchestrator itself calls <code>query()</code>, every assistant message, tool call and result arrives as an async iterable. Messages from inside a subagent carry <code>parent_tool_use_id</code>, which is how you build the tree view.</li>
+      <li><strong>The blackboard directory</strong> — file-watch <code>specs/</code> and <code>.swarm/</code> and render it. This is your shared-context pane, and it's ten lines of code.</li>
+    </ul>
+    <p>Writing back <em>into</em> a running agent is the one asymmetry. From the terminal it's the agent panel or <code>SendMessage</code>. From your own UI at Tier B you hold the SDK session and resume it by ID; at Tier C you write to the process's stdin. Both work; neither is free.</p>
+    <p>For "accessible from anywhere" before you've built anything: <strong>Remote Control already does it.</strong> It's a research preview that connects claude.ai/code or the mobile app to a session running on your machine, with subagent and workflow progress synced across every connected device and execution staying local. That covers the requirement at Tier A for zero build cost — and stays useful as a fallback after your own UI exists.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Running the same swarm on both vendors</h2>
+  <div class="prose">
+    <p>Don't write role definitions twice, and don't write to the lowest common denominator. Keep one neutral source — a <code>swarm/</code> directory of YAML role definitions plus prompt bodies — and compile it:</p>
+    <ul>
+      <li><code>swarm/roles/*.yaml</code> → <code>.claude/agents/*.md</code> (full fidelity: tools, model, worktree isolation, permission mode, memory)</li>
+      <li><code>swarm/roles/*.yaml</code> → <code>.github/agents/*.agent.md</code> (degraded: name, description, instructions, tools)</li>
+      <li><code>swarm/constitution/*.md</code> → <code>CLAUDE.md</code> and <code>AGENTS.md</code></li>
+    </ul>
+    <p>Orchestration can't be compiled the same way — Claude gets a dynamic workflow script, Copilot gets a shell script driving <code>/fleet</code> and sequential invocations. Accept that divergence; it's roughly 200 lines each. The compiler itself is an afternoon, and it's what makes the "drop this into a work repo" story real: whichever tool your employer allows, the roles are identical.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>What could actually bite you</h2>
+  <div class="prose"><p>Ranked by how much they'd change the plan.</p></div>
+  <div class="tscroll">
+  <table>
+    <thead><tr><th>Risk</th><th>Detail</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Auth &amp; billing model</strong><br><span class="dim">decides Tier B vs C</span></td><td>The Agent SDK authenticates with an API key and is metered per token; Anthropic's docs state third-party products may not offer claude.ai login or rate limits. Driving the CLI as a subprocess instead uses whatever your CLI is already logged in as. For a personal tool that's the difference between a metered bill and your existing subscription.</td><td>Confirm the terms for personal use before committing to Tier B. If it matters, move to the Tier C process model early — it costs weeks later and days now.</td></tr>
+      <tr><td><strong>Windows</strong></td><td>Split-pane teammate mode needs tmux or iTerm2 and is explicitly unsupported in Windows Terminal. Concurrent worktrees plus file-locked task claiming is the least-tested path on Windows.</td><td>Use in-process mode (the default) and your own UI for the pane view. Run the orchestrator under WSL2 if worktree or locking trouble appears.</td></tr>
+      <tr><td><strong>Agent teams are experimental</strong></td><td>Off by default behind <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</code>. Known limits: no session resumption for in-process teammates, no nested teams, one team per session, lead can't be reassigned. Enabling it also changes ordinary delegation — a named subagent silently launches as a teammate, which stalls orchestration that waits on subagent results.</td><td>Build the builder swarm on workflows and plain subagents. Use teams only for the spec-swarm debate round, where peer messaging is the actual value, and expect to rework it.</td></tr>
+      <tr><td><strong>Token burn</strong></td><td>Six personalities debating, then a builder swarm, is a lot of parallel context. Teams cost markedly more than subagents because each teammate is a full session.</td><td>Set <code>maxBudgetUsd</code> per run. Route scouts and reviewers to a cheaper model per role. Calibrate the spec swarm on a narrow brief first.</td></tr>
+      <tr><td><strong>Spec drift</strong></td><td>The approval seam is worthless if the builder swarm quietly reinterprets it.</td><td>Machine-checkable acceptance criteria; mandatory restate-and-diff as the builder's first task; QA validates against <code>acceptance.feature</code>, not against the code.</td></tr>
+      <tr><td><strong>Resume semantics</strong></td><td>A stopped workflow replays in start order — cached results stop at the first unfinished agent, and everything that started after it re-runs. Exiting Claude Code entirely restarts a workflow from scratch.</td><td>Favour many small agents over few long ones. Persist each phase's output to the blackboard so a re-run is cheap.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Build sizing</h2>
+  <div class="prose"><p>Evening-scale estimates for a side project, assuming you already know the domain. An "evening" is two to three focused hours.</p></div>
+  <div class="tscroll">
+  <table>
+    <thead><tr><th>Work item</th><th>Tier</th><th class="num">Size</th><th class="num">Rough LOC</th></tr></thead>
+    <tbody>
+      <tr><td>Constitution + six builder roles as subagent files</td><td>A</td><td class="num">1–2 evenings</td><td class="num">~400 md</td></tr>
+      <tr><td>Spec swarm workflow + six personalities + artifact template</td><td>A</td><td class="num">2 evenings</td><td class="num">~350</td></tr>
+      <tr><td>Builder swarm workflow with worktree isolation + QA gate</td><td>A</td><td class="num">2 evenings</td><td class="num">~250</td></tr>
+      <tr><td>Neutral role format + compiler to Claude and Copilot</td><td>A</td><td class="num">1 evening</td><td class="num">~250</td></tr>
+      <tr><td>Hook event sink: HTTP endpoint, SQLite schema, run model</td><td>B</td><td class="num">3–5 evenings</td><td class="num">~600</td></tr>
+      <tr><td>Orchestrator service on the Agent SDK, session registry</td><td>B</td><td class="num">1–2 weeks</td><td class="num">~1,200</td></tr>
+      <tr><td>Web UI: swarm graph, agent transcripts, blackboard viewer</td><td>B</td><td class="num">2 weeks</td><td class="num">~2,000</td></tr>
+      <tr><td>Interactive layer: steer an agent, approve a seam from the browser</td><td>B</td><td class="num">1 week</td><td class="num">~600</td></tr>
+      <tr><td>Remote access: tunnel, auth, mobile layout</td><td>B</td><td class="num">2–3 evenings</td><td class="num">~200</td></tr>
+      <tr><td>Backend adapter layer + Copilot CLI driver + worktree pool</td><td>C</td><td class="num">3–4 weeks</td><td class="num">~2,500</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <h3>Recommended sequence</h3>
+    <ol>
+      <li><strong>Build Tier A completely first, and use it on a real side project.</strong> It's cheap, it's the thing you can take to work, and it will change your role definitions more than any amount of up-front design will.</li>
+      <li><strong>Add the hook event sink alone</strong> — no UI, just a server writing events to SQLite. You get persistent history immediately, and it proves the observability model before you spend two weeks on React.</li>
+      <li><strong>Settle the auth question</strong>, then build the orchestrator on whichever process model that answer implies.</li>
+      <li><strong>Web UI read-only, then interactive.</strong> Watching a swarm is 80% of the value and 30% of the work.</li>
+      <li><strong>Copilot backend last, if at all.</strong> The compiler from step 1 already gives you portable roles; a second execution backend is the most expensive item on this list for the least novel capability.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Sources</strong></p>
+  <ul>
+    <li><a href="https://github.com/unclebob/swarm-forge">unclebob/swarm-forge</a> — architecture, roles, handoff protocol, branch topologies</li>
+    <li><a href="https://code.claude.com/docs/en/sub-agents">Claude Code subagents</a> — frontmatter fields, spawn depth, concurrency limits, SendMessage, /tasks</li>
+    <li><a href="https://code.claude.com/docs/en/agent-teams">Agent teams</a> — mailboxes, shared task list, plan approval, teammateMode, limitations</li>
+    <li><a href="https://code.claude.com/docs/en/workflows">Dynamic workflows</a> — agent()/pipeline(), concurrency and agent caps, /workflows viewer, resume semantics</li>
+    <li><a href="https://code.claude.com/docs/en/hooks">Hooks</a> — full event list, HTTP and async hook types, payload fields</li>
+    <li><a href="https://code.claude.com/docs/en/agent-sdk/overview">Claude Agent SDK</a> and <a href="https://code.claude.com/docs/en/agent-sdk/sessions">sessions</a> — query(), AgentDefinition, resume/fork, listSessions, maxBudgetUsd, auth note</li>
+    <li><a href="https://code.claude.com/docs/en/remote-control">Remote Control</a> — claude.ai/code and mobile driving a local session</li>
+    <li><a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-custom-agents-for-cli">GitHub Copilot CLI custom agents</a> and the <a href="https://github.blog/ai-and-ml/github-copilot/from-one-off-prompts-to-workflows-how-to-use-custom-agents-in-github-copilot-cli/">/fleet announcement</a></li>
+  </ul>
+</footer>
+
+</div>
