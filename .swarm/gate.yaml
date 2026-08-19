@@ -1,0 +1,21 @@
+# The quality gate for this repo. See swarm/constitution.md §2.
+# Each step is a literal command run in `shell`, or `missing`.
+# `missing` is a debt for initiation to clear — not a permanent setting.
+
+shell: pwsh
+
+steps:
+  tests:       ".venv/Scripts/pytest.exe -q"
+  coverage:    ".venv/Scripts/coverage.exe run -m pytest -q; .venv/Scripts/coverage.exe report --fail-under=0"
+  duplication: missing
+  mutation:    missing
+  crap:        missing
+  acceptance:  missing
+
+defaults:
+  crap_max: 6
+  max_mutation_sites_per_file: 100
+
+# Why so much is missing: this repo is markdown and config today. Steps 1 and 2 are the
+# constitutional floor and are real. The rest wait on initiation building Python recipes —
+# see swarm/gate/python.md.
