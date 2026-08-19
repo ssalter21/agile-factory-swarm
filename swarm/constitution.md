@@ -119,8 +119,18 @@ A question is not automatically a reason to stop. Climb this ladder in order:
 Human questions **accumulate**. They are collected, not fired off one at a time, and put to the
 human as a batch when the swarm cannot usefully continue past them.
 
-**Before the seam** (spec work): unresolved questions are raw material. Record them and keep
-going.
+**Before the seam** (spec work): named agents walk the ladder so the voices do not each walk it
+alone. The **Researcher** settles rung 1. The **Unblocker** rules on rung 2 and owns rung 3: it
+sweeps every open question a pass raised, sends each to the Researcher first, and classifies what
+survives as *settled*, *assumed*, or *blocking*.
+
+Recording an assumption and continuing is the default. Stopping the run to put a batch of
+questions to the human is **exceptional**: the Unblocker must name why no assumption was safe. The
+Devil's Advocate may force a block by marking a question **fatal-if-wrong**; the Unblocker cannot
+overrule that, only record its disagreement.
+
+Every assumption the Unblocker records ships with the spec, and is the first thing the human reads
+at the seam.
 
 **After the seam** (build work): the approved spec is the only authority. A contradiction with
 it is not a question — it halts the chain, loudly, naming the contradiction.
@@ -203,3 +213,54 @@ runs twice: first to plan, last to check conformance. QA's pass is terminal.
   to make a test pass.
 - Validate against the **acceptance criteria**, not against the code. When the code and the
   criteria disagree, the criteria win and the disagreement is reported.
+
+---
+
+## 10. The spec swarm
+
+**Applies to:** spec roles
+
+The spec swarm runs **before** the seam and produces the spec the builder swarm is then bound to.
+It never writes production code.
+
+**Three kinds of agent.**
+
+- **Voices** argue about what to build. They draft, critique, and rebut. Four of them: the Agile
+  Agent, the User Voice, the Domain Modeller, the Devil's Advocate.
+- **Machinery** has no vote. Two of them: the **Researcher** answers questions, the **Spec Writer**
+  merges the debate into the artifact.
+- **The Unblocker** runs between passes and decides whether the swarm continues, per §5.
+
+**The spec chain.** research sweep → draft → critique → rebut → synthesis.
+
+- **Draft** is independent. Voices do not see each other's drafts. Divergence is the point.
+- **Critique** is the first pass where every voice reads every draft.
+- **Rebut** is where each voice answers the critiques of its own draft, marking each one
+  *agreed*, *conceded*, or *disputed*. Only disputed points reach synthesis unresolved.
+- The Unblocker runs in each gap between passes. It is the only agent that commissions the
+  Researcher after the opening sweep, and it may commission one round per gap, on named questions
+  only.
+
+**The veto.** The Agile Agent may veto any requirement. A veto never deletes: it moves the
+requirement to the spec's **out of scope** list with the challenge recorded. Another voice pulls
+it back only by tying it to something in the brief. The human reads that list at the seam, so
+every cut is visible and reversible.
+
+**Access.** Every spec role may read the repo. Only the Researcher may reach outside it, and only
+after the repo and local documentation have failed to answer. Findings cite their sources and
+prefer primary ones. Research ships with the spec, linked rather than inlined, so the builder
+swarm does not repeat it.
+
+**Configuration.** `.swarm/spec.yaml` declares which voices run and briefs them on the project —
+the domain, and who the user is. The Agile Agent, the Devil's Advocate, the Researcher, the
+Unblocker and the Spec Writer are **not removable**: a swarm with nothing cutting scope, nothing
+attacking assumptions, and nothing merging the result is one agent with extra steps.
+
+**Blocking and resuming.** A run cannot take human input mid-flight. When the Unblocker declares a
+blocker the run **ends**, emitting the question batch. The human answers, and the swarm is invoked
+again with those answers. It resumes at a fresh **critique → rebut → synthesis** over the existing
+drafts — unless the Unblocker judges an answer premise-breaking, in which case it restarts from
+drafting and says so.
+
+**Handoffs.** Spec roles hand back to the orchestrator, not to each other. The rules in §6 that
+concern transport do not apply; the rules that concern terseness and preserving the task name do.
