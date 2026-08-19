@@ -16,7 +16,8 @@ A numbered part of the constitution, carrying a scope line naming which roles it
 _Avoid_: article, chapter
 
 **Role**:
-A named builder agent with a remit, a tool allowlist, and one step of the quality gate to own.
+A named builder agent with a remit, a tool allowlist, and at most one step of the quality gate to
+own. A role may own no gate step and earn its place another way — the architect owns the plan.
 _Avoid_: worker, agent (too general)
 
 **Personality**:
@@ -28,7 +29,30 @@ _Avoid_: persona, character
 The personalities that turn a brief into a spec. Runs before the seam.
 
 **Builder swarm**:
-The roles that turn an approved spec into a merged change. Runs after the seam.
+The roles that turn an approved spec into a merged change. Runs after the seam. Its chain is
+architect → coder → cleaner → hardener → architect → QA; the architect runs twice, first to plan
+and last to check conformance.
+
+**Plan**:
+The architect's instruction to the roles downstream of it: module boundaries, dependency
+direction, the testability boundary, and what is forbidden. A **handover, not an artifact** — it
+travels in the handoff, lives in `.scratch/` for the run, and is never committed. The code is the
+definition of the architecture.
+_Avoid_: design doc, architecture doc, spec (that word is taken)
+
+**Appeal**:
+A downstream role's request to the architect to amend the plan that is blocking it. Work stops
+until the architect rules. Three per task, then it becomes a human question.
+_Avoid_: exception, override
+
+**Bounce**:
+Sending a real problem back to the earlier role that owns it, once, with a reproduction. A second
+failure of the same thing becomes a human question.
+_Avoid_: reject, fail back
+
+**Handoff contract**:
+The fixed set of fields every hop carries — task, plan, changed, gate, deviations, request,
+status. A role that cannot fill them in has not finished.
 
 **Brief**:
 The human's loose starting statement of what they want. Input to the spec swarm.

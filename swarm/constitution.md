@@ -50,12 +50,19 @@ checked.
 **The floor.** Whatever a project declares, steps 1 and 2 always apply. A project cannot run
 with no gate at all.
 
+**Who owns a step.** Each step has exactly one owning role: the role that runs it, fixes what
+it finds, and is accountable for the number. A role owns **at most** one kind of step — some
+own none, and earn their place another way.
+
 **Defaults, overridable per project in `.swarm/gate.yaml`:**
 - `CRAP <= 6` per function. CRAP is `complexity² × (1 − coverage)³ + complexity` — either keep a
   function simple, or test it properly.
 - Split any file with more than 100 mutation sites. Too many sites means the file does too much.
 
 **Rules for running the gate:**
+- Run every step you own **and every step owned by a role before you in the chain**, in the
+  order above. Skip only steps a later role owns. The last role in a chain therefore runs all
+  six. A number nobody re-establishes is a number nobody is accountable for.
 - Never hand work on that fails your own gate step. Fix it or escalate.
 - Run gate commands in the shell `.swarm/gate.yaml` declares. Never substitute another shell.
 - Never hand-edit mutation or acceptance manifests. Let the tools update them.
@@ -134,6 +141,36 @@ it is not a question — it halts the chain, loudly, naming the contradiction.
 - **Preserve the task name** across every hop. Invent a short, stable name only when starting
   genuinely new work.
 - **Escalate, do not chatter.** Do not send messages that carry no state change and no request.
+
+**The handoff contract.** Every hop carries the same fields. A role that cannot fill them in has
+not finished:
+
+| field | what it holds |
+|---|---|
+| `task` | the stable task name, preserved across every hop |
+| `plan` | the architect's plan, as amended by any appeal |
+| `changed` | the files this role touched |
+| `gate` | every step this role ran, each `pass` / `fail` / `missing` |
+| `deviations` | appeals made, and how the architect ruled |
+| `request` | what the next role is being asked for |
+| `status` | `forward`, `appeal`, `bounce`, or `halt` |
+
+**The plan is a handover, not an artifact.** It travels in the handoff and is copied to
+`.scratch/` for the run. It is never committed. The code is the definition of the architecture.
+
+**The four statuses.**
+
+- `forward` — hand to the next role in the chain. The normal case, including when nothing changed.
+- `appeal` — the architect's plan blocks correct work. Work stops, the architect rules and amends
+  the plan, and the appealing role resumes. **Three appeals per task**; the fourth becomes a human
+  question.
+- `bounce` — the problem is real but belongs to an earlier role. It goes back **once**, with the
+  reproduction. A second failure of the same thing becomes a human question. Fix inside your own
+  remit before bouncing.
+- `halt` — a contradiction with the approved spec, per §5. The chain stops and names it.
+
+**The builder chain.** architect → coder → cleaner → hardener → architect → QA. The architect
+runs twice: first to plan, last to check conformance. QA's pass is terminal.
 
 ---
 
