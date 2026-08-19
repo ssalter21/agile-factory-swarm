@@ -67,12 +67,37 @@ _Avoid_: gate (that word is taken), checkpoint, approval step
 
 **Spec**:
 The artifact the spec swarm produces and the human approves. After approval it is the builder
-swarm's only authority on what to build.
+swarm's only authority on what to build. Approval is `status: approved` in its front matter,
+written by a human and nobody else.
+
+**Disposition**:
+What the human does to every open question at the seam: answer it in the spec, or move it to the
+assumption register with its cost if wrong. A spec with an undispositioned question is not
+approvable, because after the seam no role may ask.
+_Avoid_: resolve, triage, close
+
+**Restatement**:
+The architect's account of the approved spec in its own words, written before it plans. Diffing it
+against the spec is what catches spec drift at the cheapest moment.
+_Avoid_: summary, understanding, echo
+
+**Interpretation**:
+An ambiguity in the spec that the architect resolved defensibly rather than halting on. Named in
+the restatement, carried in the handoff, and checked by QA at the end. A contradiction is not an
+interpretation — it halts.
+_Avoid_: assumption (that word is taken by the spec swarm), judgement call
 
 **Blackboard**:
-The files under `.swarm/` and `specs/` that roles read and write instead of passing messages
-through a queue. File state *is* the queue.
+The files under `.swarm/` that roles read and write instead of passing messages through a queue.
+File state *is* the queue. Config (`gate.yaml`, `spec.yaml`) is committed; the run directory is
+not.
 _Avoid_: shared context, workspace, scratch
+
+**Run directory**:
+`.swarm/runs/current/` — the seam's artifact for the one in-flight spec: `brief.md`, `spec.md`,
+`acceptance.feature`. Ignored by version control, overwritten by the next approved spec. The
+durable record is the pull request QA opens, not this.
+_Avoid_: specs directory, spec folder, output
 
 **Escalation ladder**:
 The three-rung rule for an open question: research it, else assume defensibly and record it,

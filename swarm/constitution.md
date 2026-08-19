@@ -94,6 +94,8 @@ Before the swarm may run in a repo, that repo must have:
 2. `.swarm/gate.yaml` — the six gate steps, each a command or `missing`, plus the shell those
    commands run in.
 3. Its spec personalities configured for the project.
+4. `.swarm/runs/` ignored by version control. The seam's artifact is run state, not a record
+   (§11).
 
 **The gate registry.** `swarm/gate/<language>.md` holds the recipe for a language: which
 mutation, coverage, duplication, and CRAP tools to use, or how to build one where none exists.
@@ -177,10 +179,12 @@ not finished:
 - `bounce` — the problem is real but belongs to an earlier role. It goes back **once**, with the
   reproduction. A second failure of the same thing becomes a human question. Fix inside your own
   remit before bouncing.
-- `halt` — a contradiction with the approved spec, per §5. The chain stops and names it.
+- `halt` — the approved spec is wrong: it contradicts itself, or it cannot be satisfied as
+  written (§5, §11). Only the human can settle it. The chain stops and names the contradiction.
 
 **The builder chain.** architect → coder → cleaner → hardener → architect → QA. The architect
-runs twice: first to plan, last to check conformance. QA's pass is terminal.
+runs twice: first to plan, last to check conformance. Its first action on the first pass is to
+restate the spec and diff it (§11), before any planning. QA's pass is terminal.
 
 ---
 
@@ -212,7 +216,11 @@ runs twice: first to plan, last to check conformance. QA's pass is terminal.
 - Exercise the project **through its user interface only**. Do not call an API into the project
   to make a test pass.
 - Validate against the **acceptance criteria**, not against the code. When the code and the
-  criteria disagree, the criteria win and the disagreement is reported.
+  criteria disagree, the criteria win and the disagreement is reported. Which status it carries
+  depends on which side is wrong:
+  - Code that fails a criterion is a defect. `bounce` to the coder, once, with the reproduction.
+  - A criterion that cannot be satisfied as written, or two criteria that contradict each other,
+    is the spec being wrong. `halt` per §11. Never change behaviour to resolve it.
 
 ---
 
@@ -228,7 +236,7 @@ It never writes production code.
 - **Voices** argue about what to build. They draft, critique, and rebut. Four of them: the Agile
   Agent, the User Voice, the Domain Modeller, the Devil's Advocate.
 - **Machinery** has no vote. Two of them: the **Researcher** answers questions, the **Spec Writer**
-  merges the debate into the artifact.
+  merges the debate into the artifact at `.swarm/runs/current/` (§11).
 - **The Unblocker** runs between passes and decides whether the swarm continues, per §5.
 
 **The spec chain.** research sweep → draft → critique → rebut → synthesis.
@@ -264,3 +272,79 @@ drafting and says so.
 
 **Handoffs.** Spec roles hand back to the orchestrator, not to each other. The rules in §6 that
 concern transport do not apply; the rules that concern terseness and preserving the task name do.
+
+---
+
+## 11. The seam
+
+**Applies to:** all roles
+
+The seam is the human approval boundary between the spec swarm and the builder swarm. A workflow
+cannot take input mid-run, so the two swarms are separately invoked and the seam is the file state
+between them.
+
+**The artifact.** One run at a time, at `.swarm/runs/current/`:
+
+| file | what it holds |
+|---|---|
+| `brief.md` | the human's brief, verbatim and unedited |
+| `spec.md` | front matter, then the assumption register, the requirements, out of scope, open questions, and links to research |
+| `acceptance.feature` | the acceptance criteria, in Gherkin |
+
+There is never a second run directory. Approving a new spec overwrites the last one. Nothing else
+belongs in the artifact — a **task breakdown does not**, because that is *how*, and *how* is the
+architect's (§1).
+
+**The front matter.** `spec.md` opens with:
+
+```yaml
+---
+slug: <short-name>        # the stable task name §6 preserves across every hop, and the branch name
+status: draft             # only a human may write `approved`
+revision: 1               # bumped by the human on every amendment after approval
+approved_by:              # filled in at the seam
+approved_at:              # filled in at the seam
+---
+```
+
+`status: approved` is the only thing that makes a spec authoritative. The builder swarm reads the
+front matter before anything else and refuses to start on a spec that is not approved, naming what
+it found.
+
+**Approval means every open question is dispositioned.** After the seam the spec is the only
+authority and no role may ask (§5), so a question left genuinely open has no route. The Spec Writer
+ships disputed points as open questions without adjudicating them; the human settles each one at
+the seam, either by answering it in the spec body or by moving it into the assumption register with
+its cost if wrong. A spec still carrying an undispositioned question is not approvable.
+
+**The artifact is not committed.** `.swarm/runs/` is ignored by version control, like `.scratch/`.
+The spec is state between two invocations, not a record — the code is the record. The swarm's whole
+tracked footprint in a repo is `AGENTS.md`, `.swarm/gate.yaml`, and `.swarm/spec.yaml`.
+
+**The durable record is the pull request.** QA assembles the PR body from the brief, the spec, the
+assumption register, and the out-of-scope list, so the reviewer reads the contract beside the diff
+and sees what was cut and what was assumed. Where the repo has no pull request mechanism, QA emits
+the same text in its final report for the human to place.
+
+**Acceptance criteria survive only as something that runs.** The Gherkin graduates into the
+project's test tree where a runner for it exists; where none exists, QA writes ordinary tests
+against the same criteria and the `.feature` file dies with the run directory. An unexecuted
+feature file is prose, and prose does not accumulate in a repo.
+
+**Restate and diff.** The builder swarm's first action is the architect restating the approved spec
+in its own words, to `.scratch/restatement.md`, before it plans. It then diffs its restatement
+against the spec:
+
+- A contradiction, or a requirement it cannot account for, **halts** the run (§6). The gap list
+  goes to the human; no other role may settle it.
+- An ambiguity it can resolve defensibly is recorded as a named **interpretation** in the
+  restatement and travels in the handoff. QA checks every interpretation against the acceptance
+  criteria on its pass.
+
+Spec drift is the failure mode that kills a multi-agent chain. It is cheap to catch here and
+expensive to catch at QA.
+
+**After a halt.** The run ends. The human amends the spec and bumps `revision`. The builder swarm
+is invoked again and restarts **at the architect** — an amended spec may invalidate the plan — on
+the same branch, keeping the halted run's commits. There is no resuming mid-chain; re-invocation is
+all a workflow has.
