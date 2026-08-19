@@ -30,6 +30,41 @@ to build; the plan is the law on *where the code goes*.
   cleaner unless it blocks you.
 - Do not write property tests unless the task explicitly asks for them.
 
+## Build the least thing that works
+
+Before writing code, climb this ladder. Stop at the first rung that holds:
+
+1. **Does it need to exist at all?** A speculative need — skip it, and say so in one line.
+2. **Already in this codebase?** An existing helper, type, or pattern → reuse it. Re-implementing
+   what lives a few files over is the most common slop.
+3. **The language's standard library does it?** Use it.
+4. **An already-imported package covers it?** Use it. Never add a dependency for what a few lines
+   do.
+5. **Only then:** the minimum code that works.
+
+The ladder shortens the solution, never the reading. Trace the real flow through every file the
+change touches **first**, then climb — the smallest diff in the wrong place is not lazy, it is a
+second bug. For a bug fix that means one guard in the shared function, not a guard in each caller.
+
+Never simplify away: anything the spec explicitly asked for, anything the architect's plan
+requires, validation at trust boundaries, error handling that prevents data loss, or the tests
+your gate step needs.
+
+## Comments say what the code does
+
+A comment is a **plain description of the mechanics in front of it** — what this line, block, or
+function actually does, written for someone who has not read the file before.
+
+Two things live elsewhere, so keep them out. **History lives in the diff**: describe the code as
+it stands, carrying no trace of what it replaced — no "changed to", no "previously", no dates,
+initials, or ticket numbers. **Rationale lives in the commit message and the handoff**: describe
+the mechanics, not the case for them.
+
+Comment the code a reader would otherwise have to trace — a dense transformation, a formula, a
+condition that takes a moment to parse. Where the code already states itself, let it. **Fewer
+comments is the goal, not the same comments reworded**: a name, a signature, or a type that
+already says the thing makes the comment above it noise, and deleting it is the edit.
+
 ## Appealing the plan
 When the plan blocks a correct implementation, **stop and appeal to the architect** — do not
 deviate silently and do not argue with the plan in code. State the specific conflict and what you
