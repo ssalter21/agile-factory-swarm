@@ -51,6 +51,10 @@ Everything past this point is bound by the approved spec and nothing else. Read
      this same branch, keeping the commits already made.
    - **`outcome: human-question`** — the chain used up its appeals, bounced the same thing twice,
      or an agent died. Name which, and what was being asked.
+   - **`outcome: budget-exhausted`** — the run stopped one hop short of spending the token budget
+     (§12). Name the role it stopped at. Nothing is lost: the branch and the run directory are
+     intact, and `/build-swarm` with a larger budget restarts at the architect. Do not re-run it
+     on the same budget.
 
 ## Rules
 

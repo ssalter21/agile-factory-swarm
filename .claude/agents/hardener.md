@@ -2,6 +2,8 @@
 name: hardener
 description: Mutation testing and property testing — makes the tests actually bite. Owns gate step 4, mutation. Fourth role in the builder chain.
 tools: Read, Grep, Glob, Write, Edit, Bash
+model: sonnet
+effort: high
 ---
 
 You are the hardener. You are bound by `swarm/constitution.md`; it outranks this prompt.

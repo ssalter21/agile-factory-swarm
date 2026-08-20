@@ -21,6 +21,12 @@ const RUN = '.swarm/runs/current'
 const WORK = RUN + '/work'
 
 const mode = (args && args.mode) || 'fresh'
+
+// A resume re-enters at critique over drafts that already exist. Two things send a run
+// there and they are not the same: a human answering a blocked run's questions, and a run
+// that stopped for budget with nothing to answer (section 12). Only the first has answers
+// to read, so the skill says which this is; a resume that does not say is the old one.
+const hasAnswers = mode === 'resume' && !(args && args.answers === false)
 const voices = (args && args.voices) || ['agile-agent', 'user-voice', 'domain-modeller', 'devils-advocate']
 
 const LAW = [
@@ -165,16 +171,43 @@ function spend() {
   return Math.round(budget.remaining() / 1000) + 'k of ' + Math.round(budget.total / 1000) + 'k left'
 }
 
+// The token budget is the only ceiling this harness has, and it is a hard one: agent()
+// throws once it is spent. Dying inside a pass would leave the human an exception and a
+// half-written blackboard, so we stop ourselves one pass short instead -- exhaustion is a
+// halt, not a crash (section 12). A pass is every voice at once, so the floor is a whole
+// pass's worth. It is a floor, not a guarantee: a pass can still overrun it.
+const FLOOR = 60000
+
+function outOfBudget() {
+  return Boolean(budget.total) && budget.remaining() < FLOOR
+}
+
+// The blackboard survives, so the next run picks up where this one stopped: a run that
+// reached the drafts resumes at critique exactly as a blocked one does.
+function exhausted(at) {
+  return {
+    outcome: 'budget-exhausted',
+    at: at,
+    budget: spend(),
+    artifact: RUN,
+    next: 'The blackboard in ' + WORK + ' is intact. Raise the token budget and run /spec-swarm again.',
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Sweep and draft. Skipped on a resume: the drafts already exist on the
 // blackboard and re-entry is at critique (section 10).
 // ---------------------------------------------------------------------------
 
 if (mode === 'resume') {
-  log('resuming with the answers in ' + RUN + '/answers.md \u2014 re-entering at critique over the existing drafts')
+  log(hasAnswers
+    ? 'resuming with the answers in ' + RUN + '/answers.md \u2014 re-entering at critique over the existing drafts'
+    : 'resuming a run that stopped for budget \u2014 re-entering at critique over the existing drafts')
 } else {
   phase('Sweep')
   log('fresh run. Voices: ' + voices.join(', ') + '. Budget: ' + spend())
+
+  if (outOfBudget()) return exhausted('sweep')
 
   await agent(
     [
@@ -194,6 +227,8 @@ if (mode === 'resume') {
  // Draft is independent (section 10) -- no voice sees another's draft. This barrier is
  // real: critique cannot start until every draft exists.
   phase('Draft')
+  if (outOfBudget()) return exhausted('draft')
+
   await parallel(voices.map((v) => () =>
     agent(
       [
@@ -216,12 +251,14 @@ if (mode === 'resume') {
 // Critique, rebut, synthesis. A resume re-enters here (section 10).
 // ---------------------------------------------------------------------------
 
-const answersNote = mode === 'resume'
+const answersNote = hasAnswers
   ? '\nThe human has answered the last run\u2019s blocking questions in ' + RUN + '/answers.md. Read it first.\n' +
     'Those answers outrank anything in the drafts that contradicts them.'
   : ''
 
 phase('Critique')
+if (outOfBudget()) return exhausted('critique')
+
 await parallel(voices.map((v) => () =>
   agent(
     [
@@ -242,6 +279,8 @@ const afterCritique = await gap('Critique')
 if (afterCritique.verdict === 'block') return blocked(afterCritique, 'critique')
 
 phase('Rebut')
+if (outOfBudget()) return exhausted('rebut')
+
 await parallel(voices.map((v) => () =>
   agent(
     [
@@ -254,7 +293,10 @@ await parallel(voices.map((v) => () =>
       'unresolved, so do not dispute what you merely dislike.',
       'Write to ' + WORK + '/rebut-' + v + '.md.',
     ].join('\n'),
-    { agentType: v, label: 'rebut:' + v, phase: 'Rebut' }
+    // Answering critiques of a draft that already exists is lighter than writing it, and
+    // lighter than attacking three others. Section 12 lets the orchestrator lower a role's
+    // declared effort for a lighter pass, never raise it.
+    { agentType: v, label: 'rebut:' + v, phase: 'Rebut', effort: 'medium' }
   )
 ))
 
@@ -263,6 +305,8 @@ if (afterRebut.verdict === 'block') return blocked(afterRebut, 'rebut')
 
 phase('Synthesis')
 log('synthesising. Budget: ' + spend())
+
+if (outOfBudget()) return exhausted('synthesis')
 
 // The spec's open questions are the points still disputed after the rebut pass.
 // They are NOT the unblocker's blocking list -- that is empty whenever the run

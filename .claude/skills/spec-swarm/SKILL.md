@@ -18,6 +18,15 @@ before the workflow is invoked, and read back **here** after it returns. Read
    - **`answers.md` present** — the last run blocked and the human has answered. This is a
      **resume**. Leave every file where it is; the drafts in `work/` are what the resume re-enters
      over. Do not touch `brief.md`.
+   - **No `spec.md` and no `answers.md`** — the last run stopped for budget (§12) before it wrote
+     anything for the human. Where it stopped decides what happens now, and the drafts are the
+     marker:
+     - **`work/draft-*.md` exist** — a **resume**, but nothing for the voices to read. Pass
+       `answers: false` so they are not sent to a file that does not exist, and leave every file
+       where it is.
+     - **no drafts** — it stopped in the sweep or the draft pass, so there is nothing to re-enter
+       over. Run it **fresh** over the same directory: keep `brief.md` exactly as it is, and clear
+       `work/`.
    - **A directory with no `answers.md`, and `spec.md` does not say `status: approved`** — there is
      an unapproved spec sitting there. **Stop.** Say what is in it and ask whether to overwrite.
      Never clear it silently: a blocked run holds questions nobody has answered yet.
@@ -39,6 +48,7 @@ before the workflow is invoked, and read back **here** after it returns. Read
    ```
    Workflow({ name: 'spec-chain', args: {
      mode: 'fresh' | 'resume',
+     answers: true | false,          // resume only: false when the resume is a budget stop, not an answered block
      voices: [...],
      researchRoundsPerGap: <limits.research_rounds_per_gap, default 1>,
    } })
@@ -58,6 +68,10 @@ before the workflow is invoked, and read back **here** after it returns. Read
      `status: approved` themselves**, and that approval means every open question has been
      dispositioned — answered in the spec, or moved into the assumption register with its cost if
      wrong (§11). Do not offer to approve it. Do not edit the front matter.
+   - **`outcome: budget-exhausted`** — the run stopped one pass short of spending the token budget
+     (§12). Name the pass it stopped at. There is no spec to read yet, but the blackboard in
+     `work/` survives: `/spec-swarm` with a larger budget resumes over it if the drafts were
+     reached, and starts over if they were not. Do not re-run it on the same budget.
 
 ## Rules
 

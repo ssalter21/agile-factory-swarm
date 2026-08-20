@@ -361,3 +361,25 @@ expensive to catch at QA.
 is invoked again and restarts **at the architect** — an amended spec may invalidate the plan — on
 the same branch, keeping the halted run's commits. There is no resuming mid-chain; re-invocation is
 all a workflow has.
+
+---
+
+## 12. Runtime policy
+
+**Applies to:** the orchestrator
+
+- **Every role declares its model and its effort.** They belong to the role definition, not to a
+  run, because they are a statement about the work the role does rather than about one job. A role
+  that never gets to correct its own output, or that nothing runs after, is where the strong model
+  earns its cost; a role following a plan that already exists is where it does not.
+- **A lighter pass may be run lighter, never heavier.** Where one role does two jobs — the
+  architect plans, then checks conformance — the orchestrator may lower the declared effort for the
+  lighter pass. It may never raise it above what the role declares, and it may not change the
+  model. Anything more than that is a second role wearing the first one's name.
+- **The sequence is the isolation.** The builder chain is strictly sequential: no two roles ever
+  hold the same working tree at once. No role gets an isolated worktree. A role that needs one has
+  found a chain that is not sequential, and that is a defect in the chain, not a missing setting.
+- **Running out of budget is a halt, not a crash.** The human's token budget is the only ceiling
+  there is. The orchestrator stops one hop short of spending it rather than dying inside a hop:
+  it names the role it stopped at, leaves the branch and the run directory intact, and says what
+  raising the budget would resume. A run that ends in an exception has told the human nothing.

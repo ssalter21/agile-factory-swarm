@@ -71,6 +71,27 @@ function spend() {
   return Math.round(budget.remaining() / 1000) + 'k of ' + Math.round(budget.total / 1000) + 'k left'
 }
 
+// The token budget is the only ceiling this harness has, and it is a hard one: agent()
+// throws once it is spent. A chain that dies inside a hop leaves the human an exception
+// and no account of where it stopped, so we stop ourselves one hop short instead --
+// budget exhaustion is a halt, not a crash (section 12). One role at a time, so the
+// floor is one role's worth. It is a floor, not a guarantee: a hop can still overrun it.
+const FLOOR = 50000
+
+function outOfBudget() {
+  return Boolean(budget.total) && budget.remaining() < FLOOR
+}
+
+function exhausted(at) {
+  return {
+    outcome: 'budget-exhausted',
+    at: at,
+    budget: spend(),
+    next: 'Nothing is lost: the branch and ' + RUN + ' are intact. Raise the token budget and run ' +
+          '/build-swarm again \u2014 it restarts at the architect (\u00a711).',
+  }
+}
+
 function halted(h, at) {
   return {
     outcome: 'halted',
@@ -96,6 +117,8 @@ function askHuman(reason, at, h) {
 
 phase('Plan')
 log('build swarm. Budget: ' + spend())
+
+if (outOfBudget()) return exhausted('architect (plan)')
 
 let plan = await agent(
   [
@@ -140,6 +163,8 @@ async function runChain() {
   let i = entry
   while (i < CHAIN.length) {
     const role = CHAIN[i]
+    if (outOfBudget()) return exhausted(role)
+
     const h = await agent(
       [
         LAW,
@@ -179,7 +204,10 @@ async function runChain() {
           'Rule on it. If they are right, amend ' + PLAN + ' and say what changed. If they are wrong,',
           'say why and leave the plan as it is. Either way the ' + role + ' resumes after you.',
         ].join('\n'),
-        { agentType: 'architect', schema: HANDOFF, label: 'architect:appeal-' + appeals, phase: 'Build' }
+        // Lighter than the plan pass: the architect is ruling on one role's case against a plan
+        // it already wrote, not writing the plan. Section 12 lets the orchestrator lower a
+        // role's declared effort for a lighter pass, never raise it.
+        { agentType: 'architect', schema: HANDOFF, label: 'architect:appeal-' + appeals, phase: 'Build', effort: 'medium' }
       )
       if (!ruling || ruling.status === 'halt') return halted(ruling, 'architect (appeal)')
       deviations = deviations.concat(['appeal from ' + role + ': ' + ruling.summary])
@@ -237,6 +265,8 @@ while (true) {
 
   phase('Conformance')
 
+  if (outOfBudget()) return exhausted('architect (conformance)')
+
   const conformance = await agent(
     [
       LAW,
@@ -250,7 +280,8 @@ while (true) {
       'fix in bounceTo; that role and everything after it runs again.',
       'Correcting your own plan is an amendment, not a bounce, and costs the appealing role nothing.',
     ].join('\n'),
-    { agentType: 'architect', schema: HANDOFF, label: 'architect:conformance', phase: 'Conformance' }
+    // Reading built code against a plan that exists is lighter than writing that plan.
+    { agentType: 'architect', schema: HANDOFF, label: 'architect:conformance', phase: 'Conformance', effort: 'high' }
   )
 
   if (!conformance) return askHuman('the architect returned nothing on its conformance pass', 'architect (conformance)', null)
@@ -267,6 +298,8 @@ while (true) {
 
   phase('QA')
   log('QA. Budget: ' + spend())
+
+  if (outOfBudget()) return exhausted('qa')
 
   qa = await agent(
     [
