@@ -1,3 +1,7 @@
+import dataclasses
+
+import pytest
+
 from swarm_doctor import steps
 from swarm_doctor.diagnosis import StepState, Verdict, diagnose
 
@@ -155,3 +159,15 @@ def test_the_last_occurrence_wins_even_where_it_is_the_worse_declaration():
     assert state_of(d, "crap") is StepState.DEFECT
     assert d.defects == 1
     assert row_of(d, "crap").command is None
+
+
+def test_a_row_cannot_be_altered_after_it_is_diagnosed():
+    row = row_of(diagnose(ALL_DECLARED), "tests")
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        row.state = StepState.MISSING
+
+
+def test_a_diagnosis_cannot_be_altered_after_it_is_made():
+    d = diagnose(ALL_DECLARED)
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        d.verdict = Verdict.DEGRADED

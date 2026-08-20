@@ -58,6 +58,42 @@ def blocks(count):
         yield text, pairs
 
 
+def spelling(rng):
+    """One value as a file may spell it, and the scalar the parser owes for it."""
+    command = rng.choice(COMMANDS)
+    style = rng.randrange(3)
+    if style == 1:
+        written = "'" + command + "'"
+    elif style == 2:
+        command = command + rng.choice(("", " --tag=#1", " # and on"))
+        written = '"' + command + '"'
+    else:
+        written = command
+    if rng.random() < 0.5:
+        written += rng.choice((" # a note", chr(9) + "#note", "   #", "  # a: b"))
+    return written, command
+
+
+def spelled_blocks(count):
+    """A block spelled every way the documented subset allows: bare and quoted values, a space
+    or a tab for the indent, and comments that must never reach a value."""
+    rng = random.Random(SEED)
+    for _ in range(count):
+        pairs = tuple(
+            (rng.choice(KEYS),) + spelling(rng) for _ in range(rng.randrange(1, 7))
+        )
+        indent = rng.choice((" ", "  ", "    ", chr(9), chr(9) + chr(9)))
+        text = "steps:\n" + "".join(
+            f"{indent}{key}: {written}\n" for key, written, _ in pairs
+        )
+        yield text, tuple((key, expected) for key, _, expected in pairs)
+
+
+def test_a_value_survives_every_way_the_subset_lets_a_file_spell_it():
+    for text, pairs in spelled_blocks(CASES):
+        assert gate.parse_steps(text.encode("utf-8")) == pairs, text
+
+
 def test_a_well_formed_block_round_trips_key_for_key_and_value_for_value():
     for text, pairs in blocks(CASES):
         assert gate.parse_steps(text.encode("utf-8")) == pairs

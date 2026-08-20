@@ -74,6 +74,30 @@ def test_a_hash_inside_quotes_stays_in_the_value():
     )
 
 
+def test_a_single_quoted_value_is_read_like_a_double_quoted_one():
+    assert gate.parse_steps(b"steps:\n  crap: 'run it'\n") == (("crap", "run it"),)
+
+
+def test_a_tab_indents_an_entry_and_opens_a_comment_exactly_as_a_space_does():
+    assert gate.parse_steps(b"steps:\n\tcrap: missing\t# a debt\n") == (
+        ("crap", "missing"),
+    )
+
+
+def test_a_quote_that_has_closed_lets_a_later_hash_open_a_comment():
+    raw = b'steps:\n  tests: "run it" # a note\n'
+    assert gate.parse_steps(raw) == (("tests", "run it"),)
+
+
+def test_a_hash_opens_a_comment_only_where_a_space_or_a_tab_is_the_character_before_it():
+    assert gate.parse_steps(b"steps:\n  crap: missing #a debt\n") == (
+        ("crap", "missing"),
+    )
+    assert gate.parse_steps(b"steps:\n  crap: run--tag=#1\n") == (
+        ("crap", "run--tag=#1"),
+    )
+
+
 def test_a_value_containing_a_colon_is_kept_whole_and_the_key_is_what_precedes_it():
     raw = b'steps:\n  tests: pwsh -c "cd C:/repos; run it"\n'
     assert gate.parse_steps(raw) == (("tests", 'pwsh -c "cd C:/repos; run it"'),)

@@ -1,3 +1,5 @@
+import dataclasses
+
 import pytest
 
 from swarm_doctor import doctor
@@ -101,3 +103,9 @@ def test_any_invocation_other_than_doctor_is_one_usage_line(args):
 
 def test_the_usage_line_wins_before_the_file_is_even_looked_at():
     assert doctor.run([], None, LOOKED_IN).lines == ("usage: swarm doctor",)
+
+
+def test_a_report_cannot_be_altered_after_it_is_made():
+    report = report_for(ALL_DECLARED)
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        report.exit_code = doctor.EXIT_COULD_NOT_ANSWER

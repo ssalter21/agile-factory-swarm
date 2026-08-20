@@ -196,3 +196,60 @@ def test_the_ends_of_the_printable_range_are_left_exactly_as_they_are():
 def test_each_escape_carries_the_hex_digits_its_width_calls_for():
     command = "\x00 \u0100 \U00010000 \U0010ffff"
     assert lines_for(tests=command)[1].endswith(r"\x00 \u0100 \U00010000 \U0010ffff")
+
+
+def test_the_summary_reads_exactly_this_when_every_step_is_declared():
+    assert lines_for()[0] == "INTACT 0 of 6 gate steps are missing."
+
+
+def test_the_summary_reads_exactly_this_when_two_steps_are_defective():
+    assert lines_for(crap=None, mutation="")[0] == (
+        "INTACT 0 of 6 gate steps are missing and 2 are defects."
+    )
+
+
+def test_the_summary_reads_exactly_this_for_one_missing_floor_step_and_one_defect():
+    assert lines_for(tests="missing", crap=None)[0] == (
+        "DEGRADED 1 of 6 gate steps are missing and 1 is a defect; "
+        "the floor step tests is missing, and steps 1 and 2 always apply; "
+        "a run here would be a degraded run."
+    )
+
+
+def test_the_summary_reads_exactly_this_when_both_floor_steps_are_missing():
+    summary = lines_for(
+        tests="missing", coverage="missing", crap="missing", mutation=None
+    )[0]
+    assert summary == (
+        "DEGRADED 3 of 6 gate steps are missing and 1 is a defect; "
+        "the floor steps tests and coverage are missing, and steps 1 and 2 always apply; "
+        "a run here would be a degraded run."
+    )
+
+
+def test_a_whole_report_reads_exactly_like_this():
+    assert lines_for(crap="missing", mutation=None) == (
+        "DEGRADED 1 of 6 gate steps are missing and 1 is a defect; "
+        "a run here would be a degraded run.",
+        "  tests        declared  run-tests",
+        "  coverage     declared  run-coverage",
+        "  duplication  declared  run-duplication",
+        "  mutation     defect",
+        "  crap         missing",
+        "  acceptance   declared  run-acceptance",
+    )
+
+
+def test_the_unparseable_line_reads_exactly_this():
+    assert render.unreadable_line(Unreadable.UNPARSEABLE, LOOKED_IN) == (
+        "UNUSABLE the gate declaration at .swarm/gate.yaml could not be parsed, "
+        f"under {LOOKED_IN}."
+    )
+
+
+def test_a_newline_or_a_carriage_return_in_a_command_is_named_by_its_own_escape():
+    assert lines_for(tests="run\r\nit")[1].endswith(r"run\r\nit")
+
+
+def test_the_top_of_each_escape_width_is_escaped_at_that_width():
+    assert lines_for(tests="\xff \uffff")[1].endswith(r"\xff \uffff")

@@ -44,6 +44,15 @@ def test_it_diagnoses_the_gate_of_the_directory_it_is_invoked_from(
     ]
 
 
+def test_the_report_is_written_one_line_at_a_time_with_nothing_added_between(
+    monkeypatch, capsys, tmp_path
+):
+    write_gate(tmp_path, GATE)
+    _, out = invoke(monkeypatch, capsys, tmp_path)
+    lines = doctor.run(["doctor"], GATE, str(tmp_path)).lines
+    assert out == "\n".join(lines) + "\n"
+
+
 def test_an_empty_directory_yields_one_line_and_the_could_not_answer_code(
     monkeypatch, capsys, tmp_path
 ):
