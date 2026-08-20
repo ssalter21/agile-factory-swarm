@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agile-factory-swarm"
+version = "0.1.0"
+description = "Reads a repo's quality gate declaration and reports how much of it is declared."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+swarm = "swarm_doctor.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
