@@ -13,8 +13,14 @@ in a role's own agent definition.
 - **Shell:** PowerShell 7 on Windows 11. Gate commands run in the shell `.swarm/gate.yaml`
   declares — do not substitute bash.
 - **What this repo is:** the swarm itself. `swarm/` holds the shipped source — the constitution,
-  the gate registry, and the gate tools the swarm ships. `.claude/` holds this harness's compiled
+  the role definitions in `swarm/roles/`, the gate registry, the gate tools the swarm ships, and
+  the role compiler in `swarm/tools/python/rolecompile/`. `.claude/` holds this harness's compiled
   roles and workflows.
+- **The roles are compiled.** Edit `swarm/roles/<name>.yaml` (the declaration) and
+  `swarm/roles/<name>.md` (the prompt), then run
+  `.venv/Scripts/python.exe swarm/tools/python/rolecompile` to write `.claude/agents/` and
+  `.github/agents/`. Add `--check` to compare and write nothing. Never hand-edit a compiled agent
+  file. Nothing in this repo dispatches to `.github/agents/`; those files are published, not run.
 - **Dogfooding:** the constitution in `swarm/` is the same file installed into target repos. When
   it is wrong here, it is wrong everywhere. The same goes for `swarm/gate/tools/`: this repo runs
   its own mutation step with the runner it ships.

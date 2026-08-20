@@ -1,0 +1,5 @@
+name: unblocker
+description: Runs between passes and rules on whether the swarm continues — settled, assumed, or blocking. Owns the assumption register and everything the human is asked.
+tools: Read, Grep, Glob, Write
+model: opus
+effort: high
