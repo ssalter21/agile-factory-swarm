@@ -29,7 +29,11 @@ Everything past this point is bound by the approved spec and nothing else. Read
 
    - Already on it — stay. This is a re-invocation after a halt, and the halted run's commits stay
      (§11).
-   - Not on it — create it from the repo's default branch.
+   - Not on it — create it **from the commit the spec was approved against**, which is wherever you
+     are standing now. That is the default branch in the ordinary case, and deliberately not a rule
+     that says so: a spec written against unmerged work describes a change on top of that work, and
+     branching from the default would hand the chain a tree the spec does not describe. Say which
+     commit you branched from.
 
 3. **Say what the gate will not check.** Read `.swarm/gate.yaml`. Any step that says `missing`
    makes this a **degraded run** (§2). Name them now, before the run, not only in the report.
