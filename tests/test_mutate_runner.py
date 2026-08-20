@@ -111,6 +111,15 @@ def test_the_suite_reports_what_the_command_returned(project):
     assert failing(root).passes() is False
 
 
+def test_a_command_that_never_returns_counts_as_a_failure(tmp_path):
+    # A statement-deletion mutant can turn a loop's own terminating condition into one that
+    # never changes, so the suite hangs rather than fails. A hang is not a pass: bound it.
+    checker = tmp_path / "hang.py"
+    checker.write_text("import time\ntime.sleep(60)\n", encoding="utf-8")
+    suite = Suite("%s %s" % (sys.executable, checker), None, tmp_path, timeout=0.2)
+    assert suite.passes() is False
+
+
 # --------------------------------------------------------------------------- finding files
 
 

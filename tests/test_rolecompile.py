@@ -4,6 +4,8 @@ No filesystem and no process. Every assertion here is about a rule, and the rule
 recompiling the twelve tracked agent files changes nothing.
 """
 
+import dataclasses
+
 import pytest
 
 from rolecompile import compare, compiler, declaration, emit, report, validate
@@ -43,7 +45,25 @@ def _named(name, declared=DECLARED):
     return declared.replace("name: qa", "name: %s" % name)
 
 
+# --- model -------------------------------------------------------------------------------------
+
+
+def test_a_role_source_is_frozen():
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        source().name = "other"
+
+
+def test_a_target_file_is_frozen():
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        TargetFile(path="a", data=b"a").path = "b"
+
+
 # --- declaration -----------------------------------------------------------------------------
+
+
+def test_a_role_definition_is_frozen():
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        definitions(source())[0].prompt = "other"
 
 
 def test_fields_keep_the_order_they_were_read_in():
@@ -196,6 +216,18 @@ def test_the_filename_check_runs_before_the_tools_check():
 # --- compare ---------------------------------------------------------------------------------
 
 
+def test_every_status_member_has_its_own_distinct_value():
+    # Nothing reads a Status member's .value; what matters is that it stays unique. Two members
+    # sharing a value would make Python's Enum alias them, so `Status.DIFFERS is Status.SAME`
+    # would silently become true and every `is` comparison in compiler.py would misclassify.
+    assert [member.value for member in Status] == [
+        "same",
+        "absent",
+        "line endings",
+        "differs",
+    ]
+
+
 def test_the_same_bytes_are_the_same():
     assert compare.status(CLAUDE_BYTES, CLAUDE_BYTES) is Status.SAME
 
@@ -265,6 +297,13 @@ def test_an_undecodable_source_produces_no_targets_at_all():
 
 
 # --- compiler.outcome ------------------------------------------------------------------------
+
+
+def test_an_outcome_is_frozen():
+    outcome = compiler.outcome([], {}, set(), check=True)
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        outcome.code = 99
+
 
 CLAUDE = ".claude/agents"
 GITHUB = ".github/agents"

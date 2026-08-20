@@ -14,12 +14,20 @@ from mutate.units import unit_hashes
 
 SHELL_SYNTAX = ";|&<>$`(){}"
 
+# A statement-deletion mutant can turn a loop's terminating condition into one that never
+# changes -- dropping `found.pop()` from a `while found and not found[-1]:` leaves the loop
+# spinning forever. That is a real mutant, correctly caught by the suite hanging rather than
+# failing, but subprocess.run() waits forever without a bound. A hang is not a pass: bound it
+# and treat running past the bound the same as any other failure, which is what it is.
+TIMEOUT_SECONDS = 120
+
 
 class Suite:
     """Runs the project's test command and answers one question: did it pass?"""
 
-    def __init__(self, command, shell, root):
+    def __init__(self, command, shell, root, timeout=TIMEOUT_SECONDS):
         self.root = root
+        self.timeout = timeout
         # Timestamp-based .pyc invalidation records whole seconds and the source size, so two
         # mutants written in the same second at the same size would reuse each other's bytecode
         # and the second would be scored from the first one's run. Write none at all.
@@ -57,9 +65,17 @@ class Suite:
         return [shell or "sh", "-c", command]
 
     def passes(self):
-        done = subprocess.run(
-            self.argv, cwd=str(self.root), capture_output=True, text=True, env=self.env
-        )
+        try:
+            done = subprocess.run(
+                self.argv,
+                cwd=str(self.root),
+                capture_output=True,
+                text=True,
+                env=self.env,
+                timeout=self.timeout,
+            )
+        except subprocess.TimeoutExpired:
+            return False
         return done.returncode == 0
 
 
