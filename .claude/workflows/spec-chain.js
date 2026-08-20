@@ -1,7 +1,7 @@
 export const meta = {
   name: 'spec-chain',
-  description: 'Turn the brief in the run directory into an approvable spec (constitution §10)',
-  whenToUse: 'Runs the five passes of §10. Invoked only by the /spec-swarm skill, which owns the blackboard writes and the seam.',
+  description: 'Turn the brief in the run directory into an approvable spec (constitution \u00a710)',
+  whenToUse: 'Runs the five passes of \u00a710. Invoked only by the /spec-swarm skill, which owns the blackboard writes and the seam.',
   phases: [
     { title: 'Sweep', detail: 'researcher answers the opening questions' },
     { title: 'Draft', detail: 'voices draft independently, unseen by each other' },
@@ -24,8 +24,8 @@ const mode = (args && args.mode) || 'fresh'
 const voices = (args && args.voices) || ['agile-agent', 'user-voice', 'domain-modeller', 'devils-advocate']
 
 const LAW = [
-  'You are bound by swarm/constitution.md. Read it before you act: §10 places you in the spec swarm,',
-  '§5 is the question ladder, §11 is the seam.',
+  'You are bound by swarm/constitution.md. Read it before you act: \u00a710 places you in the spec swarm,',
+  '\u00a75 is the question ladder, \u00a711 is the seam.',
   'Read ' + RUN + '/brief.md and .swarm/spec.yaml first. The brief is what was asked for; spec.yaml',
   'says who the user is and what the domain is.',
   'Write your output to the file named below, and return ONLY a terse pointer to it plus your',
@@ -45,7 +45,7 @@ const RULING = {
     settled: { type: 'array', items: { type: 'string' }, description: 'questions research answered' },
     assumed: { type: 'array', items: { type: 'string' }, description: 'each assumption, then its cost if wrong' },
     blocking: { type: 'array', items: { type: 'string' }, description: 'questions for the human; empty unless verdict is block' },
-    why: { type: 'string', description: 'if blocking, why no assumption was safe. §5 requires this.' },
+    why: { type: 'string', description: 'if blocking, why no assumption was safe. \u00a75 requires this.' },
     research: {
       type: 'array',
       items: { type: 'string' },
@@ -61,7 +61,7 @@ function noRuling(afterPass) {
     verdict: 'block',
     settled: [], assumed: [], research: [],
     blocking: ['The unblocker returned no ruling after the ' + afterPass + ' pass.'],
-    why: 'agent failure — nothing ruled on the open questions, so nothing may be assumed past',
+    why: 'agent failure \u2014 nothing ruled on the open questions, so nothing may be assumed past',
   }
 }
 
@@ -87,9 +87,9 @@ function unblocker(afterPass, round, note) {
   )
 }
 
-// The unblocker runs in every gap between passes (§10) and owns rung 1 of the
-// question ladder by delegation (§5). It cannot spawn the researcher itself —
-// no spec role can — so the delegation happens HERE: it names the questions,
+// The unblocker runs in every gap between passes (section 10) and owns rung 1 of the
+// question ladder by delegation (section 5). It cannot spawn the researcher itself --
+// no spec role can -- so the delegation happens HERE: it names the questions,
 // the workflow fires the researcher on them, and it rules again with the
 // answers. Left to itself the unblocker just reasons about whether research
 // would have helped, which is not the same thing as researching.
@@ -118,9 +118,9 @@ async function gap(afterPass) {
           q,
           '',
           'Answer that question and nothing around it. Repo first, then local documentation, then the',
-          'web — never reach outside before the inside has failed. Cite every finding, preferring',
+          'web \u2014 never reach outside before the inside has failed. Cite every finding, preferring',
           'primary sources.',
-          'If it has no fact-shaped answer — if it is a decision rather than a missing fact — say so',
+          'If it has no fact-shaped answer \u2014 if it is a decision rather than a missing fact \u2014 say so',
           'plainly and stop. That is a useful answer.',
           'Append your finding to ' + WORK + '/research-' + afterPass.toLowerCase() + '.md under a',
           'heading quoting the question.',
@@ -141,7 +141,7 @@ async function gap(afterPass) {
     ruling = reruled
   }
 
-  log('gap after ' + afterPass + ': ' + ruling.verdict + ' — ' + ruling.settled.length + ' settled, ' +
+  log('gap after ' + afterPass + ': ' + ruling.verdict + ' \u2014 ' + ruling.settled.length + ' settled, ' +
       ruling.assumed.length + ' assumed, ' + ruling.blocking.length + ' blocking')
   return ruling
 }
@@ -167,11 +167,11 @@ function spend() {
 
 // ---------------------------------------------------------------------------
 // Sweep and draft. Skipped on a resume: the drafts already exist on the
-// blackboard and re-entry is at critique (§10).
+// blackboard and re-entry is at critique (section 10).
 // ---------------------------------------------------------------------------
 
 if (mode === 'resume') {
-  log('resuming with the answers in ' + RUN + '/answers.md — re-entering at critique over the existing drafts')
+  log('resuming with the answers in ' + RUN + '/answers.md \u2014 re-entering at critique over the existing drafts')
 } else {
   phase('Sweep')
   log('fresh run. Voices: ' + voices.join(', ') + '. Budget: ' + spend())
@@ -191,16 +191,16 @@ if (mode === 'resume') {
   const afterSweep = await gap('Sweep')
   if (afterSweep.verdict === 'block') return blocked(afterSweep, 'sweep')
 
-  // Draft is independent (§10) — no voice sees another's draft. This barrier is
-  // real: critique cannot start until every draft exists.
+ // Draft is independent (section 10) -- no voice sees another's draft. This barrier is
+ // real: critique cannot start until every draft exists.
   phase('Draft')
   await parallel(voices.map((v) => () =>
     agent(
       [
         LAW,
         '',
-        'Draft pass. Read ' + WORK + '/research-sweep.md and the brief. Do NOT read another voice’s',
-        'draft — they do not exist yet, and divergence is the point.',
+        'Draft pass. Read ' + WORK + '/research-sweep.md and the brief. Do NOT read another voice\u2019s',
+        'draft \u2014 they do not exist yet, and divergence is the point.',
         'Draft what you think should be built, from your own remit only.',
         'Write it to ' + WORK + '/draft-' + v + '.md, ending with a section titled "Open questions".',
       ].join('\n'),
@@ -213,11 +213,11 @@ if (mode === 'resume') {
 }
 
 // ---------------------------------------------------------------------------
-// Critique, rebut, synthesis. A resume re-enters here (§10).
+// Critique, rebut, synthesis. A resume re-enters here (section 10).
 // ---------------------------------------------------------------------------
 
 const answersNote = mode === 'resume'
-  ? '\nThe human has answered the last run’s blocking questions in ' + RUN + '/answers.md. Read it first.\n' +
+  ? '\nThe human has answered the last run\u2019s blocking questions in ' + RUN + '/answers.md. Read it first.\n' +
     'Those answers outrank anything in the drafts that contradicts them.'
   : ''
 
@@ -228,7 +228,7 @@ await parallel(voices.map((v) => () =>
       LAW,
       answersNote,
       '',
-      'Critique pass — the first pass where you read everyone. Read every ' + WORK + '/draft-*.md,',
+      'Critique pass \u2014 the first pass where you read everyone. Read every ' + WORK + '/draft-*.md,',
       'including your own, and ' + WORK + '/assumptions.md.',
       'Critique each draft that is not yours, from your remit. Be specific: a critique that does not',
       'name the requirement it attacks is noise.',
@@ -265,7 +265,7 @@ phase('Synthesis')
 log('synthesising. Budget: ' + spend())
 
 // The spec's open questions are the points still disputed after the rebut pass.
-// They are NOT the unblocker's blocking list — that is empty whenever the run
+// They are NOT the unblocker's blocking list -- that is empty whenever the run
 // reaches synthesis at all, so reading it here reports zero open questions on
 // every spec that was ever written.
 const WRITTEN = {
@@ -273,10 +273,10 @@ const WRITTEN = {
   additionalProperties: false,
   required: ['slug', 'openQuestions', 'degraded', 'headline'],
   properties: {
-    slug: { type: 'string', description: 'the front matter slug — the branch name and the task name' },
+    slug: { type: 'string', description: 'the front matter slug \u2014 the branch name and the task name' },
     openQuestions: { type: 'array', items: { type: 'string' }, description: 'one line per disputed point shipped for the human to disposition' },
-    degraded: { type: 'array', items: { type: 'string' }, description: 'gate steps declared missing (§2)' },
-    headline: { type: 'string', description: 'terse — what the spec asks for' },
+    degraded: { type: 'array', items: { type: 'string' }, description: 'gate steps declared missing (\u00a72)' },
+    headline: { type: 'string', description: 'terse \u2014 what the spec asks for' },
   },
 }
 
@@ -285,23 +285,23 @@ const written = await agent(
     LAW,
     answersNote,
     '',
-    'Synthesis. You are the last agent before the human. Merge — do not adjudicate.',
+    'Synthesis. You are the last agent before the human. Merge \u2014 do not adjudicate.',
     'Read everything in ' + WORK + '/: the drafts, the critiques, the rebuttals, the assumption',
     'register, and the research. Then write the artifact, from swarm/templates/:',
     '  ' + RUN + '/spec.md             front matter, assumption register, requirements, out of scope, open questions, research links',
     '  ' + RUN + '/acceptance.feature  the acceptance criteria, in Gherkin',
     'Leave brief.md exactly as it is.',
-    'Front matter is status: draft and revision: 1. Only a human writes approved (§11).',
+    'Front matter is status: draft and revision: 1. Only a human writes approved (\u00a711).',
     'Every point still disputed after the rebut pass ships as an open question. You do not settle',
     'them; the human dispositions each one at the seam.',
-    'Read .swarm/gate.yaml. If any step is missing, say so plainly near the top of spec.md — this',
-    'will be a degraded run, and the human approves knowing what will not be checked (§2).',
+    'Read .swarm/gate.yaml. If any step is missing, say so plainly near the top of spec.md \u2014 this',
+    'will be a degraded run, and the human approves knowing what will not be checked (\u00a72).',
   ].join('\n'),
   { agentType: 'spec-writer', schema: WRITTEN, label: 'spec-writer', phase: 'Synthesis' }
 )
 
-if (!written) return askHumanToRead('the spec writer returned nothing — read the run directory before trusting it')
-if (written.degraded.length) log('degraded run — the gate has no tool for: ' + written.degraded.join(', '))
+if (!written) return askHumanToRead('the spec writer returned nothing \u2014 read the run directory before trusting it')
+if (written.degraded.length) log('degraded run \u2014 the gate has no tool for: ' + written.degraded.join(', '))
 
 return {
   outcome: 'drafted',
