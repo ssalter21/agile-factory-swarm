@@ -22,6 +22,8 @@ GATE_RELATIVE_PATH: str = ".swarm/gate.yaml"
 _STEPS_KEY = "steps:"
 _QUOTES = "\"'"
 _INDENT_CHARS = " \t"
+_COMMENT_CHAR = "#"
+_FLOW_OPENERS = "[{"
 
 
 def parse_steps(raw: bytes) -> tuple[tuple[str, str | None], ...] | None:
@@ -100,9 +102,16 @@ def _without_comment(line: str) -> str:
                 quote = ""
         elif char in _QUOTES:
             quote = char
-        elif char == "#" and (index == 0 or line[index - 1] in _INDENT_CHARS):
+        elif _opens_comment(line, index):
             return line[:index]
     return line
+
+
+def _opens_comment(line: str, index: int) -> bool:
+    """Whether that character is a comment marker at column 0 or after a space or a tab."""
+    if line[index] != _COMMENT_CHAR:
+        return False
+    return index == 0 or line[index - 1] in _INDENT_CHARS
 
 
 def _scalar(value: str) -> str | None:
@@ -111,9 +120,14 @@ def _scalar(value: str) -> str | None:
     if not text:
         return None
     if text[0] in _QUOTES:
-        if len(text) > 1 and text[-1] == text[0]:
-            return text[1:-1] or None
-        return None
-    if text[0] in "[{":
+        return _quoted_scalar(text)
+    if text[0] in _FLOW_OPENERS:
         return None
     return text
+
+
+def _quoted_scalar(text: str) -> str | None:
+    """The text inside a matching pair of quotes, or None where the pair does not match."""
+    if len(text) > 1 and text[-1] == text[0]:
+        return text[1:-1] or None
+    return None

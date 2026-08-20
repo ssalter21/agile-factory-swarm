@@ -1,7 +1,7 @@
 """Property tests for the whole reader: doctor answers or declines, always in printable ASCII.
 
 Not collected by the gate's pytest run. testpaths is tests/, which recurses into this directory
-and matches no test_*.py file, so these properties sit outside gate steps 1 to 5 (plan A1).
+and matches no test_*.py file, so these properties sit outside gate steps 1 to 5 (constitution section 2).
 Run them by naming the file:
 
     .venv/Scripts/pytest.exe tests/property/prop_doctor.py -q

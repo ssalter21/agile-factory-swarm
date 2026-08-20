@@ -52,15 +52,25 @@ def diagnose(entries: Sequence[tuple[str, str | None]]) -> Diagnosis:
     """Six rows in the constitution's order, whatever order the entries arrive in."""
     values = dict(entries)
     rows = tuple(_row(name, values.get(name)) for name in steps.ORDER)
-    missing = sum(1 for row in rows if row.state is StepState.MISSING)
-    defects = sum(1 for row in rows if row.state is StepState.DEFECT)
-    floor_breaches = tuple(
-        row.key
-        for row in rows
-        if row.key in steps.FLOOR and row.state is StepState.MISSING
-    )
-    verdict = Verdict.DEGRADED if missing else Verdict.INTACT
-    return Diagnosis(rows, missing, defects, floor_breaches, verdict)
+    missing = _counted(rows, StepState.MISSING)
+    defects = _counted(rows, StepState.DEFECT)
+    return Diagnosis(rows, missing, defects, _floor_breaches(rows), _verdict(missing))
+
+
+def _counted(rows: tuple[StepRow, ...], state: StepState) -> int:
+    """How many of the rows are in that state."""
+    return sum(1 for row in rows if row.state is state)
+
+
+def _floor_breaches(rows: tuple[StepRow, ...]) -> tuple[str, ...]:
+    """The floor steps declared missing, named in the floor's own order."""
+    missing = {row.key for row in rows if row.state is StepState.MISSING}
+    return tuple(key for key in steps.FLOOR if key in missing)
+
+
+def _verdict(missing: int) -> Verdict:
+    """DEGRADED for one debt or more, INTACT for none. A defect never moves it (I-1)."""
+    return Verdict.DEGRADED if missing else Verdict.INTACT
 
 
 def _row(name: str, value: str | None) -> StepRow:
