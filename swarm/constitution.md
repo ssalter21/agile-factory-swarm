@@ -57,7 +57,10 @@ own none, and earn their place another way.
 **Defaults, overridable per project in `.swarm/gate.yaml`:**
 - `CRAP <= 6` per function. CRAP is `complexity² × (1 − coverage)³ + complexity` — either keep a
   function simple, or test it properly.
-- Split any file with more than 100 mutation sites. Too many sites means the file does too much.
+- Split any file with more than 100 mutation sites. A **site** is a place that can be mutated,
+  not a change that can be made there — `a > b` is one site whatever the tool does to it. Too
+  many sites means the file does too much. A breach fails the mutation step, and the file is not
+  mutated: splitting it is the required work either way, and mutating it first pays twice.
 
 **Rules for running the gate:**
 - Run every step you own **and every step owned by a role before you in the chain**, in the
@@ -65,7 +68,8 @@ own none, and earn their place another way.
   six. A number nobody re-establishes is a number nobody is accountable for.
 - Never hand work on that fails your own gate step. Fix it or escalate.
 - Run gate commands in the shell `.swarm/gate.yaml` declares. Never substitute another shell.
-- Never hand-edit mutation or acceptance manifests. Let the tools update them.
+- Never hand-edit mutation or acceptance manifests. Let the tools update them. Commit them: a
+  manifest is what stops the next run paying for work this one already did.
 - Keep property tests out of normal verification — out of coverage, mutation, CRAP, and unit
   runs — unless your role owns property testing or the task explicitly asks for them.
 
@@ -103,7 +107,12 @@ mutation, coverage, duplication, and CRAP tools to use, or how to build one wher
 - Initiation reads the recipe for the project's language and installs what it names.
 - Where no recipe exists, initiation builds the missing tooling and **writes the recipe back**
   into the registry. The second project in a language must cost less than the first.
-- Do not vendor tools into the swarm repo. The registry holds recipes, not binaries.
+- Do not vendor third-party tools into the swarm repo. The registry names them; it does not
+  carry them.
+- A tool the swarm **builds for itself**, that a role would otherwise rebuild on every run, is
+  the exception: it ships in `swarm/gate/tools/<language>/`. It must install nothing, depend on
+  nothing outside the standard library, and be copyable whole. A role that finds itself writing
+  a gate tool is discovering a gap in the registry, and the tool is the fix — not scratch work.
 
 ---
 
@@ -229,6 +238,10 @@ pass is to restate the spec and diff it (§11), before any planning. QA's pass i
 
 - Every commit carries your role byline on its own line: `By <role>.`
 - Temporary files go in `.scratch/` inside the project. Never the system temp directory.
+- **`.scratch/` is for what dies with the run.** Notes, logs, plans, intermediate output. If the
+  next run would have to build the same thing again, it is not temporary — it is tooling, and it
+  belongs where §4 says. Building a tool, using it once, and leaving it in `.scratch/` pays the
+  cost on every run and banks the benefit on none of them.
 - Verify before you hand off. Run the project's verification command whenever it has one.
 - Before relying on an unfamiliar command, read its local help or the project's docs.
 

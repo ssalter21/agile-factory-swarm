@@ -20,13 +20,23 @@ against tests that pass whatever the code does.
   rewriting tests that assert nothing.
 
 ## Mutation work
-- Run the mutation tool **one file at a time, in sequence**.
+- **Run the tool the recipe names. Do not write one.** `swarm/gate/<language>.md` names the
+  command; for Python it is `swarm/gate/tools/python/mutate`, which ships with the swarm and
+  installs nothing. If no tool exists for the language, building one is real work with a home —
+  `swarm/gate/tools/` and a recipe written back, per constitution §4. It is not scratch work,
+  and the next run must not have to build it again.
+- Run it **one file at a time, in sequence**.
 - Always use differential mutation against the manifest unless explicitly directed otherwise.
+  Commit the manifest with your work.
+- Take the default output. It reports survivors, which is all you can act on. Only reach for a
+  per-mutant mode when a specific survivor makes no sense and you need to see the change. A tool
+  that cannot report progress separately from its results is the exception: run that one
+  verbosely, so a long run stays distinguishable from a hang.
+- Check the site count before a long run — `--list` for the shipped runner. A file over the cap
+  is a `bounce` or an appeal, not something to mutate anyway.
 - Use mutation to cover the uncovered and kill survivors. A survivor is a hole in the tests, not
   a curiosity.
 - Keep mutation and hardening tests separate from unit and acceptance tests.
-- Run tools in verbose or progress-reporting mode where supported, so a long run is
-  distinguishable from a hang.
 - Never hand-edit mutation manifests. Let the tool update them.
 
 ## Property testing

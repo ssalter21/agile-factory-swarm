@@ -153,7 +153,20 @@ Change Risk Anti-Patterns — one number per function combining complexity and c
 
 **Mutation site**:
 A place in the code where a mutation tool could inject a small change. Used as a size measure:
-over 100 in one file means the file does too much.
+too many in one file means the file does too much.
+_Avoid_: mutant (that is the change, not the place)
+
+**Mutant**:
+One change made at a mutation site. A site yields several — `a > b` is one site and at least
+three mutants. Sites measure size; mutants measure cost.
+
+**Survivor**:
+A mutant the test suite still passes with. A hole in the tests, and the hardener's work.
+_Avoid_: escaped mutant, false negative
+
+**Mutation manifest**:
+`.swarm/mutation.json` — every mutant's verdict from earlier runs, keyed so that editing one
+function invalidates only that function. Committed. Never hand-edited.
 
 **Testability boundary**:
 The line between modules that can be tested automatically and those that cannot — GUI, device,
@@ -169,4 +182,6 @@ _Avoid_: setup, install, onboarding, bootstrap
 
 **Gate registry**:
 `swarm/gate/<language>.md` — the accumulated knowledge of how to fill the gate for a language.
-Holds recipes, never binaries. Initiation reads it, and writes back what it had to build.
+Holds recipes first. Names third-party tools rather than carrying them, and ships only the small
+tools the swarm builds for itself, in `swarm/gate/tools/`. Initiation reads it, and writes back
+what it had to build.

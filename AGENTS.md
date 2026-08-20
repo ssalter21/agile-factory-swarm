@@ -12,10 +12,17 @@ in a role's own agent definition.
 - **Language:** Python 3.11. Virtualenv at `.venv/`.
 - **Shell:** PowerShell 7 on Windows 11. Gate commands run in the shell `.swarm/gate.yaml`
   declares — do not substitute bash.
-- **What this repo is:** the swarm itself. `swarm/` holds the shipped, language-neutral source —
-  the constitution and the gate registry. `.claude/` holds this harness's compiled roles and
-  workflows.
+- **What this repo is:** the swarm itself. `swarm/` holds the shipped source — the constitution,
+  the gate registry, and the gate tools the swarm ships. `.claude/` holds this harness's compiled
+  roles and workflows.
 - **Dogfooding:** the constitution in `swarm/` is the same file installed into target repos. When
-  it is wrong here, it is wrong everywhere.
+  it is wrong here, it is wrong everywhere. The same goes for `swarm/gate/tools/`: this repo runs
+  its own mutation step with the runner it ships.
 - **The gate is degraded.** `.swarm/gate.yaml` currently declares `missing` for duplication,
-  mutation, and CRAP. Say so in any handoff, per constitution §2.
+  CRAP, and acceptance. Say so in any handoff, per constitution §2.
+- **The site cap is overridden.** `max_mutation_sites_per_file` is 250 here, not the
+  constitutional 100. The reason is in `.swarm/gate.yaml`; §2's number is unresolved.
+- **Mutation currently exits 1**, on 158 survivors in the runner's own 1,386 mutants. That is the
+  step working, not the step broken: the survivors are standing hardener debt. About 60 of them
+  are prose in diagnostic messages, killable only by asserting wording word for word. Whether
+  that is worth doing is a human question — see `swarm/gate/tools/README.md`.
