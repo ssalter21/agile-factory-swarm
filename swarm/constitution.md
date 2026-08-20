@@ -131,8 +131,16 @@ questions to the human is **exceptional**: the Unblocker must name why no assump
 Devil's Advocate may force a block by marking a question **fatal-if-wrong**; the Unblocker cannot
 overrule that, only record its disagreement.
 
-Every assumption the Unblocker records ships with the spec, and is the first thing the human reads
-at the seam.
+**A disagreement between voices is a question too.** Where two voices argue and neither convinces
+the other, the Unblocker walks the same ladder over the disputed point and rules on what being
+wrong would cost. Only a point that is fatal-if-wrong reaches the human. Anything cheaper the
+Unblocker settles itself: it picks the side that won the argument, or where neither did, it picks
+one. Both land in the register, and the register says which happened — **chosen** where the
+Unblocker ruled, **assumed** where nobody knew. Calling a ruling an assumption hides that an
+argument was won; calling a coin-toss a ruling claims a confidence nobody has.
+
+Every assumption the Unblocker records ships with the spec. It is not the first thing the human
+reads: the open questions are (§11), because answering them is what approval is.
 
 **After the seam** (build work): the approved spec is the only authority. A contradiction with
 it is not a question — it halts the chain, loudly, naming the contradiction.
@@ -182,9 +190,26 @@ not finished:
 - `halt` — the approved spec is wrong: it contradicts itself, or it cannot be satisfied as
   written (§5, §11). Only the human can settle it. The chain stops and names the contradiction.
 
-**The builder chain.** architect → coder → cleaner → hardener → architect → QA. The architect
-runs twice: first to plan, last to check conformance. Its first action on the first pass is to
-restate the spec and diff it (§11), before any planning. QA's pass is terminal.
+**The builder chain.**
+
+```text
+  approved spec
+       |
+       v
+  ARCHITECT --> CODER --> CLEANER --> HARDENER --> ARCHITECT --> QA --> pull request
+   (plan)                                        (conformance)
+
+  status    where it sends the work
+  --------  --------------------------------------------------------------------
+  forward   the next role along. The normal hop, including when nothing changed.
+  appeal    back to the architect, which amends the plan; the appealing role then
+            resumes. Three per task, then it becomes a human question.
+  bounce    back one role, once, carrying the reproduction.
+  halt      out of the chain, to the human. The run ends.
+```
+
+The architect runs twice: first to plan, last to check conformance. Its first action on the first
+pass is to restate the spec and diff it (§11), before any planning. QA's pass is terminal.
 
 ---
 
@@ -239,20 +264,54 @@ It never writes production code.
   merges the debate into the artifact at `.swarm/runs/current/` (§11).
 - **The Unblocker** runs between passes and decides whether the swarm continues, per §5.
 
-**The spec chain.** research sweep → draft → critique → rebut → synthesis.
+**The spec chain.**
+
+```text
+  brief
+    |
+    v
+  RESEARCH SWEEP
+    |
+    v
+  DRAFT       four voices in parallel, blind to each other
+    |
+    v
+  CRITIQUE    every voice reads every draft
+    |
+    v
+  REBUT       each voice answers its own critiques: agreed / conceded / disputed
+    |
+    v
+  SYNTHESIS   the spec writer merges
+    |
+    v
+  THE SEAM    questions.md, if any, then spec.md and acceptance.feature
+
+  The unblocker runs in every gap between two passes. In each gap it may:
+    - commission the researcher, one round, on named questions only
+    - record an assumption and let the run continue      <- the default
+    - end the run and emit the question batch            <- exceptional (§5)
+
+  In the last gap, rebut -> synthesis, it also rules on every disputed point:
+    fatal-if-wrong  -> questions.md, for the human
+    anything else   -> settled here, recorded as chosen or assumed (§5)
+```
 
 - **Draft** is independent. Voices do not see each other's drafts. Divergence is the point.
 - **Critique** is the first pass where every voice reads every draft.
 - **Rebut** is where each voice answers the critiques of its own draft, marking each one
-  *agreed*, *conceded*, or *disputed*. Only disputed points reach synthesis unresolved.
-- The Unblocker runs in each gap between passes. It is the only agent that commissions the
-  Researcher after the opening sweep, and it may commission one round per gap, on named questions
-  only.
+  *agreed*, *conceded*, or *disputed*.
+- **Synthesis** never receives an unruled dispute. The Unblocker has ruled on every one, so the
+  Spec Writer merges settled text and never adjudicates.
+- The Unblocker is the only agent that commissions the Researcher after the opening sweep, and it
+  may commission one round per gap, on named questions only.
 
 **The veto.** The Agile Agent may veto any requirement. A veto never deletes: it moves the
 requirement to the spec's **out of scope** list with the challenge recorded. Another voice pulls
-it back only by tying it to something in the brief. The human reads that list at the seam, so
-every cut is visible and reversible.
+it back only by tying it to something in the brief. Where a voice does that and still loses, the
+cut is **contested**, and it reaches the human as an open question rather than as a line on a
+list — a contested cut is a decision nobody made. Uncontested cuts stay on the list, which the
+human reads at the seam, so every cut is visible and reversible.
 
 **Access.** Every spec role may read the repo. Only the Researcher may reach outside it, and only
 after the repo and local documentation have failed to answer. Findings cite their sources and
@@ -264,11 +323,25 @@ the domain, and who the user is. The Agile Agent, the Devil's Advocate, the Rese
 Unblocker and the Spec Writer are **not removable**: a swarm with nothing cutting scope, nothing
 attacking assumptions, and nothing merging the result is one agent with extra steps.
 
-**Blocking and resuming.** A run cannot take human input mid-flight. When the Unblocker declares a
-blocker the run **ends**, emitting the question batch. The human answers, and the swarm is invoked
-again with those answers. It resumes at a fresh **critique → rebut → synthesis** over the existing
+**Blocking and resuming.** A run cannot take human input mid-flight, so every human answer arrives
+by re-invocation. There are three ways the swarm is invoked, and it tells them apart from the files
+on disk:
+
+| invocation | what is on disk | what runs |
+|---|---|---|
+| **fresh** | a brief, no drafts | the whole chain |
+| **resume** | drafts, and an `answers.md` newer than them | critique → rebut → synthesis, over the existing drafts |
+| **fold** | a finished `spec.md`, and an `answers.md` newer than it | the Spec Writer alone |
+
+A **resume** follows a block: the Unblocker declared a blocker, the run ended, and the question
+batch went to the human. It resumes at a fresh **critique → rebut → synthesis** over the existing
 drafts — unless the Unblocker judges an answer premise-breaking, in which case it restarts from
 drafting and says so.
+
+A **fold** follows the seam: the run finished, the human answered the questions it could not
+settle, and nothing needs re-arguing. Only the Spec Writer runs. It writes the answers into
+`spec.md`, deletes `questions.md`, and stops. The voices are not re-run — re-arguing a spec the
+human has already read would change text they had accepted.
 
 **Handoffs.** Spec roles hand back to the orchestrator, not to each other. The rules in §6 that
 concern transport do not apply; the rules that concern terseness and preserving the task name do.
@@ -283,30 +356,73 @@ The seam is the human approval boundary between the spec swarm and the builder s
 cannot take input mid-run, so the two swarms are separately invoked and the seam is the file state
 between them.
 
-**The artifact.** One run at a time, at `.swarm/runs/current/`:
+**One run at a time, at `.swarm/runs/current/`:**
+
+```text
+  .swarm/runs/current/
+  |
+  +-- questions.md        <- the human reads this FIRST, and it is the only file
+  |                          that asks them for anything. Absent when there is
+  |                          nothing left to answer.
+  +-- answers.md          <- the human writes this, in plain prose
+  |
+  +-- brief.md            }
+  +-- spec.md             }  the artifact: what the builder swarm is bound to
+  +-- acceptance.feature  }
+  |
+  +-- .work/              <- the passes. Not for the human, and hidden so that
+                             it is not the first thing they see.
+```
 
 | file | what it holds |
 |---|---|
+| `questions.md` | every question the swarm could not settle, and every contested cut (§10). Deleted once they are all answered. |
+| `answers.md` | the human's answers, written by hand, in prose |
 | `brief.md` | the human's brief, verbatim and unedited |
-| `spec.md` | front matter, then the assumption register, the requirements, out of scope, open questions, and links to research |
+| `spec.md` | front matter, the gate warning if the run is degraded, the requirements, the assumption register, out of scope, and links to research |
 | `acceptance.feature` | the acceptance criteria, in Gherkin |
+| `.work/` | the passes — drafts, critiques, rebuttals, the research sweep, the register's full text |
 
 There is never a second run directory. Approving a new spec overwrites the last one. Nothing else
 belongs in the artifact — a **task breakdown does not**, because that is *how*, and *how* is the
 architect's (§1).
 
-**The artifact is those three files, not the whole directory.** The run directory also carries the
-spec swarm's working state, and that state is not approved and is not read as the spec:
+**The artifact is `brief.md`, `spec.md` and `acceptance.feature`** — not the whole directory. The
+rest is either the human's side of the conversation or the swarm's working state, and neither is
+approved or read as the spec.
 
-| path | what it holds |
-|---|---|
-| `work/` | the passes — drafts, critiques, rebuttals, the research sweep, the assumption register |
-| `questions.md` | the batch the Unblocker emitted when it blocked the run |
-| `answers.md` | the human's answers to that batch, written by hand |
+`.work/` lives here rather than in `.scratch/` for one reason: a blocked run resumes by reading its
+own drafts, and `.scratch/` is the directory people clear without thinking. One run is one
+directory, and deleting it deletes the whole run.
 
-It lives here rather than in `.scratch/` for one reason: a blocked run resumes by reading its own
-drafts, and `.scratch/` is the directory people clear without thinking. One run is one directory,
-and deleting it deletes the whole run.
+**The open questions are their own file, and the file is the gate.** They are not a section of
+`spec.md`. A question buried on line 274 of a 380-line document cannot be answered, and answering
+them is the only thing approval is (below). So:
+
+- `questions.md` **existing at all** means the seam is open. Its absence is the mechanical signal
+  that every question has been dispositioned.
+- **At most three questions** reach the human. Where more survive the Unblocker's stake filter
+  (§5), it must state, for each one past the third, why the ladder failed. The cap costs an
+  explanation, not a rejection — it may not overrule a fatal-if-wrong mark.
+- **At most one screen per question**, roughly forty lines, and every question is titled on the
+  first screen so the whole batch is visible before any of it is read.
+- Each question carries its fork, what changes down each branch, and what being wrong costs. It
+  carries a **recommendation only where a voice won the argument** — a report of the debate, not
+  the machinery's opinion. Where the voices were genuinely tied, no recommendation is offered, and
+  that absence is the signal that the decision is the human's alone.
+
+**Plain language, and diagrams where they are clearer.** Everything the swarm writes for a human
+uses ordinary technical English — `questions.md`, `spec.md`, the pull request, and every halt and
+question batch a role emits on the way. A term the swarm
+coined is defined where it is first used, or it is not used: *discharged*, *hardened to fact*, *the
+through-line* and *the counter-triple* all appeared in a spec that no source defines, and the
+builder roles are as badly served by them as the human is. The Domain Modeller's glossary is the
+project's language, not a licence to invent one.
+
+Where an idea is a graph — a chain, a fork, a set of states — draw it rather than describe it.
+Diagrams are for human readers, so they appear only in what a human reads, and in the form that
+renders where that human is: **plain-text box drawings** in files read in an editor or a terminal,
+**mermaid** in a pull request body, where a browser will render it.
 
 **The front matter.** `spec.md` opens with:
 
@@ -325,19 +441,47 @@ front matter before anything else and refuses to start on a spec that is not app
 it found.
 
 **Approval means every open question is dispositioned.** After the seam the spec is the only
-authority and no role may ask (§5), so a question left genuinely open has no route. The Spec Writer
-ships disputed points as open questions without adjudicating them; the human settles each one at
-the seam, either by answering it in the spec body or by moving it into the assumption register with
-its cost if wrong. A spec still carrying an undispositioned question is not approvable.
+authority and no role may ask (§5), so a question left genuinely open has no route. A spec still
+carrying an undispositioned question is not approvable, and `questions.md` is what says whether one
+does.
+
+The human answers in `answers.md`, in prose, and never edits `spec.md` by hand. Then:
+
+```text
+  spec swarm finishes
+        |
+        v
+  questions.md exists? --- no ---> read spec.md, set status: approved. Done.
+        |
+       yes
+        |
+        v
+  write answers.md  -->  /spec-swarm again (a fold, §10)
+        |
+        v
+  the Spec Writer folds the answers into spec.md and deletes questions.md
+        |
+        v
+  read spec.md, set status: approved. Done.
+```
+
+The human writes prose; the Spec Writer keeps the structure. Asking a human to hand-edit a long
+document is what makes disposition expensive, and disposition is the one thing the seam is for.
 
 **The artifact is not committed.** `.swarm/runs/` is ignored by version control, like `.scratch/`.
 The spec is state between two invocations, not a record — the code is the record. The swarm's whole
 tracked footprint in a repo is `AGENTS.md`, `.swarm/gate.yaml`, and `.swarm/spec.yaml`.
 
-**The durable record is the pull request.** QA assembles the PR body from the brief, the spec, the
-assumption register, and the out-of-scope list, so the reviewer reads the contract beside the diff
-and sees what was cut and what was assumed. Where the repo has no pull request mechanism, QA emits
-the same text in its final report for the human to place.
+**The durable record is the pull request.** The run directory dies; the PR does not. QA assembles
+the PR body from the brief, the spec, the assumption register, and the out-of-scope list, so the
+reviewer reads the contract beside the diff and sees what was cut and what was assumed.
+
+It is the only human-facing output that survives the run, so the rules above bind it hardest. It is
+not a dump of four documents. It **leads with what was decided** — the questions the human answered
+and how, then what was assumed with its cost, then what was cut — and it carries **one mermaid
+diagram** of the change, because a pull request is read in a browser where mermaid renders. Plain
+language applies. Where the repo has no pull request mechanism, QA emits the same text in its final
+report for the human to place.
 
 **Acceptance criteria survive only as something that runs.** The Gherkin graduates into the
 project's test tree where a runner for it exists; where none exists, QA writes ordinary tests

@@ -18,8 +18,14 @@ export const meta = {
 // ---------------------------------------------------------------------------
 
 const RUN = '.swarm/runs/current'
-const WORK = RUN + '/work'
+// Hidden, because the human's first sight of the run directory should not be twelve files
+// that are not for them (section 11). A blocked run still resumes over its own drafts.
+const WORK = RUN + '/.work'
 
+// Three invocations, told apart by the skill from what is on disk (section 10):
+//   fresh   the whole chain
+//   resume  critique -> rebut -> synthesis over drafts that already exist
+//   fold    the spec writer alone, writing the human's seam answers into a finished spec
 const mode = (args && args.mode) || 'fresh'
 
 // A resume re-enters at critique over drafts that already exist. Two things send a run
@@ -52,11 +58,34 @@ const RULING = {
     assumed: { type: 'array', items: { type: 'string' }, description: 'each assumption, then its cost if wrong' },
     blocking: { type: 'array', items: { type: 'string' }, description: 'questions for the human; empty unless verdict is block' },
     why: { type: 'string', description: 'if blocking, why no assumption was safe. \u00a75 requires this.' },
+    chosen: {
+      type: 'array',
+      items: { type: 'string' },
+      description: 'disputed points you ruled on because being wrong is cheap. Each: the point, the side you took, whether a voice won the argument or you picked, and the cost if wrong. \u00a75 makes this yours; the spec writer never adjudicates.',
+    },
+    questions: {
+      type: 'array',
+      maxItems: 8,
+      items: { type: 'string' },
+      description: 'the batch for the human, each the FULL text of one question in \u00a711 shape: title, the fork as named options, what changes down each branch, the cost if wrong, and a recommendation ONLY where a voice won the argument. At most three; if you exceed three, say for each extra one why the ladder failed. Under 40 lines each. Empty when the human needs to be asked nothing.',
+    },
     research: {
       type: 'array',
       items: { type: 'string' },
       description: 'named questions to send to the researcher before you rule. One round per gap; each must be one specific question with a fact-shaped answer, not a topic. Empty when nothing here is a missing fact.',
     },
+  },
+}
+
+const FOLDED = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['slug', 'answered', 'questionsDeleted', 'headline'],
+  properties: {
+    slug: { type: 'string', description: 'the front matter slug, unchanged by the fold' },
+    answered: { type: 'array', items: { type: 'string' }, description: 'one line per question: what the human decided, and where in spec.md it now lives' },
+    questionsDeleted: { type: 'boolean', description: 'true only if you actually deleted questions.md. Its absence is what makes the spec approvable (\u00a711).' },
+    headline: { type: 'string', description: 'terse \u2014 what the answers changed' },
   },
 }
 
@@ -68,8 +97,32 @@ function noRuling(afterPass) {
     settled: [], assumed: [], research: [],
     blocking: ['The unblocker returned no ruling after the ' + afterPass + ' pass.'],
     why: 'agent failure \u2014 nothing ruled on the open questions, so nothing may be assumed past',
+    chosen: [], questions: [],
   }
 }
+
+// In the last gap the unblocker does a second job: it rules on every point the rebut
+// pass left disputed, so synthesis never receives one (section 5, section 10). What
+// survives that filter is the batch the human reads first at the seam, and section 11
+// caps it at three.
+const SEAM_DUTY = [
+  'This is the LAST gap, so you have a second job.',
+  'Read every rebuttal in ' + WORK + '/. Every point a voice marked DISPUTED is a question too:',
+  'two voices argued and neither won. Rule on each by what being wrong costs.',
+  '  fatal-if-wrong  -> it goes in `questions`, for the human',
+  '  anything else   -> you settle it. Put it in `chosen`: take the side that won the argument,',
+  '                     or where neither did, pick one and say that is what you did.',
+  'A contested cut is a disputed point: the agile agent vetoed a requirement, another voice tied it',
+  'to the brief and lost anyway. It runs through this same filter (section 10).',
+  '`questions` is what the human reads FIRST at the seam, before the spec. Section 11 binds it:',
+  'at most three, at most 40 lines each, each with its fork as named options, what changes down each',
+  'branch, and the cost if wrong. A recommendation ONLY where a voice won the argument, reported as',
+  'that -- which voice and on what grounds. Where they were tied, offer none and say so: the absence',
+  'tells the human the decision is theirs alone.',
+  'Ordinary technical English. Do not use a term this run invented unless you define it there.',
+  'Where a fork is clearer drawn than described, draw it as a plain-text diagram.',
+  'An empty `questions` is the best outcome available. Do not manufacture one.',
+].join('\n')
 
 function unblocker(afterPass, round, note) {
   return agent(
@@ -80,9 +133,13 @@ function unblocker(afterPass, round, note) {
       'Sweep every open question raised so far in ' + WORK + '/, then rule on what survives.',
       note,
       'Append to the assumption register at ' + WORK + '/assumptions.md. Never rewrite it.',
+      'Each entry says which it is: CHOSEN where you ruled, ASSUMED where nobody knew. Do not write',
+      'assumed over a ruling, and do not write chosen over a coin-toss (section 5).',
       'Blocking is exceptional: if you block, name why no assumption was safe.',
       'A question another voice marked fatal-if-wrong you may not assume past. You may only record',
-      'that you disagreed.',
+      'that you disagreed. The cap of three questions in section 11 does not overrule that mark',
+      'either: it costs you an explanation, not the mark.',
+      afterPass === 'Rebut' ? SEAM_DUTY : '',
     ].join('\n'),
     {
       agentType: 'unblocker',
@@ -148,7 +205,9 @@ async function gap(afterPass) {
   }
 
   log('gap after ' + afterPass + ': ' + ruling.verdict + ' \u2014 ' + ruling.settled.length + ' settled, ' +
-      ruling.assumed.length + ' assumed, ' + ruling.blocking.length + ' blocking')
+      ruling.assumed.length + ' assumed, ' + (ruling.chosen || []).length + ' chosen, ' +
+      ruling.blocking.length + ' blocking' +
+      (afterPass === 'Rebut' ? ', ' + (ruling.questions || []).length + ' for the human' : ''))
   return ruling
 }
 
@@ -191,6 +250,53 @@ function exhausted(at) {
     budget: spend(),
     artifact: RUN,
     next: 'The blackboard in ' + WORK + ' is intact. Raise the token budget and run /spec-swarm again.',
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Fold. The run already reached the seam and the human has answered the
+// questions it could not settle, so nothing needs re-arguing: only the spec
+// writer runs (section 10). Re-running the voices here would change text the
+// human had already read and accepted.
+// ---------------------------------------------------------------------------
+
+if (mode === 'fold') {
+  phase('Synthesis')
+  log('folding the answers in ' + RUN + '/answers.md into the spec. Spec writer only. Budget: ' + spend())
+
+  if (outOfBudget()) return exhausted('fold')
+
+  const folded = await agent(
+    [
+      LAW,
+      '',
+      'This is a FOLD (section 10). The spec at ' + RUN + '/spec.md went to the human, who has',
+      'answered the questions it could not settle. You are the only agent running.',
+      'Read ' + RUN + '/questions.md and ' + RUN + '/answers.md.',
+      'Write each answer into ' + RUN + '/spec.md where it belongs -- into the requirement, the',
+      'register, or the out-of-scope list, as the answer dictates. The human wrote prose; you keep',
+      'the structure. Their answers outrank anything in the spec that contradicts them.',
+      'Do not re-open the debate, do not add requirements no voice raised, and do not touch',
+      'brief.md or the front matter. Only a human writes status: approved (section 11).',
+      'Then DELETE ' + RUN + '/questions.md. Its absence is what says nothing is left to answer,',
+      'and it is the only mechanical check the disposition rule has (section 11).',
+      'Never leave the same decision written in two files.',
+    ].join('\n'),
+    { agentType: 'spec-writer', schema: FOLDED, label: 'spec-writer:fold', phase: 'Synthesis' }
+  )
+
+  if (!folded) return askHumanToRead('the spec writer returned nothing from the fold \u2014 read the run directory before trusting it')
+  if (!folded.questionsDeleted) {
+    return askHumanToRead('the fold did not delete ' + RUN + '/questions.md, so the seam is still open and the spec is not approvable')
+  }
+
+  return {
+    outcome: 'folded',
+    artifact: RUN,
+    slug: folded.slug,
+    folded: folded.answered,
+    headline: folded.headline,
+    next: 'Read ' + RUN + '/spec.md and set status: approved yourself. Nothing is left to answer.',
   }
 }
 
@@ -308,17 +414,16 @@ log('synthesising. Budget: ' + spend())
 
 if (outOfBudget()) return exhausted('synthesis')
 
-// The spec's open questions are the points still disputed after the rebut pass.
-// They are NOT the unblocker's blocking list -- that is empty whenever the run
-// reaches synthesis at all, so reading it here reports zero open questions on
-// every spec that was ever written.
+// The open questions are no longer the spec writer's. The unblocker ruled on every
+// disputed point in the last gap, so what reaches the human is `afterRebut.questions`
+// and it lives in its own file, not in a section of spec.md (section 11). The spec
+// writer's job here is the artifact and nothing else.
 const WRITTEN = {
   type: 'object',
   additionalProperties: false,
-  required: ['slug', 'openQuestions', 'degraded', 'headline'],
+  required: ['slug', 'degraded', 'headline'],
   properties: {
     slug: { type: 'string', description: 'the front matter slug \u2014 the branch name and the task name' },
-    openQuestions: { type: 'array', items: { type: 'string' }, description: 'one line per disputed point shipped for the human to disposition' },
     degraded: { type: 'array', items: { type: 'string' }, description: 'gate steps declared missing (\u00a72)' },
     headline: { type: 'string', description: 'terse \u2014 what the spec asks for' },
   },
@@ -332,13 +437,23 @@ const written = await agent(
     'Synthesis. You are the last agent before the human. Merge \u2014 do not adjudicate.',
     'Read everything in ' + WORK + '/: the drafts, the critiques, the rebuttals, the assumption',
     'register, and the research. Then write the artifact, from swarm/templates/:',
-    '  ' + RUN + '/spec.md             front matter, assumption register, requirements, out of scope, open questions, research links',
+    '  ' + RUN + '/spec.md             the fixed order below',
     '  ' + RUN + '/acceptance.feature  the acceptance criteria, in Gherkin',
     'Leave brief.md exactly as it is.',
+    'The order of spec.md is fixed (\u00a711): the degraded-gate warning if this run is degraded, then',
+    'the requirements, then the assumption register, then out of scope, then research links. The',
+    'warning is first because it changes what approval means. The requirements are next because the',
+    'main reader of this file is the architect.',
     'Front matter is status: draft and revision: 1. Only a human writes approved (\u00a711).',
-    'Every point still disputed after the rebut pass ships as an open question. You do not settle',
-    'them; the human dispositions each one at the seam.',
-    'Read .swarm/gate.yaml. If any step is missing, say so plainly near the top of spec.md \u2014 this',
+    'You write NO open-questions section. Every disputed point was ruled on by the unblocker in the',
+    'last gap: what it chose is settled text with a register entry, and what it could not settle is',
+    'the human\u2019s batch, which lives in its own file and is not yours. If a dispute reaches you',
+    'unruled, say so in your headline rather than deciding it.',
+    'Each register entry says CHOSEN or ASSUMED, as the unblocker recorded it. Do not flatten them.',
+    'Ordinary technical English (\u00a711). Define any term this run invented, at first use, or drop it.',
+    'Where an idea is a chain, a fork or a set of states, draw it as a plain-text diagram rather than',
+    'describing it in a paragraph. Plain text, not mermaid: this file is read in an editor.',
+    'Read .swarm/gate.yaml. If any step is missing, say so plainly at the very top of spec.md \u2014 this',
     'will be a degraded run, and the human approves knowing what will not be checked (\u00a72).',
   ].join('\n'),
   { agentType: 'spec-writer', schema: WRITTEN, label: 'spec-writer', phase: 'Synthesis' }
@@ -347,14 +462,21 @@ const written = await agent(
 if (!written) return askHumanToRead('the spec writer returned nothing \u2014 read the run directory before trusting it')
 if (written.degraded.length) log('degraded run \u2014 the gate has no tool for: ' + written.degraded.join(', '))
 
+// The questions are the unblocker's, not the spec writer's, and they go in their own
+// file. The skill writes them, verbatim -- this script cannot touch the filesystem.
+const seamQuestions = afterRebut.questions || []
+
 return {
   outcome: 'drafted',
   artifact: RUN,
   slug: written.slug,
   assumptions: afterRebut.assumed,
-  openQuestions: written.openQuestions,
+  chosen: afterRebut.chosen || [],
+  questions: seamQuestions,
   degraded: written.degraded,
   headline: written.headline,
-  next: 'Read ' + RUN + '/spec.md, disposition all ' + written.openQuestions.length +
-        ' open questions, then set status: approved yourself.',
+  next: seamQuestions.length
+    ? 'Write these ' + seamQuestions.length + ' question(s) to ' + RUN + '/questions.md verbatim. ' +
+      'The human answers them in ' + RUN + '/answers.md, in prose, then runs /spec-swarm again for a fold.'
+    : 'Nothing is left to answer. Read ' + RUN + '/spec.md and set status: approved yourself.',
 }

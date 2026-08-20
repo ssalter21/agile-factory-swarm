@@ -321,6 +321,12 @@ while (true) {
       'Then assemble the durable record: open the pull request, its body built from the brief, the',
       'spec, the assumption register, and the out-of-scope list, so the reviewer reads the contract',
       'beside the diff. Where the repo has no pull request mechanism, emit the same text here.',
+      'It is the only human-facing output that outlives the run, so section 11 binds it hardest. It',
+      'is NOT a dump of four documents. Order it: what was decided at the seam and what the human',
+      'chose; what was assumed, each with its cost if wrong, marked CHOSEN or ASSUMED; what was cut,',
+      'one line each; then ONE mermaid diagram of the change. A pull request is read in a browser, so',
+      'mermaid renders there -- use it here and nowhere else. Ordinary technical English: define any',
+      'term this run invented, or drop it.',
       'Deviations across the run: ' + (deviations.length ? deviations.join('; ') : 'none'),
     ].join('\n'),
     { agentType: 'qa', schema: HANDOFF, label: 'qa', phase: 'QA' }

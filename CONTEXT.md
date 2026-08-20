@@ -71,10 +71,37 @@ swarm's only authority on what to build. Approval is `status: approved` in its f
 written by a human and nobody else.
 
 **Disposition**:
-What the human does to every open question at the seam: answer it in the spec, or move it to the
-assumption register with its cost if wrong. A spec with an undispositioned question is not
-approvable, because after the seam no role may ask.
+What the human does to every open question at the seam: answer it in `answers.md`, in prose. The
+spec writer then folds the answers into the spec and deletes `questions.md`. A spec with an
+undispositioned question is not approvable, because after the seam no role may ask — and
+`questions.md` still existing is what says one is.
 _Avoid_: resolve, triage, close
+
+**Questions file**:
+`questions.md` in the run directory — everything the human is asked, whether the run blocked early
+or reached the seam. The first thing they read, and the only file there that asks them for
+something. At most three questions, at most a screen each. Its existence means the seam is open; the
+spec writer deletes it on a fold, and that absence is the only mechanical check disposition has.
+_Avoid_: question batch (that is the content, not the file), open questions section, TODO
+
+**Fold**:
+The third way the spec swarm is invoked, after a resume and a fresh run: the human has answered the
+seam's questions, so the spec writer runs alone, writes the answers into the spec, and deletes
+`questions.md`. The voices are not re-run — re-arguing a spec the human has read would change text
+they had accepted.
+_Avoid_: revision, amendment, second pass
+
+**Chosen** / **Assumed**:
+The two kinds of register entry. *Chosen* is a disputed point the unblocker ruled on because being
+wrong is cheap. *Assumed* is a gap nobody could answer. Naming a ruling an assumption hides that an
+argument was won; naming a coin-toss a ruling claims a confidence nobody has.
+_Avoid_: decided, settled (that word means research answered it)
+
+**Contested cut**:
+A requirement the agile agent vetoed, that another voice then tied to the brief and lost anyway. It
+is a decision nobody made, so it reaches the human as a question rather than as a line on the
+out-of-scope list.
+_Avoid_: disputed veto, rejected requirement
 
 **Restatement**:
 The architect's account of the approved spec in its own words, written before it plans. Diffing it
@@ -94,14 +121,19 @@ not.
 _Avoid_: shared context, workspace, scratch
 
 **Run directory**:
-`.swarm/runs/current/` — the seam's artifact for the one in-flight spec: `brief.md`, `spec.md`,
-`acceptance.feature`. Ignored by version control, overwritten by the next approved spec. The
-durable record is the pull request QA opens, not this.
+`.swarm/runs/current/` — everything for the one in-flight spec. The **artifact** is three files:
+`brief.md`, `spec.md`, `acceptance.feature`. Beside them sit the human's side of the conversation
+(`questions.md`, `answers.md`) and the swarm's working state (`.work/`, hidden, because the human's
+first sight of this directory should not be twelve files that are not for them). Ignored by version
+control, overwritten by the next approved spec. The durable record is the pull request QA opens, not
+this.
 _Avoid_: specs directory, spec folder, output
 
 **Escalation ladder**:
 The three-rung rule for an open question: research it, else assume defensibly and record it,
-else make it a human question. Human questions accumulate and are asked as a batch.
+else make it a human question. Human questions accumulate and are asked as a batch. A **disputed
+point** — two voices argued and neither won — walks the same ladder, ruled on by what being wrong
+costs; only a fatal-if-wrong one reaches the human.
 
 ### Quality
 

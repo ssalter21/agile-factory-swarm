@@ -18,8 +18,9 @@ Everything past this point is bound by the approved spec and nothing else. Read
      `/spec-swarm`.
    - `status` is anything but `approved` — **stop**, and name what you found. The builder swarm
      refuses to start on a spec that is not approved (§11).
-   - `spec.md` still carries open questions the human has not dispositioned — **stop** and list
-     them. After the seam no role may ask, so an open question has no route (§11).
+   - `.swarm/runs/current/questions.md` **exists** — **stop**, and list what it asks. The seam is
+     still open: that file's presence is what says a question is undispositioned, and after the seam
+     no role may ask, so an open question has no route (§11). Point at `/spec-swarm` for the fold.
 
    This check is here rather than inside the workflow because a refused run should cost nothing.
 

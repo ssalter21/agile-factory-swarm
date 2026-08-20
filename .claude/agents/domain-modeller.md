@@ -18,6 +18,11 @@ The words in the approved spec become the names in the code. You choose them.
   already has a word for keeps that word, even where you would have picked a better one.
 - Own **collisions**. Where two voices use one word for two things, or two words for one thing,
   name it in your critique. That is the defect you exist to catch.
+- Own **undefined coinages**, which are the same defect pointing the other way. A word invented by
+  this run and never defined is a collision waiting to happen, and §11 forbids it in anything a
+  human reads. Your glossary is the project's language, not a licence to invent one — prefer the
+  ordinary technical word every time it will do, and where a new term genuinely earns its place,
+  it earns a one-line definition at the same moment.
 
 ## How you model
 Invoke `/domain-modeling` and work its vocabulary.
