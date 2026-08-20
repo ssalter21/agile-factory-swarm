@@ -46,34 +46,101 @@ const RULING = {
     assumed: { type: 'array', items: { type: 'string' }, description: 'each assumption, then its cost if wrong' },
     blocking: { type: 'array', items: { type: 'string' }, description: 'questions for the human; empty unless verdict is block' },
     why: { type: 'string', description: 'if blocking, why no assumption was safe. §5 requires this.' },
+    research: {
+      type: 'array',
+      items: { type: 'string' },
+      description: 'named questions to send to the researcher before you rule. One round per gap; each must be one specific question with a fact-shaped answer, not a topic. Empty when nothing here is a missing fact.',
+    },
   },
 }
 
-// The unblocker runs in every gap between passes (§10). It is the only agent
-// that may commission the researcher after the opening sweep.
-async function gap(afterPass) {
-  const ruling = await agent(
+const RESEARCH_ROUNDS_PER_GAP = (args && args.researchRoundsPerGap) || 1
+
+function noRuling(afterPass) {
+  return {
+    verdict: 'block',
+    settled: [], assumed: [], research: [],
+    blocking: ['The unblocker returned no ruling after the ' + afterPass + ' pass.'],
+    why: 'agent failure — nothing ruled on the open questions, so nothing may be assumed past',
+  }
+}
+
+function unblocker(afterPass, round, note) {
+  return agent(
     [
       LAW,
       '',
       'You are running the gap after the ' + afterPass + ' pass.',
-      'Sweep every open question raised so far in ' + WORK + '/. Send each to the researcher first',
-      '(rung 1); .swarm/spec.yaml caps you at one research round per gap. Then rule on what survives.',
+      'Sweep every open question raised so far in ' + WORK + '/, then rule on what survives.',
+      note,
       'Append to the assumption register at ' + WORK + '/assumptions.md. Never rewrite it.',
       'Blocking is exceptional: if you block, name why no assumption was safe.',
       'A question another voice marked fatal-if-wrong you may not assume past. You may only record',
       'that you disagreed.',
     ].join('\n'),
-    { agentType: 'unblocker', schema: RULING, label: 'unblocker:' + afterPass.toLowerCase(), phase: afterPass }
-  )
-  if (!ruling) {
-    return {
-      verdict: 'block',
-      settled: [], assumed: [],
-      blocking: ['The unblocker returned no ruling after the ' + afterPass + ' pass.'],
-      why: 'agent failure — nothing ruled on the open questions, so nothing may be assumed past',
+    {
+      agentType: 'unblocker',
+      schema: RULING,
+      label: 'unblocker:' + afterPass.toLowerCase() + (round ? '-r' + round : ''),
+      phase: afterPass,
     }
+  )
+}
+
+// The unblocker runs in every gap between passes (§10) and owns rung 1 of the
+// question ladder by delegation (§5). It cannot spawn the researcher itself —
+// no spec role can — so the delegation happens HERE: it names the questions,
+// the workflow fires the researcher on them, and it rules again with the
+// answers. Left to itself the unblocker just reasons about whether research
+// would have helped, which is not the same thing as researching.
+async function gap(afterPass) {
+  let ruling = await unblocker(
+    afterPass,
+    0,
+    'Rung 1 is yours by delegation. Name in `research` every question that is a missing FACT rather\n' +
+    'than a decision; the workflow sends them to the researcher and asks you again with the answers.\n' +
+    'You get ' + RESEARCH_ROUNDS_PER_GAP + ' round in this gap. Naming nothing forfeits it.'
+  )
+  if (!ruling) return noRuling(afterPass)
+
+  for (let round = 1; round <= RESEARCH_ROUNDS_PER_GAP; round += 1) {
+    const questions = ruling.research || []
+    if (!questions.length) break
+
+    log('gap after ' + afterPass + ': researching ' + questions.length + ' named question(s)')
+    await parallel(questions.map((q, n) => () =>
+      agent(
+        [
+          LAW,
+          '',
+          'The unblocker has named this question in the gap after the ' + afterPass + ' pass:',
+          '',
+          q,
+          '',
+          'Answer that question and nothing around it. Repo first, then local documentation, then the',
+          'web — never reach outside before the inside has failed. Cite every finding, preferring',
+          'primary sources.',
+          'If it has no fact-shaped answer — if it is a decision rather than a missing fact — say so',
+          'plainly and stop. That is a useful answer.',
+          'Append your finding to ' + WORK + '/research-' + afterPass.toLowerCase() + '.md under a',
+          'heading quoting the question.',
+        ].join('\n'),
+        { agentType: 'researcher', label: 'research:' + afterPass.toLowerCase() + '-' + (n + 1), phase: afterPass }
+      )
+    ))
+
+    const reruled = await unblocker(
+      afterPass,
+      round,
+      'The researcher has answered the questions you named. Read\n' +
+      WORK + '/research-' + afterPass.toLowerCase() + '.md before you rule.\n' +
+      'Fold every answered question into `settled` and rule on what is left. Your research rounds for\n' +
+      'this gap are now spent, so leave `research` empty.'
+    )
+    if (!reruled) return noRuling(afterPass)
+    ruling = reruled
   }
+
   log('gap after ' + afterPass + ': ' + ruling.verdict + ' — ' + ruling.settled.length + ' settled, ' +
       ruling.assumed.length + ' assumed, ' + ruling.blocking.length + ' blocking')
   return ruling
