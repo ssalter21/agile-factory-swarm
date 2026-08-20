@@ -442,7 +442,7 @@ renders where that human is: **plain-text box drawings** in files read in an edi
 ```yaml
 ---
 slug: <short-name>        # the stable task name §6 preserves across every hop, and the branch name
-status: draft             # only a human may write `approved`
+status: draft             # `approved` is the human's, and may be delegated (below)
 revision: 1               # bumped by the human on every amendment after approval
 approved_by:              # filled in at the seam
 approved_at:              # filled in at the seam
@@ -452,6 +452,20 @@ approved_at:              # filled in at the seam
 `status: approved` is the only thing that makes a spec authoritative. The builder swarm reads the
 front matter before anything else and refuses to start on a spec that is not approved, naming what
 it found.
+
+**Approval is the human's, and may be delegated.** It is their judgement, so it is theirs to hand
+over: a human who says *approve it for me* has approved it, and the agent driving the seam writes
+the field on their behalf. Refusing that is ceremony, not control — it protects nothing, and it
+teaches the human to route around the seam rather than use it.
+
+Two limits, and they are what the rule was actually for:
+
+- **A run may not approve its own output.** No agent inside the spec chain may write the field —
+  not the Spec Writer, not the Unblocker, not a voice. Approval is an act at the seam, by whoever
+  is standing on the human's side of it, never a step inside the thing being approved.
+- **`approved_by` records how it happened.** A delegated approval says so, and names the human who
+  delegated it. The record never implies someone read what they did not read. A reader who cannot
+  tell a considered approval from a waved-through one has been given a worse record than no record.
 
 **Approval means every open question is dispositioned.** After the seam the spec is the only
 authority and no role may ask (§5), so a question left genuinely open has no route. A spec still

@@ -85,10 +85,9 @@ before the workflow is invoked, and read back **here** after it returns. Read
      point the user at it **first**. Say how many questions there are, and that answering them
      is what approval is (§11): they write `answers.md` in prose, run `/spec-swarm` again, and the
      spec writer folds the answers in and deletes `questions.md`. Point at `spec.md` second, and say
-     how many assumptions it carries. Say plainly that **nothing is built until they write
-     `status: approved` themselves**. Do not offer to approve it. Do not edit the front matter.
-     Where the unblocker emitted no batch, say so — the seam is already open and they only have to
-     read `spec.md` and approve it.
+     how many assumptions it carries. Say plainly that **nothing is built until the spec is
+     approved**. Where the unblocker emitted no batch, say so — there is nothing to answer and the
+     spec only has to be read and approved.
    - **`outcome: folded`** — the spec writer wrote the answers into `spec.md` and deleted
      `questions.md`. Confirm `questions.md` is gone; if it is not, the fold did not finish and the
      spec is not approvable. Point at `spec.md` and say nothing is left to answer.
@@ -99,9 +98,13 @@ before the workflow is invoked, and read back **here** after it returns. Read
 
 ## Rules
 
-- **Never write `status: approved`.** Not on request, not as a convenience, not "to save a step".
-  It is the one field a human writes alone, and it is the only thing that makes a spec
-  authoritative (§11).
+- **Write `status: approved` only when the user tells you to.** It is their judgement and theirs to
+  delegate (§11), but never yours to volunteer: do not offer it, do not infer it from enthusiasm
+  about the spec, and never write it in the same breath as reporting the spec exists. When they do
+  delegate it, fill `approved_by` with their name **and the fact that it was delegated**, so the
+  record never implies they read what they did not read.
+- **Never approve a spec this session produced without the user in the loop at all.** A run may not
+  approve its own output (§11). If nobody has said the word, the field stays `draft`.
 - **Never commit the run directory.** `.swarm/runs/` is ignored. The spec is state between two
   invocations, not a record.
 - **Do not summarise the spec back at length.** The user reads the artifact; that is the point of

@@ -67,8 +67,9 @@ _Avoid_: gate (that word is taken), checkpoint, approval step
 
 **Spec**:
 The artifact the spec swarm produces and the human approves. After approval it is the builder
-swarm's only authority on what to build. Approval is `status: approved` in its front matter,
-written by a human and nobody else.
+swarm's only authority on what to build. Approval is `status: approved` in its front matter. It is
+the human's judgement and theirs to delegate, but no agent inside the run may write it — a run does
+not approve its own output. `approved_by` records whether it was considered or delegated.
 
 **Disposition**:
 What the human does to every open question at the seam: answer it in `answers.md`, in prose. The
