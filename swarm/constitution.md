@@ -295,6 +295,19 @@ There is never a second run directory. Approving a new spec overwrites the last 
 belongs in the artifact — a **task breakdown does not**, because that is *how*, and *how* is the
 architect's (§1).
 
+**The artifact is those three files, not the whole directory.** The run directory also carries the
+spec swarm's working state, and that state is not approved and is not read as the spec:
+
+| path | what it holds |
+|---|---|
+| `work/` | the passes — drafts, critiques, rebuttals, the research sweep, the assumption register |
+| `questions.md` | the batch the Unblocker emitted when it blocked the run |
+| `answers.md` | the human's answers to that batch, written by hand |
+
+It lives here rather than in `.scratch/` for one reason: a blocked run resumes by reading its own
+drafts, and `.scratch/` is the directory people clear without thinking. One run is one directory,
+and deleting it deletes the whole run.
+
 **The front matter.** `spec.md` opens with:
 
 ```yaml
