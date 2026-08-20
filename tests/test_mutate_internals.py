@@ -299,7 +299,7 @@ def test_strip_comment_keeps_everything_before_the_hash():
 
 def test_a_gate_with_no_file_is_all_defaults(tmp_path):
     gate = load_gate(tmp_path / "nothing.yaml")
-    assert (gate.shell, gate.tests, gate.mutation_tests, gate.max_sites) == (None, None, None, 100)
+    assert (gate.shell, gate.tests, gate.mutation_tests, gate.max_sites) == (None, None, None, 250)
     assert gate.command is None
 
 

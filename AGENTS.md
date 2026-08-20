@@ -20,8 +20,6 @@ in a role's own agent definition.
   its own mutation step with the runner it ships.
 - **The gate is degraded.** `.swarm/gate.yaml` currently declares `missing` for duplication,
   CRAP, and acceptance. Say so in any handoff, per constitution §2.
-- **The site cap is overridden.** `max_mutation_sites_per_file` is 250 here, not the
-  constitutional 100. The reason is in `.swarm/gate.yaml`; §2's number is unresolved.
 - **Mutation currently exits 1**, on 158 survivors in the runner's own 1,386 mutants. That is the
   step working, not the step broken: the survivors are standing hardener debt. About 60 of them
   are prose in diagnostic messages, killable only by asserting wording word for word. Whether

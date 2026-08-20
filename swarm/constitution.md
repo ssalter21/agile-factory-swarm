@@ -57,7 +57,7 @@ own none, and earn their place another way.
 **Defaults, overridable per project in `.swarm/gate.yaml`:**
 - `CRAP <= 6` per function. CRAP is `complexity² × (1 − coverage)³ + complexity` — either keep a
   function simple, or test it properly.
-- Split any file with more than 100 mutation sites. A **site** is a place that can be mutated,
+- Split any file with more than 250 mutation sites. A **site** is a place that can be mutated,
   not a change that can be made there — `a > b` is one site whatever the tool does to it. Too
   many sites means the file does too much. A breach fails the mutation step, and the file is not
   mutated: splitting it is the required work either way, and mutating it first pays twice.

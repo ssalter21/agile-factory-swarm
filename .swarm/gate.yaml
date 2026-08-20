@@ -20,10 +20,3 @@ defaults:
 # Why coverage, duplication, crap and acceptance are still thin: this repo was markdown and
 # config until the mutation runner landed. Steps 1 and 2 are the constitutional floor and are
 # real. The rest wait on initiation building the Python recipes — see swarm/gate/python.md.
-#
-# Why the site cap is 250 and not the constitutional default of 100: 100 sites is about 60
-# lines of Python. Every module in this repo measures between 90 and 205, after being split
-# along the seams it actually has. The two largest files in the swarm-doctor run breached the
-# cap as well, on a looser count that has since been tightened. No file the swarm has produced
-# has ever met the default, so it is overridden here rather than quietly ignored.
-# §2's number needs a human decision; this override is not that decision.

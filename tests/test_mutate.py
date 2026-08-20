@@ -58,7 +58,7 @@ def test_scalar_keeps_a_quoted_number_as_text():
 
 def test_load_gate_defaults_when_there_is_no_file(tmp_path):
     gate = load_gate(tmp_path / "gate.yaml")
-    assert gate.max_sites == 100
+    assert gate.max_sites == 250
     assert gate.tests is None
 
 
@@ -89,7 +89,7 @@ def test_load_gate_reads_the_cap_and_the_commands(tmp_path):
 def test_load_gate_ignores_a_non_numeric_cap(tmp_path):
     path = tmp_path / "gate.yaml"
     path.write_text("defaults:\n  max_mutation_sites_per_file: lots\n", encoding="utf-8")
-    assert load_gate(path).max_sites == 100
+    assert load_gate(path).max_sites == 250
 
 
 # --------------------------------------------------------------------------- sites

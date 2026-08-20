@@ -7,7 +7,7 @@ tools that install nothing.
 
 from pathlib import Path
 
-DEFAULT_MAX_SITES = 100
+DEFAULT_MAX_SITES = 250
 
 
 class Gate:
