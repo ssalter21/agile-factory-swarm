@@ -47,7 +47,7 @@ const LAW = [
 const RULING = {
   type: 'object',
   additionalProperties: false,
-  required: ['verdict', 'settled', 'assumed', 'blocking', 'why'],
+  required: ['verdict', 'settled', 'assumed', 'questions', 'why'],
   properties: {
     verdict: {
       type: 'string',
@@ -56,18 +56,22 @@ const RULING = {
     },
     settled: { type: 'array', items: { type: 'string' }, description: 'questions research answered' },
     assumed: { type: 'array', items: { type: 'string' }, description: 'each assumption, then its cost if wrong' },
-    blocking: { type: 'array', items: { type: 'string' }, description: 'questions for the human; empty unless verdict is block' },
     why: { type: 'string', description: 'if blocking, why no assumption was safe. \u00a75 requires this.' },
     chosen: {
       type: 'array',
       items: { type: 'string' },
       description: 'disputed points you ruled on because being wrong is cheap. Each: the point, the side you took, whether a voice won the argument or you picked, and the cost if wrong. \u00a75 makes this yours; the spec writer never adjudicates.',
     },
+    // ONE field for everything the human is asked, whichever gap emits it. There used to
+    // be two -- `blocking` for a gap that ends the run, `questions` for the batch at the
+    // seam -- and the \u00a711 shape rules only ever reached the second. So a run that blocked
+    // early emitted the exact unstructured wall of prose \u00a711 exists to prevent. Two fields
+    // meaning "questions for the human" will always drift apart; one cannot.
     questions: {
       type: 'array',
       maxItems: 8,
       items: { type: 'string' },
-      description: 'the batch for the human, each the FULL text of one question in \u00a711 shape: title, the fork as named options, what changes down each branch, the cost if wrong, and a recommendation ONLY where a voice won the argument. At most three; if you exceed three, say for each extra one why the ladder failed. Under 40 lines each. Empty when the human needs to be asked nothing.',
+      description: 'everything the human is asked, each the FULL text of one question in \u00a711 shape: title, the fork as named options, what changes down each branch, the cost if wrong, and a recommendation ONLY where a voice won the argument (none where they were tied, and say so). At most three; if you exceed three, say for each extra one why the ladder failed. Under 40 lines each. Empty when the human needs to be asked nothing \u2014 which is required when the verdict is continue, and forbidden when it is block.',
     },
     research: {
       type: 'array',
@@ -94,17 +98,32 @@ const RESEARCH_ROUNDS_PER_GAP = (args && args.researchRoundsPerGap) || 1
 function noRuling(afterPass) {
   return {
     verdict: 'block',
-    settled: [], assumed: [], research: [],
-    blocking: ['The unblocker returned no ruling after the ' + afterPass + ' pass.'],
+    settled: [], assumed: [], research: [], chosen: [],
+    questions: ['The unblocker returned no ruling after the ' + afterPass + ' pass.'],
     why: 'agent failure \u2014 nothing ruled on the open questions, so nothing may be assumed past',
-    chosen: [], questions: [],
   }
 }
 
+// The shape of anything the human is asked, in EVERY gap. This used to live only in the
+// last gap's instructions, so a run that blocked at the draft gap emitted a wall of dense
+// prose -- the exact failure section 11 exists to prevent, surviving in the one path
+// nobody had exercised.
+const QUESTION_SHAPE = [
+  '`questions` is whatever the human is asked, and it is the FIRST thing they read -- before the',
+  'spec, if there is one. Section 11 binds its shape whichever gap emits it:',
+  '  - at most THREE. Past three, say for each extra one why the ladder failed for it.',
+  '  - at most 40 lines each, and a title that reads as a question.',
+  '  - each carries its fork as NAMED OPTIONS, what changes down each branch, and the cost of',
+  '    being wrong. Draw the fork as a plain-text diagram where that beats a paragraph.',
+  '  - a recommendation ONLY where a voice won the argument, reported as that -- which voice and on',
+  '    what grounds. Where they were tied, offer none and SAY SO: the absence tells the human the',
+  '    decision is theirs alone.',
+  '  - ordinary technical English. Do not use a term this run invented unless you define it there.',
+  'An empty `questions` is the best outcome available. Do not manufacture one.',
+].join('\n')
+
 // In the last gap the unblocker does a second job: it rules on every point the rebut
-// pass left disputed, so synthesis never receives one (section 5, section 10). What
-// survives that filter is the batch the human reads first at the seam, and section 11
-// caps it at three.
+// pass left disputed, so synthesis never receives one (section 5, section 10).
 const SEAM_DUTY = [
   'This is the LAST gap, so you have a second job.',
   'Read every rebuttal in ' + WORK + '/. Every point a voice marked DISPUTED is a question too:',
@@ -114,14 +133,6 @@ const SEAM_DUTY = [
   '                     or where neither did, pick one and say that is what you did.',
   'A contested cut is a disputed point: the agile agent vetoed a requirement, another voice tied it',
   'to the brief and lost anyway. It runs through this same filter (section 10).',
-  '`questions` is what the human reads FIRST at the seam, before the spec. Section 11 binds it:',
-  'at most three, at most 40 lines each, each with its fork as named options, what changes down each',
-  'branch, and the cost if wrong. A recommendation ONLY where a voice won the argument, reported as',
-  'that -- which voice and on what grounds. Where they were tied, offer none and say so: the absence',
-  'tells the human the decision is theirs alone.',
-  'Ordinary technical English. Do not use a term this run invented unless you define it there.',
-  'Where a fork is clearer drawn than described, draw it as a plain-text diagram.',
-  'An empty `questions` is the best outcome available. Do not manufacture one.',
 ].join('\n')
 
 function unblocker(afterPass, round, note) {
@@ -140,6 +151,7 @@ function unblocker(afterPass, round, note) {
       'that you disagreed. The cap of three questions in section 11 does not overrule that mark',
       'either: it costs you an explanation, not the mark.',
       afterPass === 'Rebut' ? SEAM_DUTY : '',
+      QUESTION_SHAPE,
     ].join('\n'),
     {
       agentType: 'unblocker',
@@ -185,8 +197,14 @@ async function gap(afterPass) {
           'primary sources.',
           'If it has no fact-shaped answer \u2014 if it is a decision rather than a missing fact \u2014 say so',
           'plainly and stop. That is a useful answer.',
-          'Append your finding to ' + WORK + '/research-' + afterPass.toLowerCase() + '.md under a',
-          'heading quoting the question.',
+          // One file per researcher, never a shared one. These run in parallel, and an
+          // append to a file three siblings are also appending to is a race: on the first
+          // real run of this chain, four researchers reported success into one file and
+          // three findings were lost, silently, leaving the unblocker to rule on a quarter
+          // of the evidence it had commissioned.
+          'Write your finding to ' + WORK + '/research-' + afterPass.toLowerCase() + '-' + (n + 1) + '.md,',
+          'under a heading quoting the question. That file is yours alone: create it, do not append',
+          'to any other file, and do not touch a sibling2019s.',
         ].join('\n'),
         { agentType: 'researcher', label: 'research:' + afterPass.toLowerCase() + '-' + (n + 1), phase: afterPass }
       )
@@ -195,8 +213,10 @@ async function gap(afterPass) {
     const reruled = await unblocker(
       afterPass,
       round,
-      'The researcher has answered the questions you named. Read\n' +
-      WORK + '/research-' + afterPass.toLowerCase() + '.md before you rule.\n' +
+      'The researchers have answered the questions you named, one file each. Read ALL of\n' +
+      WORK + '/research-' + afterPass.toLowerCase() + '-*.md before you rule 2014 there is one per\n' +
+      'question you named, numbered in the order you named them. A file that is missing is a failed\n' +
+      'agent, not a question you may treat as unresearched: say which number is absent.\n' +
       'Fold every answered question into `settled` and rule on what is left. Your research rounds for\n' +
       'this gap are now spent, so leave `research` empty.'
     )
@@ -206,8 +226,7 @@ async function gap(afterPass) {
 
   log('gap after ' + afterPass + ': ' + ruling.verdict + ' \u2014 ' + ruling.settled.length + ' settled, ' +
       ruling.assumed.length + ' assumed, ' + (ruling.chosen || []).length + ' chosen, ' +
-      ruling.blocking.length + ' blocking' +
-      (afterPass === 'Rebut' ? ', ' + (ruling.questions || []).length + ' for the human' : ''))
+      (ruling.questions || []).length + ' for the human')
   return ruling
 }
 
@@ -215,7 +234,7 @@ function blocked(ruling, at) {
   return {
     outcome: 'blocked',
     at: at,
-    questions: ruling.blocking,
+    questions: ruling.questions,
     why: ruling.why,
     next: 'Answer the batch in ' + RUN + '/answers.md, then run /spec-swarm again.',
   }
