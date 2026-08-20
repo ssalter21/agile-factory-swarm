@@ -1,0 +1,3 @@
+# Workflow scripts are read by the harness, which rejects control characters.
+# CR is one, so these stay LF on every platform.
+*.js text eol=lf
