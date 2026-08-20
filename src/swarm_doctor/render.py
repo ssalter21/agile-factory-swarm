@@ -10,7 +10,7 @@ _CLAUSE_GAP = "; "
 
 _LOWEST_PRINTABLE = " "
 _HIGHEST_PRINTABLE = "~"
-_NAMED_ESCAPES = {"\\": "\\\\", "\t": "\\t", "\n": "\\n", "\r": "\\r"}
+_NAMED_ESCAPES = {"\t": "\\t", "\n": "\\n", "\r": "\\r"}
 
 
 def diagnosis_lines(d: Diagnosis) -> tuple[str, ...]:
@@ -67,7 +67,12 @@ def _row_line(row: StepRow, key_width: int) -> str:
 
 
 def _printable(text: str) -> str:
-    """Text from outside doctor, as printable ASCII with nothing dropped or shortened."""
+    """Text from outside doctor, as printable ASCII with nothing dropped or shortened.
+
+    Printable ASCII passes through as itself, the backslash included, so a Windows path is
+    printed as it was observed. The escaping is one-way: two different inputs can print the
+    same, and nothing here promises a way back to the original characters.
+    """
     return "".join(_escaped(char) for char in text)
 
 

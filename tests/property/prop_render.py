@@ -39,6 +39,20 @@ def declaring(command):
     )
 
 
+def row_for(command):
+    return render.diagnosis_lines(diagnose(declaring(command)))[1]
+
+
+# The key column and the state column are the same width in every all-declared report, so a
+# one-character command locates where the command starts on the row.
+_COMMAND_AT = len(row_for("x")) - 1
+
+
+def escaped(text):
+    """What render prints in place of `text`, taken off the end of a declared row."""
+    return row_for(text)[_COMMAND_AT:]
+
+
 def test_every_character_of_every_line_is_printable_ascii():
     for text in texts(CASES):
         lines = render.diagnosis_lines(diagnose(declaring(text)))
@@ -48,16 +62,24 @@ def test_every_character_of_every_line_is_printable_ascii():
             assert all(" " <= char <= "~" for char in line), (text, line)
 
 
-def test_a_declared_command_survives_the_escaping_character_for_character():
+def test_every_character_is_rendered_in_place_and_none_is_dropped():
     for text in texts(CASES):
-        row = render.diagnosis_lines(diagnose(declaring(text)))[1]
-        assert row.encode("ascii").decode("unicode_escape").endswith(text), text
+        assert escaped(text) == "".join(escaped(char) for char in text), text
 
 
-def test_a_looked_in_directory_survives_the_escaping_character_for_character():
+def test_a_printable_character_is_itself_and_any_other_is_a_backslash_escape():
+    for char in POOL:
+        printed = escaped(char)
+        if " " <= char <= "~":
+            assert printed == char, char
+        else:
+            assert printed.startswith("\\") and len(printed) > 1, char
+
+
+def test_a_looked_in_directory_is_escaped_exactly_as_a_command_is():
     for text in texts(CASES):
         line = render.unreadable_line(Unreadable.ABSENT, text)
-        assert line.encode("ascii").decode("unicode_escape").endswith(f"{text}."), text
+        assert line.endswith(f"{escaped(text)}."), text
 
 
 def test_a_report_is_always_a_summary_and_six_rows_on_seven_physical_lines():

@@ -4,11 +4,9 @@ from swarm_doctor.diagnosis import Unreadable, Verdict, diagnose
 # Words that would say a step ran, passed or works. No prose doctor owns may contain one.
 FORBIDDEN = ("ok", "pass", "fail", "green", "healthy", "good", "tick", "check")
 
-# Any absolute directory. Doctor is told where it looked; it never goes there.
+# Any absolute directory. Doctor is told where it looked; it never goes there. Every character
+# of it is printable ASCII, so doctor prints it back unchanged, backslashes and all (I-8).
 LOOKED_IN = r"C:\repos\a-project"
-
-# The same directory as doctor prints it: every backslash escaped (A2, I-8).
-ESCAPED_LOOKED_IN = r"C:\\repos\\a-project"
 
 
 def entries_with(**overrides):
@@ -124,7 +122,7 @@ def test_the_absent_line_names_the_file_and_the_directory():
     line = render.unreadable_line(Unreadable.ABSENT, LOOKED_IN)
     assert line.split()[0] == Verdict.UNUSABLE.value
     assert ".swarm/gate.yaml" in line
-    assert ESCAPED_LOOKED_IN in line
+    assert LOOKED_IN in line
     assert "no gate declaration found" in line
 
 
@@ -138,7 +136,7 @@ def test_the_unparseable_line_says_the_file_was_there_and_would_not_parse():
     line = render.unreadable_line(Unreadable.UNPARSEABLE, LOOKED_IN)
     assert line.split()[0] == Verdict.UNUSABLE.value
     assert ".swarm/gate.yaml" in line
-    assert ESCAPED_LOOKED_IN in line
+    assert LOOKED_IN in line
     assert "could not be parsed" in line
     assert "not found" not in line
 
@@ -163,15 +161,14 @@ def test_a_non_ascii_character_in_a_declared_command_is_escaped_and_never_emitte
     assert row.endswith(r"nai\xe9ve \u2014 \U0001f600")
 
 
-def test_a_backslash_in_a_declared_command_is_doubled_so_no_escape_is_ambiguous():
-    row = lines_for(tests="cd C:\\repos; run \\t")[1]
-    assert row.endswith(r"cd C:\\repos; run \\t")
+def test_a_backslash_is_printed_as_itself_so_a_windows_path_reads_as_observed():
+    row = lines_for(tests=r"cd C:\repos; run \t")[1]
+    assert row.endswith(r"cd C:\repos; run \t")
 
 
 def test_an_escaped_command_still_carries_every_character_it_declared():
-    command = "run\tit \u2014 C:\\dir \x00"
-    row = lines_for(tests=command)[1]
-    assert row.encode("ascii").decode("unicode_escape").endswith(command)
+    row = lines_for(tests="run\tit \u2014 C:\\dir \x00")[1]
+    assert row.endswith(r"run\tit \u2014 C:\dir \x00")
 
 
 def test_a_declared_command_keeps_the_trailing_space_it_declared():
@@ -180,10 +177,8 @@ def test_a_declared_command_keeps_the_trailing_space_it_declared():
 
 def test_the_looked_in_directory_is_escaped_the_same_way():
     line = render.unreadable_line(Unreadable.ABSENT, "C:\\dr\tnone\u00e9")
-    assert line.endswith(r"C:\\dr\tnone\xe9.")
-    assert line.encode("ascii").decode("unicode_escape") == (
-        "UNUSABLE no gate declaration found at .swarm/gate.yaml, "
-        "under C:\\dr\tnone\u00e9."
+    assert line == (
+        r"UNUSABLE no gate declaration found at .swarm/gate.yaml, under C:\dr\tnone\xe9."
     )
 
 

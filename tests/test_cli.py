@@ -55,7 +55,7 @@ def test_an_empty_directory_yields_one_line_and_the_could_not_answer_code(
     lines = out.splitlines()
     assert exit_code == doctor.EXIT_COULD_NOT_ANSWER
     assert len(lines) == 1
-    assert lines[0].encode("ascii").decode("unicode_escape") == expected
+    assert lines[0] == expected
     assert "Traceback" not in out
 
 
