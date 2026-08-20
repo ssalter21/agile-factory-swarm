@@ -4,7 +4,8 @@ from swarm_doctor.diagnosis import Unreadable, Verdict, diagnose
 # Words that would say a step ran, passed or works. No prose doctor owns may contain one.
 FORBIDDEN = ("ok", "pass", "fail", "green", "healthy", "good", "tick", "check")
 
-DIRECTORY = r"C:\Users\salte\repos\agile-factory-swarm"
+# Any absolute directory. Doctor is told where it looked; it never goes there.
+LOOKED_IN = r"C:\repos\a-project"
 
 
 def entries_with(**overrides):
@@ -104,24 +105,24 @@ def test_every_character_is_plain_printable_ascii():
 
 
 def test_the_absent_line_names_the_file_and_the_directory():
-    line = render.unreadable_line(Unreadable.ABSENT, DIRECTORY)
+    line = render.unreadable_line(Unreadable.ABSENT, LOOKED_IN)
     assert line.split()[0] == Verdict.UNUSABLE.value
     assert ".swarm/gate.yaml" in line
-    assert DIRECTORY in line
+    assert LOOKED_IN in line
     assert "no gate declaration found" in line
 
 
 def test_the_absent_line_makes_no_claim_about_initiation():
-    line = render.unreadable_line(Unreadable.ABSENT, DIRECTORY).lower()
+    line = render.unreadable_line(Unreadable.ABSENT, LOOKED_IN).lower()
     assert "initiat" not in line
     assert "parse" not in line
 
 
 def test_the_unparseable_line_says_the_file_was_there_and_would_not_parse():
-    line = render.unreadable_line(Unreadable.UNPARSEABLE, DIRECTORY)
+    line = render.unreadable_line(Unreadable.UNPARSEABLE, LOOKED_IN)
     assert line.split()[0] == Verdict.UNUSABLE.value
     assert ".swarm/gate.yaml" in line
-    assert DIRECTORY in line
+    assert LOOKED_IN in line
     assert "could not be parsed" in line
     assert "not found" not in line
 

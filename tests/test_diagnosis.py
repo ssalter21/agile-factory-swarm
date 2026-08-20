@@ -13,8 +13,12 @@ def entries_with(**overrides):
     )
 
 
+def row_of(d, key):
+    return next(row for row in d.rows if row.key == key)
+
+
 def state_of(d, key):
-    return next(row.state for row in d.rows if row.key == key)
+    return row_of(d, key).state
 
 
 def test_all_six_declared_is_intact_with_nothing_owed():
@@ -29,12 +33,12 @@ def test_all_six_declared_is_intact_with_nothing_owed():
 def test_a_declared_row_carries_its_command_whole():
     command = "run the suite; report --fail-under=0 --and-then-some"
     d = diagnose(entries_with(coverage=command))
-    assert next(row.command for row in d.rows if row.key == "coverage") == command
+    assert row_of(d, "coverage").command == command
 
 
 def test_the_literal_word_missing_is_a_debt_and_carries_no_command():
     d = diagnose(entries_with(crap="missing"))
-    row = next(row for row in d.rows if row.key == "crap")
+    row = row_of(d, "crap")
     assert row.state is StepState.MISSING
     assert row.command is None
 
@@ -56,7 +60,7 @@ def test_a_value_that_is_not_a_string_is_a_defect():
 
 def test_an_absent_key_is_a_defect_keyed_with_the_constitutions_spelling():
     d = diagnose(entries_with(crap=None))
-    row = next(row for row in d.rows if row.key == "crap")
+    row = row_of(d, "crap")
     assert row.state is StepState.DEFECT
     assert row.command is None
 

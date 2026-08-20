@@ -15,6 +15,8 @@ The accepted subset of YAML, and nothing wider:
 Anything outside that subset is not guessed at.
 """
 
+from collections.abc import Iterator
+
 GATE_RELATIVE_PATH: str = ".swarm/gate.yaml"
 
 _STEPS_KEY = "steps:"
@@ -28,36 +30,22 @@ def parse_steps(raw: bytes) -> tuple[tuple[str, str | None], ...] | None:
     Each entry is the key exactly as the file spells it and the value's scalar text, or None
     where the value is empty or is not a scalar.
     """
-    try:
-        text = raw.decode("utf-8")
-    except UnicodeDecodeError:
+    text = _decoded(raw)
+    if text is None:
         return None
-
     lines = text.splitlines()
     start = _steps_line(lines)
     if start is None:
         return None
+    return tuple(_entries(lines[start + 1 :])) or None
 
-    entries: list[tuple[str, str | None]] = []
-    block_indent: int | None = None
-    for line in lines[start + 1 :]:
-        content = _without_comment(line)
-        body = content.strip()
-        if not body:
-            continue
-        indent = len(content) - len(content.lstrip(_INDENT_CHARS))
-        if indent == 0:
-            break
-        if block_indent is None:
-            block_indent = indent
-        if indent != block_indent:
-            continue
-        key, separator, value = body.partition(":")
-        key = key.strip()
-        if separator and key:
-            entries.append((key, _scalar(value)))
 
-    return tuple(entries) or None
+def _decoded(raw: bytes) -> str | None:
+    """The bytes as UTF-8 text, or None where they are not UTF-8."""
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def _steps_line(lines: list[str]) -> int | None:
@@ -66,6 +54,41 @@ def _steps_line(lines: list[str]) -> int | None:
         if _without_comment(line).rstrip() == _STEPS_KEY:
             return index
     return None
+
+
+def _entries(lines: list[str]) -> Iterator[tuple[str, str | None]]:
+    """The `key: value` lines at the indent of the block's first entry, in file order."""
+    entry_indent: int | None = None
+    for indent, body in _block_lines(lines):
+        if entry_indent is None:
+            entry_indent = indent
+        if indent != entry_indent:
+            continue
+        entry = _entry(body)
+        if entry is not None:
+            yield entry
+
+
+def _block_lines(lines: list[str]) -> Iterator[tuple[int, str]]:
+    """Each non-blank line of the block, as indent and text, up to the next column-0 line."""
+    for line in lines:
+        content = _without_comment(line)
+        body = content.strip()
+        if not body:
+            continue
+        indent = len(content) - len(content.lstrip(_INDENT_CHARS))
+        if indent == 0:
+            return
+        yield indent, body
+
+
+def _entry(body: str) -> tuple[str, str | None] | None:
+    """One line read as a key and its scalar, or None where the line declares no key."""
+    key, separator, value = body.partition(":")
+    key = key.strip()
+    if not separator or not key:
+        return None
+    return key, _scalar(value)
 
 
 def _without_comment(line: str) -> str:

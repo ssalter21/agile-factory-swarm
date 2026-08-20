@@ -52,11 +52,12 @@ def diagnose(entries: Sequence[tuple[str, str | None]]) -> Diagnosis:
     """Six rows in the constitution's order, whatever order the entries arrive in."""
     values = dict(entries)
     rows = tuple(_row(name, values.get(name)) for name in steps.ORDER)
-    states = {row.key: row.state for row in rows}
     missing = sum(1 for row in rows if row.state is StepState.MISSING)
     defects = sum(1 for row in rows if row.state is StepState.DEFECT)
     floor_breaches = tuple(
-        name for name in steps.FLOOR if states[name] is StepState.MISSING
+        row.key
+        for row in rows
+        if row.key in steps.FLOOR and row.state is StepState.MISSING
     )
     verdict = Verdict.DEGRADED if missing else Verdict.INTACT
     return Diagnosis(rows, missing, defects, floor_breaches, verdict)

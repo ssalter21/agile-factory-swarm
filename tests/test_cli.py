@@ -75,7 +75,7 @@ def test_the_arguments_come_from_the_command_line(monkeypatch, capsys, tmp_path)
 def test_it_writes_nothing_where_it_is_invoked(monkeypatch, capsys, tmp_path):
     write_gate(tmp_path, GATE)
     before = sorted(path.relative_to(tmp_path) for path in tmp_path.rglob("*"))
-    digest = (tmp_path / ".swarm" / "gate.yaml").read_bytes()
+    contents = (tmp_path / ".swarm" / "gate.yaml").read_bytes()
     invoke(monkeypatch, capsys, tmp_path)
     assert sorted(path.relative_to(tmp_path) for path in tmp_path.rglob("*")) == before
-    assert (tmp_path / ".swarm" / "gate.yaml").read_bytes() == digest
+    assert (tmp_path / ".swarm" / "gate.yaml").read_bytes() == contents

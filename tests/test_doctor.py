@@ -3,7 +3,7 @@ import pytest
 from swarm_doctor import doctor
 from swarm_doctor.diagnosis import Verdict
 
-DIRECTORY = r"C:\Users\salte\repos\agile-factory-swarm"
+LOOKED_IN = r"C:\repos\a-project"
 
 DECLARED_AND_MISSING = b"""shell: pwsh
 
@@ -27,7 +27,7 @@ ALL_DECLARED = b"""steps:
 
 
 def report_for(raw):
-    return doctor.run(["doctor"], raw, DIRECTORY)
+    return doctor.run(["doctor"], raw, LOOKED_IN)
 
 
 def test_the_two_exit_codes_are_zero_and_two():
@@ -62,7 +62,7 @@ def test_a_floor_breach_is_still_an_answer():
 
 
 def test_an_absent_declaration_is_one_line_and_no_answer():
-    report = doctor.run(["doctor"], None, DIRECTORY)
+    report = doctor.run(["doctor"], None, LOOKED_IN)
     assert report.exit_code == doctor.EXIT_COULD_NOT_ANSWER
     assert len(report.lines) == 1
     assert report.lines[0].startswith(Verdict.UNUSABLE.value)
@@ -87,10 +87,10 @@ def test_bytes_that_are_not_text_are_a_parse_failure_not_a_crash():
     [[], ["doctor", "extra"], ["--help"], ["Doctor"], ["frobnicate"], ["doctor", "--json"]],
 )
 def test_any_invocation_other_than_doctor_is_one_usage_line(args):
-    report = doctor.run(args, DECLARED_AND_MISSING, DIRECTORY)
+    report = doctor.run(args, DECLARED_AND_MISSING, LOOKED_IN)
     assert report.exit_code == doctor.EXIT_COULD_NOT_ANSWER
     assert report.lines == ("usage: swarm doctor",)
 
 
 def test_the_usage_line_wins_before_the_file_is_even_looked_at():
-    assert doctor.run([], None, DIRECTORY).lines == ("usage: swarm doctor",)
+    assert doctor.run([], None, LOOKED_IN).lines == ("usage: swarm doctor",)

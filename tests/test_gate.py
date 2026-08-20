@@ -78,6 +78,16 @@ def test_lines_nested_below_an_entry_are_not_entries():
     assert gate.parse_steps(raw) == (("crap", None), ("tests", "run it"))
 
 
+def test_a_block_line_that_is_no_key_and_value_pair_is_not_an_entry():
+    raw = b"steps:\n  crap: missing\n  - a list item\n"
+    assert gate.parse_steps(raw) == (("crap", "missing"),)
+
+
+def test_a_block_line_with_an_empty_key_is_not_an_entry():
+    raw = b"steps:\n  crap: missing\n  : orphaned\n"
+    assert gate.parse_steps(raw) == (("crap", "missing"),)
+
+
 def test_the_mapping_ends_at_the_next_column_zero_key():
     raw = b"steps:\n  crap: missing\ndefaults:\n  crap_max: 6\n"
     assert gate.parse_steps(raw) == (("crap", "missing"),)
