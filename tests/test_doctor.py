@@ -109,3 +109,55 @@ def test_a_report_cannot_be_altered_after_it_is_made():
     report = report_for(ALL_DECLARED)
     with pytest.raises(dataclasses.FrozenInstanceError):
         report.exit_code = doctor.EXIT_COULD_NOT_ANSWER
+
+
+# The declaration this repo actually carries, verbatim. Acceptance criteria are executed through
+# the command line by a QA pass (gate step 6 is `missing`, so there is no runner for the Gherkin);
+# these pin the same criteria as ordinary tests so they survive the run directory (section 11).
+THIS_REPOS_GATE = b"""# The quality gate for this repo. See swarm/constitution.md section 2.
+
+shell: pwsh
+
+steps:
+  tests:       ".venv/Scripts/pytest.exe -q"
+  coverage:    ".venv/Scripts/coverage.exe run -m pytest -q; .venv/Scripts/coverage.exe report --fail-under=0"
+  duplication: missing
+  mutation:    missing
+  crap:        missing
+  acceptance:  missing
+
+defaults:
+  crap_max: 6
+"""
+
+# Words and glyphs that would say a step ran, passed or works (R11).
+CLAIMS_A_STEP_WORKS = ("ok", "pass", "green", "healthy", "good", "fine", "works", "success")
+
+
+def test_this_repos_own_declaration_reads_exactly_like_this():
+    assert report_for(THIS_REPOS_GATE).lines == (
+        "DEGRADED 4 of 6 gate steps are missing; a run here would be a degraded run.",
+        "  tests        declared  .venv/Scripts/pytest.exe -q",
+        "  coverage     declared  .venv/Scripts/coverage.exe run -m pytest -q;"
+        " .venv/Scripts/coverage.exe report --fail-under=0",
+        "  duplication  missing",
+        "  mutation     missing",
+        "  crap         missing",
+        "  acceptance   missing",
+    )
+
+
+def test_this_repos_own_declaration_answers_at_the_answered_exit_code():
+    assert report_for(THIS_REPOS_GATE).exit_code == doctor.EXIT_ANSWERED
+
+
+def test_nothing_in_this_repos_diagnosis_says_a_step_ran_or_works():
+    text = "\n".join(report_for(THIS_REPOS_GATE).lines).lower()
+    for word in CLAIMS_A_STEP_WORKS:
+        assert word not in text
+    assert all(" " <= char <= "~" for char in text.replace("\n", ""))
+
+
+def test_the_coverage_row_shows_the_threshold_that_cannot_fail():
+    coverage_row = report_for(THIS_REPOS_GATE).lines[2]
+    assert coverage_row.endswith("--fail-under=0")
