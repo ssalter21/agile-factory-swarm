@@ -141,3 +141,17 @@ def test_a_missing_step_outside_the_floor_is_no_breach():
 def test_a_defective_floor_step_is_not_counted_as_a_breach():
     d = diagnose(entries_with(tests=None))
     assert d.floor_breaches == ()
+
+
+def test_a_key_declared_twice_is_diagnosed_from_its_last_occurrence():
+    d = diagnose(entries_with(crap="missing") + (("crap", "run crap"),))
+    assert state_of(d, "crap") is StepState.DECLARED
+    assert row_of(d, "crap").command == "run crap"
+    assert d.missing == 0
+
+
+def test_the_last_occurrence_wins_even_where_it_is_the_worse_declaration():
+    d = diagnose(entries_with(crap="run crap") + (("crap", ""),))
+    assert state_of(d, "crap") is StepState.DEFECT
+    assert d.defects == 1
+    assert row_of(d, "crap").command is None

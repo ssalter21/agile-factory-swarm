@@ -48,11 +48,14 @@ def test_an_empty_directory_yields_one_line_and_the_could_not_answer_code(
     monkeypatch, capsys, tmp_path
 ):
     exit_code, out = invoke(monkeypatch, capsys, tmp_path)
-    assert exit_code == doctor.EXIT_COULD_NOT_ANSWER
-    assert out.splitlines() == [
+    expected = (
         f"{Verdict.UNUSABLE.value} no gate declaration found at "
         f".swarm/gate.yaml, under {tmp_path}."
-    ]
+    )
+    lines = out.splitlines()
+    assert exit_code == doctor.EXIT_COULD_NOT_ANSWER
+    assert len(lines) == 1
+    assert lines[0].encode("ascii").decode("unicode_escape") == expected
     assert "Traceback" not in out
 
 

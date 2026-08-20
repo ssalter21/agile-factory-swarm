@@ -8,6 +8,10 @@ _COLUMN_GAP = "  "
 _STATE_WIDTH = max(len(state.value) for state in StepState)
 _CLAUSE_GAP = "; "
 
+_LOWEST_PRINTABLE = " "
+_HIGHEST_PRINTABLE = "~"
+_NAMED_ESCAPES = {"\\": "\\\\", "\t": "\\t", "\n": "\\n", "\r": "\\r"}
+
 
 def diagnosis_lines(d: Diagnosis) -> tuple[str, ...]:
     """The summary line, then one line per step row."""
@@ -21,7 +25,7 @@ def unreadable_line(reason: Unreadable, looked_in: str) -> str:
         detail = f"no gate declaration found at {gate.GATE_RELATIVE_PATH}"
     else:
         detail = f"the gate declaration at {gate.GATE_RELATIVE_PATH} could not be parsed"
-    return f"{Verdict.UNUSABLE.value} {detail}, under {looked_in}."
+    return f"{Verdict.UNUSABLE.value} {detail}, under {_printable(looked_in)}."
 
 
 def usage_line() -> str:
@@ -55,7 +59,27 @@ def _floor(breaches: tuple[str, ...]) -> str:
 
 
 def _row_line(row: StepRow, key_width: int) -> str:
-    cells = [row.key.ljust(key_width), row.state.value.ljust(_STATE_WIDTH)]
-    if row.command is not None:
-        cells.append(row.command)
-    return (_ROW_INDENT + _COLUMN_GAP.join(cells)).rstrip()
+    prefix = _ROW_INDENT + row.key.ljust(key_width) + _COLUMN_GAP
+    if row.command is None:
+        return prefix + row.state.value
+    state = row.state.value.ljust(_STATE_WIDTH)
+    return prefix + state + _COLUMN_GAP + _printable(row.command)
+
+
+def _printable(text: str) -> str:
+    """Text from outside doctor, as printable ASCII with nothing dropped or shortened."""
+    return "".join(_escaped(char) for char in text)
+
+
+def _escaped(char: str) -> str:
+    """One character as itself, or as the backslash escape that stands for it."""
+    if char in _NAMED_ESCAPES:
+        return _NAMED_ESCAPES[char]
+    if _LOWEST_PRINTABLE <= char <= _HIGHEST_PRINTABLE:
+        return char
+    code = ord(char)
+    if code < 0x100:
+        return f"\\x{code:02x}"
+    if code < 0x10000:
+        return f"\\u{code:04x}"
+    return f"\\U{code:08x}"
