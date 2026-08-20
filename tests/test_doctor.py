@@ -76,6 +76,13 @@ def test_a_declaration_that_will_not_parse_is_one_line_and_no_answer():
     assert "could not be parsed" in report.lines[0]
 
 
+def test_an_empty_file_is_a_parse_failure_and_not_an_absent_declaration():
+    report = report_for(b"")
+    assert report.exit_code == doctor.EXIT_COULD_NOT_ANSWER
+    assert "could not be parsed" in report.lines[0]
+    assert "no gate declaration found" not in report.lines[0]
+
+
 def test_bytes_that_are_not_text_are_a_parse_failure_not_a_crash():
     report = report_for(b"steps:\n  crap: \xff\xfe\n")
     assert report.exit_code == doctor.EXIT_COULD_NOT_ANSWER

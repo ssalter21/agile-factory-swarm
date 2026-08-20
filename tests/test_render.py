@@ -55,6 +55,12 @@ def test_the_first_line_carries_no_defect_count_when_there_is_no_defect():
     assert "defect" not in lines_for(crap="missing")[0]
 
 
+def test_the_summary_is_one_physical_line_ending_in_a_full_stop():
+    summary = lines_for(tests="missing", crap=None)[0]
+    assert "\n" not in summary
+    assert summary.endswith(".")
+
+
 def test_a_floor_breach_is_named_on_the_first_line_with_the_rule_it_breaches():
     summary = lines_for(tests="missing")[0]
     assert "tests" in summary
@@ -75,6 +81,13 @@ def test_each_row_carries_the_step_key_and_its_state():
     assert rows[0].split() == ["tests", "declared", "run-tests"]
     assert rows[3].split() == ["mutation", "defect"]
     assert rows[4].split() == ["crap", "missing"]
+
+
+def test_the_rows_are_indented_under_the_summary_and_their_states_line_up():
+    lines = lines_for(coverage="missing", crap=None)
+    assert not lines[0].startswith(" ")
+    assert all(row.startswith(" ") for row in lines[1:])
+    assert len({row.index(row.split()[1]) for row in lines[1:]}) == 1
 
 
 def test_rows_appear_in_the_constitutions_order():

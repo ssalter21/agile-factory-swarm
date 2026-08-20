@@ -48,6 +48,13 @@ def test_a_command_that_merely_contains_the_word_missing_is_declared():
     assert state_of(d, "crap") is StepState.DECLARED
 
 
+def test_only_the_lower_case_word_missing_is_a_debt():
+    d = diagnose(entries_with(crap="MISSING", mutation="Missing"))
+    assert state_of(d, "crap") is StepState.DECLARED
+    assert state_of(d, "mutation") is StepState.DECLARED
+    assert d.missing == 0
+
+
 def test_a_value_that_is_no_scalar_is_a_defect():
     d = diagnose(entries_with(mutation=""))
     assert state_of(d, "mutation") is StepState.DEFECT
@@ -110,6 +117,10 @@ def test_unusable_is_never_a_verdict_about_a_readable_declaration():
         for case in ({}, {"crap": "missing"}, {"crap": None}, {"tests": "missing"})
     }
     assert Verdict.UNUSABLE not in verdicts
+
+
+def test_the_verdict_words_are_the_three_literal_upper_case_words():
+    assert [verdict.value for verdict in Verdict] == ["INTACT", "DEGRADED", "UNUSABLE"]
 
 
 def test_a_missing_floor_step_is_named_as_a_breach():

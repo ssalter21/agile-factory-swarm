@@ -55,6 +55,7 @@ def test_an_empty_quoted_value_is_no_scalar():
 
 def test_a_flow_collection_value_is_no_scalar():
     assert gate.parse_steps(b"steps:\n  crap: [one, two]\n") == (("crap", None),)
+    assert gate.parse_steps(b"steps:\n  crap: {one: two}\n") == (("crap", None),)
 
 
 def test_an_unterminated_quote_is_no_scalar():
@@ -68,9 +69,18 @@ def test_a_trailing_comment_is_not_part_of_the_value():
 
 
 def test_a_hash_inside_quotes_stays_in_the_value():
-    assert gate.parse_steps(b'steps:\n  crap: "run --tag=#1"\n') == (
-        ("crap", "run --tag=#1"),
+    assert gate.parse_steps(b'steps:\n  crap: "run --tag=#1 # and on"\n') == (
+        ("crap", "run --tag=#1 # and on"),
     )
+
+
+def test_a_value_containing_a_colon_is_kept_whole_and_the_key_is_what_precedes_it():
+    raw = b'steps:\n  tests: pwsh -c "cd C:/repos; run it"\n'
+    assert gate.parse_steps(raw) == (("tests", 'pwsh -c "cd C:/repos; run it"'),)
+
+
+def test_a_space_before_the_colon_is_no_part_of_the_key():
+    assert gate.parse_steps(b"steps:\n  crap : missing\n") == (("crap", "missing"),)
 
 
 def test_lines_nested_below_an_entry_are_not_entries():
@@ -88,8 +98,23 @@ def test_a_block_line_with_an_empty_key_is_not_an_entry():
     assert gate.parse_steps(raw) == (("crap", "missing"),)
 
 
+def test_a_blank_line_between_entries_does_not_end_the_mapping():
+    raw = b"steps:\n  tests: run it\n\n  crap: missing\n"
+    assert gate.parse_steps(raw) == (("tests", "run it"), ("crap", "missing"))
+
+
+def test_a_comment_line_at_column_zero_does_not_end_the_mapping():
+    raw = b"steps:\n  tests: run it\n# owed: the rest\n  crap: missing\n"
+    assert gate.parse_steps(raw) == (("tests", "run it"), ("crap", "missing"))
+
+
 def test_the_mapping_ends_at_the_next_column_zero_key():
     raw = b"steps:\n  crap: missing\ndefaults:\n  crap_max: 6\n"
+    assert gate.parse_steps(raw) == (("crap", "missing"),)
+
+
+def test_the_steps_line_is_found_past_its_own_trailing_comment_and_spaces():
+    raw = b"steps:   # the six of them\n  crap: missing\n"
     assert gate.parse_steps(raw) == (("crap", "missing"),)
 
 
