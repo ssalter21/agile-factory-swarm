@@ -78,8 +78,11 @@ before the workflow is invoked, and read back **here** after it returns. Read
      **verbatim**, using `swarm/templates/questions.md`. §11 fixes the shape: at most three
      questions, at most a screen each, every question titled on the first screen. Tell the user to
      answer in `answers.md` beside it and run `/spec-swarm` again. There is no partial spec to read.
-   - **`outcome: drafted`** — write `questions.md` if the unblocker emitted a batch, the same way,
-     then point the user at it **first**. Say how many questions there are, and that answering them
+   - **`outcome: drafted`** — **`questions.md` is rewritten from the returned batch, always.** Where
+     the batch is empty, **delete** any `questions.md` that is sitting there: it was answered on the
+     way here, and a stale one is read by §11 as a seam that is still open, which would make the
+     spec permanently unapprovable. Where there is a batch, write it the same way as above, then
+     point the user at it **first**. Say how many questions there are, and that answering them
      is what approval is (§11): they write `answers.md` in prose, run `/spec-swarm` again, and the
      spec writer folds the answers in and deletes `questions.md`. Point at `spec.md` second, and say
      how many assumptions it carries. Say plainly that **nothing is built until they write
