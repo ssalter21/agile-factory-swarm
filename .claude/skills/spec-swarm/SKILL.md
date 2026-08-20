@@ -30,18 +30,23 @@ before the workflow is invoked, and read back **here** after it returns. Read
    its contents. §11 requires this file to be the human's words, and the whole swarm reads it as
    the statement of what was asked for.
 
-3. **Read `.swarm/spec.yaml`** for the voices that are `on`. The agile agent and the devil's
-   advocate cannot be off; if the config says otherwise, say so and use them anyway (§10).
+3. **Read `.swarm/spec.yaml`** for the voices that are `on`, and for
+   `limits.research_rounds_per_gap`. The agile agent and the devil's advocate cannot be off; if the
+   config says otherwise, say so and use them anyway (§10).
 
 4. **Run the workflow.** Invoking this skill is the user's opt-in to multi-agent orchestration.
 
    ```
-   Workflow({ name: 'spec-chain', args: { mode: 'fresh' | 'resume', voices: [...] } })
+   Workflow({ name: 'spec-chain', args: {
+     mode: 'fresh' | 'resume',
+     voices: [...],
+     researchRoundsPerGap: <limits.research_rounds_per_gap, default 1>,
+   } })
    ```
 
-   It is roughly 18 agents on a fresh run — four voices across three passes, the unblocker in each
-   gap, the researcher, and the spec writer. That is what §10 asks for; do not trim it to fit a
-   size guideline.
+   Twenty or more agents on a fresh run — four voices across three passes, the unblocker in each
+   gap, the opening researcher, the spec writer, and a researcher per question the unblocker names
+   in a gap. That is what §10 asks for; do not trim it to fit a size guideline.
 
 5. **Report what came back**, and nothing more.
 

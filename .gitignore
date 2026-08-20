@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .scratch/
 .swarm/runs/
+.claude/settings.local.json
 *.egg-info/
 .coverage
 .pytest_cache/
