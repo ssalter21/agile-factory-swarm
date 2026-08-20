@@ -89,6 +89,10 @@ function blocked(ruling, at) {
   }
 }
 
+function askHumanToRead(reason) {
+  return { outcome: 'unknown', reason: reason, artifact: RUN }
+}
+
 function spend() {
   if (!budget.total) return 'no ceiling set'
   return Math.round(budget.remaining() / 1000) + 'k of ' + Math.round(budget.total / 1000) + 'k left'
@@ -193,6 +197,22 @@ if (afterRebut.verdict === 'block') return blocked(afterRebut, 'rebut')
 phase('Synthesis')
 log('synthesising. Budget: ' + spend())
 
+// The spec's open questions are the points still disputed after the rebut pass.
+// They are NOT the unblocker's blocking list — that is empty whenever the run
+// reaches synthesis at all, so reading it here reports zero open questions on
+// every spec that was ever written.
+const WRITTEN = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['slug', 'openQuestions', 'degraded', 'headline'],
+  properties: {
+    slug: { type: 'string', description: 'the front matter slug — the branch name and the task name' },
+    openQuestions: { type: 'array', items: { type: 'string' }, description: 'one line per disputed point shipped for the human to disposition' },
+    degraded: { type: 'array', items: { type: 'string' }, description: 'gate steps declared missing (§2)' },
+    headline: { type: 'string', description: 'terse — what the spec asks for' },
+  },
+}
+
 const written = await agent(
   [
     LAW,
@@ -210,14 +230,20 @@ const written = await agent(
     'Read .swarm/gate.yaml. If any step is missing, say so plainly near the top of spec.md — this',
     'will be a degraded run, and the human approves knowing what will not be checked (§2).',
   ].join('\n'),
-  { agentType: 'spec-writer', label: 'spec-writer', phase: 'Synthesis' }
+  { agentType: 'spec-writer', schema: WRITTEN, label: 'spec-writer', phase: 'Synthesis' }
 )
+
+if (!written) return askHumanToRead('the spec writer returned nothing — read the run directory before trusting it')
+if (written.degraded.length) log('degraded run — the gate has no tool for: ' + written.degraded.join(', '))
 
 return {
   outcome: 'drafted',
   artifact: RUN,
+  slug: written.slug,
   assumptions: afterRebut.assumed,
-  openQuestions: afterCritique.blocking.concat(afterRebut.blocking),
-  specWriter: written,
-  next: 'Read ' + RUN + '/spec.md, disposition every open question, then set status: approved yourself.',
+  openQuestions: written.openQuestions,
+  degraded: written.degraded,
+  headline: written.headline,
+  next: 'Read ' + RUN + '/spec.md, disposition all ' + written.openQuestions.length +
+        ' open questions, then set status: approved yourself.',
 }
