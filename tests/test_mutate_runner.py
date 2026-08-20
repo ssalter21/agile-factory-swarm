@@ -105,6 +105,10 @@ def test_bytecode_writing_is_switched_off(tmp_path):
     assert suite.env["PYTHONDONTWRITEBYTECODE"] == "1"
 
 
+def test_the_default_timeout_is_two_minutes(tmp_path):
+    assert Suite("pytest", None, tmp_path).timeout == 120
+
+
 def test_the_suite_reports_what_the_command_returned(project):
     root, suite = project
     assert suite.passes() is True

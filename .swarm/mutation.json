@@ -1038,22 +1038,22 @@
       "sites": {
         "<module>#del#0#0": {
           "desc": "L10 drop Assign",
-          "unit": "6bd98540803618ac",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "<module>#expr#0#0": {
-          "desc": "L10 100 -> 101",
-          "unit": "6bd98540803618ac",
+          "desc": "L10 250 -> 251",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "<module>#expr#0#1": {
-          "desc": "L10 100 -> 99",
-          "unit": "6bd98540803618ac",
+          "desc": "L10 250 -> 249",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "<module>#expr#0#2": {
-          "desc": "L10 100 -> 0",
-          "unit": "6bd98540803618ac",
+          "desc": "L10 250 -> 0",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "Gate.__init__#del#0#0": {
@@ -4674,42 +4674,67 @@
       "sites": {
         "<module>#del#0#0": {
           "desc": "L15 drop Assign",
-          "unit": "b1b3e7aed0ebb76c",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L22 drop Assign",
+          "unit": "989b7a81db1a3e0b",
           "verdict": "killed"
         },
         "<module>#expr#0#0": {
           "desc": "L15 ';|&<>$`(){}' -> empty",
-          "unit": "b1b3e7aed0ebb76c",
+          "unit": "989b7a81db1a3e0b",
           "verdict": "killed"
         },
         "<module>#expr#0#1": {
           "desc": "L15 ';|&<>$`(){}' -> mutated",
-          "unit": "b1b3e7aed0ebb76c",
+          "unit": "989b7a81db1a3e0b",
           "verdict": "survived"
         },
+        "<module>#expr#1#0": {
+          "desc": "L22 120 -> 121",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L22 120 -> 119",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#2": {
+          "desc": "L22 120 -> 0",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
         "Suite.__init__#del#0#0": {
-          "desc": "L22 drop Assign",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L29 drop Assign",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#del#1#0": {
-          "desc": "L26 drop Assign",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L30 drop Assign",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#del#2#0": {
-          "desc": "L27 drop Assign",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L34 drop Assign",
+          "unit": "0738a00d21468271",
+          "verdict": "killed"
+        },
+        "Suite.__init__#del#3#0": {
+          "desc": "L35 drop Assign",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#expr#0#0": {
-          "desc": "L26 '1' -> empty",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L34 '1' -> empty",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#expr#0#1": {
-          "desc": "L26 '1' -> mutated",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L34 '1' -> mutated",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.command_argv#del#0#0": {
@@ -4783,22 +4808,22 @@
           "verdict": "killed"
         },
         "Suite.command_argv#expr#10#0": {
-          "desc": "L53 'powershell' -> empty",
+          "desc": "L61 'powershell' -> empty",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
         "Suite.command_argv#expr#10#1": {
-          "desc": "L53 'powershell' -> mutated",
+          "desc": "L61 'powershell' -> mutated",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
         "Suite.command_argv#expr#11#0": {
-          "desc": "L53 'powershell.exe' -> empty",
+          "desc": "L61 'powershell.exe' -> empty",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
         "Suite.command_argv#expr#11#1": {
-          "desc": "L53 'powershell.exe' -> mutated",
+          "desc": "L61 'powershell.exe' -> mutated",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
@@ -5018,7 +5043,7 @@
           "verdict": "killed"
         },
         "Suite.command_argv#expr#5#0": {
-          "desc": "L49 if -> True",
+          "desc": "L57 if -> True",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
@@ -5083,43 +5108,63 @@
           "verdict": "killed"
         },
         "Suite.passes#del#0#0": {
-          "desc": "L60 drop Assign",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L68 drop Try",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#del#1#0": {
-          "desc": "L63 drop Return",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L79 drop Return",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#del#2#0": {
+          "desc": "L69 drop Assign",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#del#3#0": {
+          "desc": "L78 drop Return",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#expr#0#0": {
-          "desc": "L61 True -> False",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L72 True -> False",
+          "unit": "639f01611428d3b6",
           "verdict": "survived"
         },
         "Suite.passes#expr#1#0": {
-          "desc": "L61 True -> False",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L73 True -> False",
+          "unit": "639f01611428d3b6",
           "verdict": "survived"
         },
         "Suite.passes#expr#2#0": {
-          "desc": "L63 0 -> 1",
-          "unit": "90a5b7b2f263408e",
-          "verdict": "killed"
-        },
-        "Suite.passes#expr#2#1": {
-          "desc": "L63 0 -> -1",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L78 False -> True",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#expr#3#0": {
-          "desc": "L63 Eq -> NotEq",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L78 return -> None",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#expr#4#0": {
-          "desc": "L63 return -> None",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L79 0 -> 1",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#expr#4#1": {
+          "desc": "L79 0 -> -1",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#expr#5#0": {
+          "desc": "L79 Eq -> NotEq",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#expr#6#0": {
+          "desc": "L79 return -> None",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.resolve#del#0#0": {
@@ -5163,7 +5208,7 @@
           "verdict": "killed"
         },
         "Suite.resolve#expr#2#1": {
-          "desc": "L38 0 -> -1",
+          "desc": "L46 0 -> -1",
           "unit": "89bc0db140fbac49",
           "verdict": "survived"
         },
@@ -5323,7 +5368,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#10#0": {
-          "desc": "L132 drop If",
+          "desc": "L148 drop If",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5333,7 +5378,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#12#0": {
-          "desc": "L136 drop Expr",
+          "desc": "L152 drop Expr",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5383,12 +5428,12 @@
           "verdict": "killed"
         },
         "mutate_file#del#21#0": {
-          "desc": "L133 drop Return",
+          "desc": "L149 drop Return",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#del#22#0": {
-          "desc": "L144 drop Expr",
+          "desc": "L160 drop Expr",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5433,7 +5478,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#30#0": {
-          "desc": "L153 drop If",
+          "desc": "L169 drop If",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5468,7 +5513,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#37#0": {
-          "desc": "L154 drop Continue",
+          "desc": "L170 drop Continue",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5508,7 +5553,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#7#0": {
-          "desc": "L125 drop Expr",
+          "desc": "L141 drop Expr",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5543,7 +5588,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#1#2": {
-          "desc": "L116 Gt -> GtE",
+          "desc": "L132 Gt -> GtE",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5568,7 +5613,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#13#0": {
-          "desc": "L130 True -> False",
+          "desc": "L146 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5598,7 +5643,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#17#1": {
-          "desc": "L132 if -> False",
+          "desc": "L148 if -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5608,7 +5653,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#18#1": {
-          "desc": "L136 '__pycache__' -> mutated",
+          "desc": "L152 '__pycache__' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5628,22 +5673,22 @@
           "verdict": "killed"
         },
         "mutate_file#expr#21#0": {
-          "desc": "L138 1 -> 2",
+          "desc": "L154 1 -> 2",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#21#1": {
-          "desc": "L138 1 -> 0",
+          "desc": "L154 1 -> 0",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#22#0": {
-          "desc": "L138 4 -> 5",
+          "desc": "L154 4 -> 5",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#22#1": {
-          "desc": "L138 4 -> 3",
+          "desc": "L154 4 -> 3",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5663,7 +5708,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#24#0": {
-          "desc": "L144 '\\n' -> empty",
+          "desc": "L160 '\\n' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5688,7 +5733,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#27#0": {
-          "desc": "L144 '\\n' -> empty",
+          "desc": "L160 '\\n' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5708,7 +5753,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#29#1": {
-          "desc": "L147 '%s: BASELINE FAILS on the unparsed original; results would be noise' -> mutated",
+          "desc": "L163 '%s: BASELINE FAILS on the unparsed original; results would be noise' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5718,7 +5763,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#3#1": {
-          "desc": "L119 '%s: %d sites, over the cap of %d. Split it (constitution section 2). Not mutated.' -> mutated",
+          "desc": "L135 '%s: %d sites, over the cap of %d. Split it (constitution section 2). Not mutated.' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5728,7 +5773,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#31#0": {
-          "desc": "L148 True -> False",
+          "desc": "L164 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5753,7 +5798,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#34#1": {
-          "desc": "L153 if -> False",
+          "desc": "L169 if -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5768,7 +5813,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#36#0": {
-          "desc": "L155 '\\n' -> empty",
+          "desc": "L171 '\\n' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5798,12 +5843,12 @@
           "verdict": "killed"
         },
         "mutate_file#expr#39#0": {
-          "desc": "L158 'killed' -> empty",
+          "desc": "L174 'killed' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#39#1": {
-          "desc": "L158 'killed' -> mutated",
+          "desc": "L174 'killed' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5843,12 +5888,12 @@
           "verdict": "killed"
         },
         "mutate_file#expr#43#0": {
-          "desc": "L162 'killed  ' -> empty",
+          "desc": "L178 'killed  ' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#43#1": {
-          "desc": "L162 'killed  ' -> mutated",
+          "desc": "L178 'killed  ' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5883,17 +5928,17 @@
           "verdict": "killed"
         },
         "mutate_file#expr#48#1": {
-          "desc": "L165 '  %s %d/%d, %d survivors, %ds' -> mutated",
+          "desc": "L181 '  %s %d/%d, %d survivors, %ds' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#49#0": {
-          "desc": "L166 Sub -> Add",
+          "desc": "L182 Sub -> Add",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#5#0": {
-          "desc": "L121 True -> False",
+          "desc": "L137 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5903,7 +5948,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#51#0": {
-          "desc": "L163 if -> True",
+          "desc": "L179 if -> True",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5923,7 +5968,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#53#0": {
-          "desc": "L170 True -> False",
+          "desc": "L186 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5973,7 +6018,7 @@
           "verdict": "killed"
         },
         "note#del#1#0": {
-          "desc": "L88 drop Expr",
+          "desc": "L104 drop Expr",
           "unit": "d9c760cf319f12a3",
           "verdict": "survived"
         },
@@ -6178,7 +6223,7 @@
           "verdict": "killed"
         },
         "python_files#expr#1#3": {
-          "desc": "L70 '*.py' -> '*py'",
+          "desc": "L86 '*.py' -> '*py'",
           "unit": "5cedd6a32c28b35f",
           "verdict": "survived"
         },
@@ -9646,6 +9691,7 @@
     "tests/test_mutate_runner.py::test_several_paths_are_all_collected": "7984cedf37823632",
     "tests/test_mutate_runner.py::test_the_backup_flattens_the_path_and_holds_the_bytes": "2a26d85e5672a9da",
     "tests/test_mutate_runner.py::test_the_backup_is_removed_when_the_run_finishes": "d6507e277f47ed06",
+    "tests/test_mutate_runner.py::test_the_default_timeout_is_two_minutes": "fe8271b6de5dacf1",
     "tests/test_mutate_runner.py::test_the_file_comes_back_byte_for_byte": "82ab319091b70aa9",
     "tests/test_mutate_runner.py::test_the_header_names_sites_mutants_and_what_is_cached": "f5ccd5bab7d453b0",
     "tests/test_mutate_runner.py::test_the_manifest_ends_up_holding_a_verdict_for_every_mutant": "3f1754d4acbb6b97",
