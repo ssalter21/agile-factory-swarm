@@ -1,0 +1,8 @@
+# Workflow scripts are read by the harness, which rejects control characters.
+# CR is one, so these stay LF on every platform.
+*.js text eol=lf
+
+# Agent files are compiled byte for byte, so their line ending is pinned rather than left to
+# whatever the checkout is configured for. The compiler emits CRLF on every platform.
+.claude/agents/*.md        text eol=crlf
+.github/agents/*.agent.md  text eol=crlf

@@ -1,0 +1,28 @@
+# The spec swarm's configuration for this repo. See swarm/constitution.md §10.
+# Required by initiation (§4): a repo is not initiated until its spec personalities are configured.
+
+# Who the User Voice speaks as. There is exactly one — a second kind of user is a question,
+# not a setting.
+user: >-
+  A developer running the swarm from a terminal in their own repo, on their own machine.
+  Judges the swarm by whether it produced the change they wanted without needing to be
+  supervised.
+
+# What the voices are working on. One paragraph, enough to keep a draft from wandering.
+domain: >-
+  Agent orchestration for small games and side projects. A swarm of narrow-remit agents,
+  configured per repo, that turns a short brief into an approved spec and then into a merged
+  change. Language-neutral law in swarm/, harness-specific compilation in .claude/.
+
+# The voices. The Agile Agent and the Devil's Advocate are not removable (§10).
+voices:
+  agile-agent:     on   # fixed
+  devils-advocate: on   # fixed
+  user-voice:      on
+  domain-modeller: on
+
+# Machinery and the Unblocker are always present and are not listed here — they cannot be
+# turned off. Researcher, Unblocker, Spec Writer.
+
+limits:
+  research_rounds_per_gap: 1
