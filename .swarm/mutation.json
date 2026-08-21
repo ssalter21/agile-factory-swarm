@@ -7008,7 +7008,7 @@
         "<module>#del#0#0": {
           "desc": "L14 drop Expr",
           "unit": "c6df9a6f5d9f7a46",
-          "verdict": "survived"
+          "verdict": "killed"
         },
         "<module>#del#1#0": {
           "desc": "L19 drop Assign",
@@ -7018,12 +7018,12 @@
         "<module>#del#2#0": {
           "desc": "L59 drop If",
           "unit": "c6df9a6f5d9f7a46",
-          "verdict": "survived"
+          "verdict": "killed"
         },
         "<module>#del#3#0": {
           "desc": "L60 drop Expr",
           "unit": "c6df9a6f5d9f7a46",
-          "verdict": "survived"
+          "verdict": "killed"
         },
         "<module>#expr#0#0": {
           "desc": "L14 0 -> 1",
@@ -7038,12 +7038,12 @@
         "<module>#expr#1#0": {
           "desc": "L59 '__main__' -> empty",
           "unit": "c6df9a6f5d9f7a46",
-          "verdict": "survived"
+          "verdict": "killed"
         },
         "<module>#expr#1#1": {
           "desc": "L59 '__main__' -> mutated",
           "unit": "c6df9a6f5d9f7a46",
-          "verdict": "survived"
+          "verdict": "killed"
         },
         "<module>#expr#2#0": {
           "desc": "L59 Eq -> NotEq",
@@ -7058,7 +7058,7 @@
         "<module>#expr#3#1": {
           "desc": "L59 if -> False",
           "unit": "c6df9a6f5d9f7a46",
-          "verdict": "survived"
+          "verdict": "killed"
         },
         "main#del#0#0": {
           "desc": "L37 drop Assign",
@@ -9757,6 +9757,35 @@
     "tests/test_rolecompile.py::test_write_mode_leaves_a_matching_file_alone": "23dd3abb01401514",
     "tests/test_rolecompile.py::test_write_mode_reports_on_a_destination_that_is_not_on_disk_yet": "9876523df23efe99",
     "tests/test_rolecompile.py::test_write_mode_rewrites_a_file_that_differs_only_in_its_line_endings": "16832ee460bad925",
+    "tests/test_rolecompile_acceptance.py::<module>": "6a96081af7669a6e",
+    "tests/test_rolecompile_acceptance.py::Run": "e9ac3efe865f9c8f",
+    "tests/test_rolecompile_acceptance.py::Run.__init__": "71c3833cc297c735",
+    "tests/test_rolecompile_acceptance.py::Run.lines": "fbfe80b4e1dc5c18",
+    "tests/test_rolecompile_acceptance.py::claude": "a29c4ebd1634819d",
+    "tests/test_rolecompile_acceptance.py::compile_command": "4ccf515378a15e4a",
+    "tests/test_rolecompile_acceptance.py::declare": "c2e60874e64df775",
+    "tests/test_rolecompile_acceptance.py::fingerprint": "bcb9ed2165dac6bf",
+    "tests/test_rolecompile_acceptance.py::front_matter": "41c51a71918f973c",
+    "tests/test_rolecompile_acceptance.py::github": "2cee54a5aa66dc33",
+    "tests/test_rolecompile_acceptance.py::project": "687b4390e8440719",
+    "tests/test_rolecompile_acceptance.py::test_a_declared_name_that_does_not_match_its_filename_fails_the_compile": "f1524521c847518a",
+    "tests/test_rolecompile_acceptance.py::test_a_hand_edit_to_a_compiled_file_is_caught_and_there_is_no_banner": "afc2a8fc6509378c",
+    "tests/test_rolecompile_acceptance.py::test_a_line_ending_only_difference_is_named_as_one": "fcf2946eab57bf4d",
+    "tests/test_rolecompile_acceptance.py::test_a_prompt_edit_reaches_both_harnesses_from_one_place": "bde139394e49a438",
+    "tests/test_rolecompile_acceptance.py::test_a_tree_carrying_the_pinned_line_ending_compares_clean": "49d405c46aa05af7",
+    "tests/test_rolecompile_acceptance.py::test_adding_a_role_produces_both_agent_files_under_the_declared_name": "d2d116c5f6a30f31",
+    "tests/test_rolecompile_acceptance.py::test_an_omitted_tools_field_fails_the_compile_and_says_why_it_matters": "598c728958316916",
+    "tests/test_rolecompile_acceptance.py::test_check_mode_is_clean_before_the_compiler_is_allowed_to_write_anything": "7bee6244f75bfc8f",
+    "tests/test_rolecompile_acceptance.py::test_check_mode_names_a_stale_agent_file_and_writes_nothing": "d4e7f3644b605b71",
+    "tests/test_rolecompile_acceptance.py::test_everything_restores": "417492412bb9f79d",
+    "tests/test_rolecompile_acceptance.py::test_running_the_compile_twice_writes_nothing_the_second_time": "4d1bd7060351107d",
+    "tests/test_rolecompile_acceptance.py::test_the_compiled_claude_tree_is_exactly_the_twelve_roles": "815a75b0486862b5",
+    "tests/test_rolecompile_acceptance.py::test_the_compiler_is_reachable_by_the_gate_commands_the_repo_declares": "64cf3a2ec3e51256",
+    "tests/test_rolecompile_acceptance.py::test_the_first_write_produces_both_trees_and_names_every_file": "fac0054c1a49de62",
+    "tests/test_rolecompile_acceptance.py::test_the_github_agent_file_carries_four_things_and_nothing_more": "ebdc1f33ed765ea7",
+    "tests/test_rolecompile_acceptance.py::test_the_line_ending_the_compiler_emits_is_pinned_for_both_agent_directories": "6cf2eb3cf62d625d",
+    "tests/test_rolecompile_acceptance.py::test_the_researcher_description_survives_the_round_trip_on_one_line": "5259715663f91c2b",
+    "tests/test_rolecompile_acceptance.py::test_two_declarations_with_the_same_name_fail_the_compile": "67694c1a5087b030",
     "tests/test_rolecompile_cli.py::<module>": "2fb0bf0b311bbf95",
     "tests/test_rolecompile_cli.py::claude": "a29c4ebd1634819d",
     "tests/test_rolecompile_cli.py::github": "2cee54a5aa66dc33",
