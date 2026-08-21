@@ -1038,22 +1038,22 @@
       "sites": {
         "<module>#del#0#0": {
           "desc": "L10 drop Assign",
-          "unit": "6bd98540803618ac",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "<module>#expr#0#0": {
-          "desc": "L10 100 -> 101",
-          "unit": "6bd98540803618ac",
+          "desc": "L10 250 -> 251",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "<module>#expr#0#1": {
-          "desc": "L10 100 -> 99",
-          "unit": "6bd98540803618ac",
+          "desc": "L10 250 -> 249",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "<module>#expr#0#2": {
-          "desc": "L10 100 -> 0",
-          "unit": "6bd98540803618ac",
+          "desc": "L10 250 -> 0",
+          "unit": "5f0a91bf538c6b6f",
           "verdict": "killed"
         },
         "Gate.__init__#del#0#0": {
@@ -4674,42 +4674,67 @@
       "sites": {
         "<module>#del#0#0": {
           "desc": "L15 drop Assign",
-          "unit": "b1b3e7aed0ebb76c",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L22 drop Assign",
+          "unit": "989b7a81db1a3e0b",
           "verdict": "killed"
         },
         "<module>#expr#0#0": {
           "desc": "L15 ';|&<>$`(){}' -> empty",
-          "unit": "b1b3e7aed0ebb76c",
+          "unit": "989b7a81db1a3e0b",
           "verdict": "killed"
         },
         "<module>#expr#0#1": {
           "desc": "L15 ';|&<>$`(){}' -> mutated",
-          "unit": "b1b3e7aed0ebb76c",
+          "unit": "989b7a81db1a3e0b",
           "verdict": "survived"
         },
+        "<module>#expr#1#0": {
+          "desc": "L22 120 -> 121",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L22 120 -> 119",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#2": {
+          "desc": "L22 120 -> 0",
+          "unit": "989b7a81db1a3e0b",
+          "verdict": "killed"
+        },
         "Suite.__init__#del#0#0": {
-          "desc": "L22 drop Assign",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L29 drop Assign",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#del#1#0": {
-          "desc": "L26 drop Assign",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L30 drop Assign",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#del#2#0": {
-          "desc": "L27 drop Assign",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L34 drop Assign",
+          "unit": "0738a00d21468271",
+          "verdict": "killed"
+        },
+        "Suite.__init__#del#3#0": {
+          "desc": "L35 drop Assign",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#expr#0#0": {
-          "desc": "L26 '1' -> empty",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L34 '1' -> empty",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.__init__#expr#0#1": {
-          "desc": "L26 '1' -> mutated",
-          "unit": "ad41d0179a9d41a3",
+          "desc": "L34 '1' -> mutated",
+          "unit": "0738a00d21468271",
           "verdict": "killed"
         },
         "Suite.command_argv#del#0#0": {
@@ -4783,22 +4808,22 @@
           "verdict": "killed"
         },
         "Suite.command_argv#expr#10#0": {
-          "desc": "L53 'powershell' -> empty",
+          "desc": "L61 'powershell' -> empty",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
         "Suite.command_argv#expr#10#1": {
-          "desc": "L53 'powershell' -> mutated",
+          "desc": "L61 'powershell' -> mutated",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
         "Suite.command_argv#expr#11#0": {
-          "desc": "L53 'powershell.exe' -> empty",
+          "desc": "L61 'powershell.exe' -> empty",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
         "Suite.command_argv#expr#11#1": {
-          "desc": "L53 'powershell.exe' -> mutated",
+          "desc": "L61 'powershell.exe' -> mutated",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
@@ -5018,7 +5043,7 @@
           "verdict": "killed"
         },
         "Suite.command_argv#expr#5#0": {
-          "desc": "L49 if -> True",
+          "desc": "L57 if -> True",
           "unit": "37bc906adc7b65cb",
           "verdict": "survived"
         },
@@ -5083,43 +5108,63 @@
           "verdict": "killed"
         },
         "Suite.passes#del#0#0": {
-          "desc": "L60 drop Assign",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L68 drop Try",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#del#1#0": {
-          "desc": "L63 drop Return",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L79 drop Return",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#del#2#0": {
+          "desc": "L69 drop Assign",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#del#3#0": {
+          "desc": "L78 drop Return",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#expr#0#0": {
-          "desc": "L61 True -> False",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L72 True -> False",
+          "unit": "639f01611428d3b6",
           "verdict": "survived"
         },
         "Suite.passes#expr#1#0": {
-          "desc": "L61 True -> False",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L73 True -> False",
+          "unit": "639f01611428d3b6",
           "verdict": "survived"
         },
         "Suite.passes#expr#2#0": {
-          "desc": "L63 0 -> 1",
-          "unit": "90a5b7b2f263408e",
-          "verdict": "killed"
-        },
-        "Suite.passes#expr#2#1": {
-          "desc": "L63 0 -> -1",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L78 False -> True",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#expr#3#0": {
-          "desc": "L63 Eq -> NotEq",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L78 return -> None",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.passes#expr#4#0": {
-          "desc": "L63 return -> None",
-          "unit": "90a5b7b2f263408e",
+          "desc": "L79 0 -> 1",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#expr#4#1": {
+          "desc": "L79 0 -> -1",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#expr#5#0": {
+          "desc": "L79 Eq -> NotEq",
+          "unit": "639f01611428d3b6",
+          "verdict": "killed"
+        },
+        "Suite.passes#expr#6#0": {
+          "desc": "L79 return -> None",
+          "unit": "639f01611428d3b6",
           "verdict": "killed"
         },
         "Suite.resolve#del#0#0": {
@@ -5163,7 +5208,7 @@
           "verdict": "killed"
         },
         "Suite.resolve#expr#2#1": {
-          "desc": "L38 0 -> -1",
+          "desc": "L46 0 -> -1",
           "unit": "89bc0db140fbac49",
           "verdict": "survived"
         },
@@ -5323,7 +5368,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#10#0": {
-          "desc": "L132 drop If",
+          "desc": "L148 drop If",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5333,7 +5378,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#12#0": {
-          "desc": "L136 drop Expr",
+          "desc": "L152 drop Expr",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5383,12 +5428,12 @@
           "verdict": "killed"
         },
         "mutate_file#del#21#0": {
-          "desc": "L133 drop Return",
+          "desc": "L149 drop Return",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#del#22#0": {
-          "desc": "L144 drop Expr",
+          "desc": "L160 drop Expr",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5433,7 +5478,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#30#0": {
-          "desc": "L153 drop If",
+          "desc": "L169 drop If",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5468,7 +5513,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#37#0": {
-          "desc": "L154 drop Continue",
+          "desc": "L170 drop Continue",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5508,7 +5553,7 @@
           "verdict": "killed"
         },
         "mutate_file#del#7#0": {
-          "desc": "L125 drop Expr",
+          "desc": "L141 drop Expr",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5543,7 +5588,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#1#2": {
-          "desc": "L116 Gt -> GtE",
+          "desc": "L132 Gt -> GtE",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5568,7 +5613,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#13#0": {
-          "desc": "L130 True -> False",
+          "desc": "L146 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5598,7 +5643,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#17#1": {
-          "desc": "L132 if -> False",
+          "desc": "L148 if -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5608,7 +5653,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#18#1": {
-          "desc": "L136 '__pycache__' -> mutated",
+          "desc": "L152 '__pycache__' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5628,22 +5673,22 @@
           "verdict": "killed"
         },
         "mutate_file#expr#21#0": {
-          "desc": "L138 1 -> 2",
+          "desc": "L154 1 -> 2",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#21#1": {
-          "desc": "L138 1 -> 0",
+          "desc": "L154 1 -> 0",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#22#0": {
-          "desc": "L138 4 -> 5",
+          "desc": "L154 4 -> 5",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#22#1": {
-          "desc": "L138 4 -> 3",
+          "desc": "L154 4 -> 3",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5663,7 +5708,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#24#0": {
-          "desc": "L144 '\\n' -> empty",
+          "desc": "L160 '\\n' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5688,7 +5733,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#27#0": {
-          "desc": "L144 '\\n' -> empty",
+          "desc": "L160 '\\n' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5708,7 +5753,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#29#1": {
-          "desc": "L147 '%s: BASELINE FAILS on the unparsed original; results would be noise' -> mutated",
+          "desc": "L163 '%s: BASELINE FAILS on the unparsed original; results would be noise' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5718,7 +5763,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#3#1": {
-          "desc": "L119 '%s: %d sites, over the cap of %d. Split it (constitution section 2). Not mutated.' -> mutated",
+          "desc": "L135 '%s: %d sites, over the cap of %d. Split it (constitution section 2). Not mutated.' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5728,7 +5773,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#31#0": {
-          "desc": "L148 True -> False",
+          "desc": "L164 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5753,7 +5798,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#34#1": {
-          "desc": "L153 if -> False",
+          "desc": "L169 if -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5768,7 +5813,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#36#0": {
-          "desc": "L155 '\\n' -> empty",
+          "desc": "L171 '\\n' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5798,12 +5843,12 @@
           "verdict": "killed"
         },
         "mutate_file#expr#39#0": {
-          "desc": "L158 'killed' -> empty",
+          "desc": "L174 'killed' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#39#1": {
-          "desc": "L158 'killed' -> mutated",
+          "desc": "L174 'killed' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5843,12 +5888,12 @@
           "verdict": "killed"
         },
         "mutate_file#expr#43#0": {
-          "desc": "L162 'killed  ' -> empty",
+          "desc": "L178 'killed  ' -> empty",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#43#1": {
-          "desc": "L162 'killed  ' -> mutated",
+          "desc": "L178 'killed  ' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5883,17 +5928,17 @@
           "verdict": "killed"
         },
         "mutate_file#expr#48#1": {
-          "desc": "L165 '  %s %d/%d, %d survivors, %ds' -> mutated",
+          "desc": "L181 '  %s %d/%d, %d survivors, %ds' -> mutated",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#49#0": {
-          "desc": "L166 Sub -> Add",
+          "desc": "L182 Sub -> Add",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
         "mutate_file#expr#5#0": {
-          "desc": "L121 True -> False",
+          "desc": "L137 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5903,7 +5948,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#51#0": {
-          "desc": "L163 if -> True",
+          "desc": "L179 if -> True",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5923,7 +5968,7 @@
           "verdict": "killed"
         },
         "mutate_file#expr#53#0": {
-          "desc": "L170 True -> False",
+          "desc": "L186 True -> False",
           "unit": "5fe4bc4197145af1",
           "verdict": "survived"
         },
@@ -5973,7 +6018,7 @@
           "verdict": "killed"
         },
         "note#del#1#0": {
-          "desc": "L88 drop Expr",
+          "desc": "L104 drop Expr",
           "unit": "d9c760cf319f12a3",
           "verdict": "survived"
         },
@@ -6178,7 +6223,7 @@
           "verdict": "killed"
         },
         "python_files#expr#1#3": {
-          "desc": "L70 '*.py' -> '*py'",
+          "desc": "L86 '*.py' -> '*py'",
           "unit": "5cedd6a32c28b35f",
           "verdict": "survived"
         },
@@ -6957,10 +7002,2485 @@
           "verdict": "killed"
         }
       }
+    },
+    "swarm/tools/python/rolecompile/__main__.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L14 drop Expr",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L19 drop Assign",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#del#2#0": {
+          "desc": "L59 drop If",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#del#3#0": {
+          "desc": "L60 drop Expr",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L14 0 -> 1",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "survived"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L14 0 -> -1",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "survived"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L59 '__main__' -> empty",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L59 '__main__' -> mutated",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#0": {
+          "desc": "L59 Eq -> NotEq",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#0": {
+          "desc": "L59 if -> True",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#1": {
+          "desc": "L59 if -> False",
+          "unit": "c6df9a6f5d9f7a46",
+          "verdict": "killed"
+        },
+        "main#del#0#0": {
+          "desc": "L37 drop Assign",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#1#0": {
+          "desc": "L38 drop Try",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#10#0": {
+          "desc": "L52 drop Expr",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#11#0": {
+          "desc": "L55 drop Expr",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#12#0": {
+          "desc": "L56 drop Return",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#2#0": {
+          "desc": "L39 drop Assign",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#3#0": {
+          "desc": "L40 drop If",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#4#0": {
+          "desc": "L43 drop Assign",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#5#0": {
+          "desc": "L50 drop Expr",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#6#0": {
+          "desc": "L51 drop For",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#7#0": {
+          "desc": "L53 drop Return",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#8#0": {
+          "desc": "L41 drop Expr",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#del#9#0": {
+          "desc": "L42 drop Return",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#expr#0#0": {
+          "desc": "L40 IsNot -> Is",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#expr#1#0": {
+          "desc": "L42 return -> None",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#expr#2#0": {
+          "desc": "L40 if -> True",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#expr#2#1": {
+          "desc": "L40 if -> False",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#expr#3#0": {
+          "desc": "L53 return -> None",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "main#expr#4#0": {
+          "desc": "L56 return -> None",
+          "unit": "f56ddaf19ed560bc",
+          "verdict": "killed"
+        },
+        "parse_args#del#0#0": {
+          "desc": "L23 drop Assign",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#del#1#0": {
+          "desc": "L27 drop Expr",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#del#2#0": {
+          "desc": "L32 drop Expr",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#del#3#0": {
+          "desc": "L33 drop Return",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#0#0": {
+          "desc": "L24 'rolecompile' -> empty",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "survived"
+        },
+        "parse_args#expr#0#1": {
+          "desc": "L24 'rolecompile' -> mutated",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "survived"
+        },
+        "parse_args#expr#1#0": {
+          "desc": "L28 '--check' -> empty",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#1#1": {
+          "desc": "L28 '--check' -> mutated",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#2#0": {
+          "desc": "L29 'store_true' -> empty",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#2#1": {
+          "desc": "L29 'store_true' -> mutated",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#3#0": {
+          "desc": "L32 '--root' -> empty",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#3#1": {
+          "desc": "L32 '--root' -> mutated",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#4#0": {
+          "desc": "L32 '.' -> empty",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#4#1": {
+          "desc": "L32 '.' -> mutated",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        },
+        "parse_args#expr#5#0": {
+          "desc": "L33 return -> None",
+          "unit": "f4eac4b23957aba6",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/compare.py": {
+      "sites": {
+        "Status#del#0#0": {
+          "desc": "L16 drop Assign",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#del#1#0": {
+          "desc": "L17 drop Assign",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#del#2#0": {
+          "desc": "L18 drop Assign",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#del#3#0": {
+          "desc": "L19 drop Assign",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#0#0": {
+          "desc": "L16 'same' -> empty",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#0#1": {
+          "desc": "L16 'same' -> mutated",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#0#2": {
+          "desc": "L16 'same' -> 'ame'",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#0#3": {
+          "desc": "L16 'same' -> 'sme'",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#0#4": {
+          "desc": "L16 'same' -> 'sae'",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#0#5": {
+          "desc": "L16 'same' -> 'sam'",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#1#0": {
+          "desc": "L17 'absent' -> empty",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#1#1": {
+          "desc": "L17 'absent' -> mutated",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#2#0": {
+          "desc": "L18 'line endings' -> empty",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#2#1": {
+          "desc": "L18 'line endings' -> mutated",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#3#0": {
+          "desc": "L19 'differs' -> empty",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "Status#expr#3#1": {
+          "desc": "L19 'differs' -> mutated",
+          "unit": "82424f064d15b382",
+          "verdict": "killed"
+        },
+        "status#del#0#0": {
+          "desc": "L24 drop If",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#1#0": {
+          "desc": "L26 drop If",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#2#0": {
+          "desc": "L28 drop Assign",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#3#0": {
+          "desc": "L29 drop If",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#4#0": {
+          "desc": "L31 drop If",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#5#0": {
+          "desc": "L33 drop Return",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#6#0": {
+          "desc": "L25 drop Return",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#7#0": {
+          "desc": "L27 drop Return",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#8#0": {
+          "desc": "L30 drop Return",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#del#9#0": {
+          "desc": "L32 drop Return",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#0#0": {
+          "desc": "L24 Is -> IsNot",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#1#0": {
+          "desc": "L25 return -> None",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#10#0": {
+          "desc": "L32 return -> None",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#11#0": {
+          "desc": "L31 if -> True",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#11#1": {
+          "desc": "L31 if -> False",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#12#0": {
+          "desc": "L33 return -> None",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#2#0": {
+          "desc": "L24 if -> True",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#2#1": {
+          "desc": "L24 if -> False",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#3#0": {
+          "desc": "L26 Eq -> NotEq",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#4#0": {
+          "desc": "L27 return -> None",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#5#0": {
+          "desc": "L26 if -> True",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#5#1": {
+          "desc": "L26 if -> False",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#6#0": {
+          "desc": "L29 Is -> IsNot",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#7#0": {
+          "desc": "L30 return -> None",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#8#0": {
+          "desc": "L29 if -> True",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#8#1": {
+          "desc": "L29 if -> False",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        },
+        "status#expr#9#0": {
+          "desc": "L31 Eq -> NotEq",
+          "unit": "e17ba9358a14a632",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/compiler.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L17 drop Assign",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L18 drop Assign",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#del#2#0": {
+          "desc": "L19 drop Assign",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L17 0 -> 1",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L17 0 -> -1",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L18 1 -> 2",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L18 1 -> 0",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#0": {
+          "desc": "L19 2 -> 3",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#1": {
+          "desc": "L19 2 -> 1",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#2": {
+          "desc": "L19 2 -> 0",
+          "unit": "3d046c37d55057d2",
+          "verdict": "killed"
+        },
+        "Outcome#del#0#0": {
+          "desc": "L26 drop AnnAssign",
+          "unit": "0bf3ab24908522e1",
+          "verdict": "killed"
+        },
+        "Outcome#del#1#0": {
+          "desc": "L27 drop AnnAssign",
+          "unit": "0bf3ab24908522e1",
+          "verdict": "killed"
+        },
+        "Outcome#del#2#0": {
+          "desc": "L28 drop AnnAssign",
+          "unit": "0bf3ab24908522e1",
+          "verdict": "killed"
+        },
+        "Outcome#expr#0#0": {
+          "desc": "L22 True -> False",
+          "unit": "0bf3ab24908522e1",
+          "verdict": "killed"
+        },
+        "_directory#del#0#0": {
+          "desc": "L87 drop Return",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#0#0": {
+          "desc": "L87 '/' -> empty",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#0#1": {
+          "desc": "L87 '/' -> mutated",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#1#0": {
+          "desc": "L87 1 -> 2",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#1#1": {
+          "desc": "L87 1 -> 0",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#2#0": {
+          "desc": "L87 0 -> 1",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#2#1": {
+          "desc": "L87 0 -> -1",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_directory#expr#3#0": {
+          "desc": "L87 return -> None",
+          "unit": "79232501fa01aa44",
+          "verdict": "killed"
+        },
+        "_files#del#0#0": {
+          "desc": "L74 drop For",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#del#1#0": {
+          "desc": "L75 drop Assign",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#del#2#0": {
+          "desc": "L76 drop Expr",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#del#3#0": {
+          "desc": "L80 drop Expr",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#expr#0#0": {
+          "desc": "L77 '%s/%s%s' -> empty",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#expr#0#1": {
+          "desc": "L77 '%s/%s%s' -> mutated",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#expr#1#0": {
+          "desc": "L77 Mod -> Mult",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#expr#2#0": {
+          "desc": "L81 '%s/%s%s' -> empty",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#expr#2#1": {
+          "desc": "L81 '%s/%s%s' -> mutated",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "_files#expr#3#0": {
+          "desc": "L81 Mod -> Mult",
+          "unit": "aea1a395f1930217",
+          "verdict": "killed"
+        },
+        "outcome#del#0#0": {
+          "desc": "L54 drop Assign",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#1#0": {
+          "desc": "L55 drop Assign",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#10#0": {
+          "desc": "L63 drop If",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#11#0": {
+          "desc": "L64 drop Expr",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#12#0": {
+          "desc": "L65 drop Assign",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#13#0": {
+          "desc": "L67 drop Expr",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#14#0": {
+          "desc": "L68 drop Expr",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#2#0": {
+          "desc": "L56 drop Assign",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#3#0": {
+          "desc": "L57 drop For",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#4#0": {
+          "desc": "L69 drop Return",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#5#0": {
+          "desc": "L58 drop If",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#6#0": {
+          "desc": "L60 drop Assign",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#7#0": {
+          "desc": "L61 drop If",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#8#0": {
+          "desc": "L59 drop Continue",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#del#9#0": {
+          "desc": "L62 drop Expr",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#0#0": {
+          "desc": "L58 NotIn -> In",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#1#0": {
+          "desc": "L58 And -> Or",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#2#0": {
+          "desc": "L58 if -> True",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#2#1": {
+          "desc": "L58 if -> False",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#3#0": {
+          "desc": "L61 Is -> IsNot",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#4#0": {
+          "desc": "L64 Is -> IsNot",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#5#0": {
+          "desc": "L63 if -> True",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#5#1": {
+          "desc": "L63 if -> False",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#6#0": {
+          "desc": "L61 if -> True",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#6#1": {
+          "desc": "L61 if -> False",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "outcome#expr#7#0": {
+          "desc": "L69 return -> None",
+          "unit": "4c5e4f5763475348",
+          "verdict": "killed"
+        },
+        "targets#del#0#0": {
+          "desc": "L33 drop Try",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#del#1#0": {
+          "desc": "L37 drop Assign",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#del#2#0": {
+          "desc": "L38 drop If",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#del#3#0": {
+          "desc": "L40 drop Return",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#del#4#0": {
+          "desc": "L34 drop Assign",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#del#5#0": {
+          "desc": "L36 drop Return",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#del#6#0": {
+          "desc": "L39 drop Return",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#expr#0#0": {
+          "desc": "L36 return -> None",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#expr#1#0": {
+          "desc": "L38 IsNot -> Is",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#expr#2#0": {
+          "desc": "L39 return -> None",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#expr#3#0": {
+          "desc": "L38 if -> True",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#expr#3#1": {
+          "desc": "L38 if -> False",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        },
+        "targets#expr#4#0": {
+          "desc": "L40 return -> None",
+          "unit": "f9da9ac72e90fe32",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/declaration.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L14 drop Assign",
+          "unit": "c6d6801b0d1d3490",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L15 drop Assign",
+          "unit": "c6d6801b0d1d3490",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L14 '#' -> empty",
+          "unit": "c6d6801b0d1d3490",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L14 '#' -> mutated",
+          "unit": "c6d6801b0d1d3490",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L15 ':' -> empty",
+          "unit": "c6d6801b0d1d3490",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L15 ':' -> mutated",
+          "unit": "c6d6801b0d1d3490",
+          "verdict": "killed"
+        },
+        "RoleDefinition#del#0#0": {
+          "desc": "L26 drop AnnAssign",
+          "unit": "fcbdf730771a8fd6",
+          "verdict": "killed"
+        },
+        "RoleDefinition#del#1#0": {
+          "desc": "L27 drop AnnAssign",
+          "unit": "fcbdf730771a8fd6",
+          "verdict": "killed"
+        },
+        "RoleDefinition#del#2#0": {
+          "desc": "L28 drop AnnAssign",
+          "unit": "fcbdf730771a8fd6",
+          "verdict": "killed"
+        },
+        "RoleDefinition#expr#0#0": {
+          "desc": "L22 True -> False",
+          "unit": "fcbdf730771a8fd6",
+          "verdict": "killed"
+        },
+        "_text#del#0#0": {
+          "desc": "L60 drop Assign",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#del#1#0": {
+          "desc": "L61 drop If",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#del#2#0": {
+          "desc": "L63 drop Return",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#del#3#0": {
+          "desc": "L62 drop Raise",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#expr#0#0": {
+          "desc": "L61 Is -> IsNot",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#expr#1#0": {
+          "desc": "L61 if -> True",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#expr#1#1": {
+          "desc": "L61 if -> False",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "_text#expr#2#0": {
+          "desc": "L63 return -> None",
+          "unit": "571e27073c60bad8",
+          "verdict": "killed"
+        },
+        "fields#del#0#0": {
+          "desc": "L47 drop Assign",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#1#0": {
+          "desc": "L48 drop For",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#2#0": {
+          "desc": "L56 drop Return",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#3#0": {
+          "desc": "L49 drop Assign",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#4#0": {
+          "desc": "L50 drop If",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#5#0": {
+          "desc": "L52 drop Assign",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#6#0": {
+          "desc": "L53 drop If",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#7#0": {
+          "desc": "L55 drop Assign",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#8#0": {
+          "desc": "L51 drop Continue",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#del#9#0": {
+          "desc": "L54 drop Continue",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#0#0": {
+          "desc": "L50 drop not",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#1#0": {
+          "desc": "L50 Or -> And",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#2#0": {
+          "desc": "L50 if -> True",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#2#1": {
+          "desc": "L50 if -> False",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#3#0": {
+          "desc": "L53 drop not",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#4#0": {
+          "desc": "L53 if -> True",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#4#1": {
+          "desc": "L53 if -> False",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "fields#expr#5#0": {
+          "desc": "L56 return -> None",
+          "unit": "3bf9e6dd71213ed7",
+          "verdict": "killed"
+        },
+        "parse#del#0#0": {
+          "desc": "L33 drop Return",
+          "unit": "72e463dcd061d388",
+          "verdict": "killed"
+        },
+        "parse#expr#0#0": {
+          "desc": "L33 return -> None",
+          "unit": "72e463dcd061d388",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/emit.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L24 drop Assign",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L25 drop Assign",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#del#2#0": {
+          "desc": "L26 drop Assign",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#del#3#0": {
+          "desc": "L28 drop Assign",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#del#4#0": {
+          "desc": "L29 drop Assign",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L24 '\\r\\n' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L24 '\\r\\n' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#2": {
+          "desc": "L24 '\\r\\n' -> '\\n'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#3": {
+          "desc": "L24 '\\r\\n' -> '\\r'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L25 '---' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L25 '---' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#2": {
+          "desc": "L25 '---' -> '--'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#10#0": {
+          "desc": "L29 'tools' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#10#1": {
+          "desc": "L29 'tools' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#0": {
+          "desc": "L26 'utf-8' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#1": {
+          "desc": "L26 'utf-8' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#0": {
+          "desc": "L28 'name' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#1": {
+          "desc": "L28 'name' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#2": {
+          "desc": "L28 'name' -> 'ame'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#3": {
+          "desc": "L28 'name' -> 'nme'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#4": {
+          "desc": "L28 'name' -> 'nae'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#5": {
+          "desc": "L28 'name' -> 'nam'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#0": {
+          "desc": "L28 'description' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#1": {
+          "desc": "L28 'description' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#0": {
+          "desc": "L28 'tools' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#1": {
+          "desc": "L28 'tools' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#6#0": {
+          "desc": "L28 'model' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#6#1": {
+          "desc": "L28 'model' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#7#0": {
+          "desc": "L28 'effort' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#7#1": {
+          "desc": "L28 'effort' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#8#0": {
+          "desc": "L29 'name' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#8#1": {
+          "desc": "L29 'name' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#8#2": {
+          "desc": "L29 'name' -> 'ame'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#8#3": {
+          "desc": "L29 'name' -> 'nme'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#8#4": {
+          "desc": "L29 'name' -> 'nae'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#8#5": {
+          "desc": "L29 'name' -> 'nam'",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#9#0": {
+          "desc": "L29 'description' -> empty",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "<module>#expr#9#1": {
+          "desc": "L29 'description' -> mutated",
+          "unit": "3d46a231fe20e448",
+          "verdict": "killed"
+        },
+        "agent_file#del#0#0": {
+          "desc": "L44 drop Assign",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#del#1#0": {
+          "desc": "L45 drop Expr",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#del#2#0": {
+          "desc": "L46 drop Expr",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#del#3#0": {
+          "desc": "L47 drop Expr",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#del#4#0": {
+          "desc": "L48 drop Expr",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#del#5#0": {
+          "desc": "L49 drop Return",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#expr#0#0": {
+          "desc": "L45 '%s: %s' -> empty",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#expr#0#1": {
+          "desc": "L45 '%s: %s' -> mutated",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#expr#1#0": {
+          "desc": "L45 Mod -> Mult",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#expr#2#0": {
+          "desc": "L45 In -> NotIn",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#expr#3#0": {
+          "desc": "L49 Add -> Sub",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "agent_file#expr#4#0": {
+          "desc": "L49 return -> None",
+          "unit": "1d26e7e614d607a4",
+          "verdict": "killed"
+        },
+        "body#del#0#0": {
+          "desc": "L54 drop Assign",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#del#1#0": {
+          "desc": "L55 drop While",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#del#2#0": {
+          "desc": "L57 drop Return",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#del#3#0": {
+          "desc": "L56 drop Expr",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#expr#0#0": {
+          "desc": "L55 1 -> 2",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#expr#0#1": {
+          "desc": "L55 1 -> 0",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#expr#1#0": {
+          "desc": "L55 drop not",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#expr#2#0": {
+          "desc": "L55 And -> Or",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "body#expr#3#0": {
+          "desc": "L57 return -> None",
+          "unit": "786b260ee0320a7f",
+          "verdict": "killed"
+        },
+        "claude_file#del#0#0": {
+          "desc": "L34 drop Return",
+          "unit": "85a99274e7e1ebc8",
+          "verdict": "killed"
+        },
+        "claude_file#expr#0#0": {
+          "desc": "L34 return -> None",
+          "unit": "85a99274e7e1ebc8",
+          "verdict": "killed"
+        },
+        "github_file#del#0#0": {
+          "desc": "L39 drop Return",
+          "unit": "b9f6ec6973e83eea",
+          "verdict": "killed"
+        },
+        "github_file#expr#0#0": {
+          "desc": "L39 return -> None",
+          "unit": "b9f6ec6973e83eea",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/files.py": {
+      "sites": {
+        "_role_names#del#0#0": {
+          "desc": "L73 drop Assign",
+          "unit": "665519340ee08a11",
+          "verdict": "killed"
+        },
+        "_role_names#del#1#0": {
+          "desc": "L74 drop Return",
+          "unit": "665519340ee08a11",
+          "verdict": "killed"
+        },
+        "_role_names#expr#0#0": {
+          "desc": "L74 return -> None",
+          "unit": "665519340ee08a11",
+          "verdict": "killed"
+        },
+        "destinations_present#del#0#0": {
+          "desc": "L51 drop Return",
+          "unit": "f67245ba510259df",
+          "verdict": "killed"
+        },
+        "destinations_present#expr#0#0": {
+          "desc": "L51 return -> None",
+          "unit": "f67245ba510259df",
+          "verdict": "killed"
+        },
+        "join#del#0#0": {
+          "desc": "L69 drop Return",
+          "unit": "7e84f6908a7ada53",
+          "verdict": "killed"
+        },
+        "join#expr#0#0": {
+          "desc": "L69 '/' -> empty",
+          "unit": "7e84f6908a7ada53",
+          "verdict": "killed"
+        },
+        "join#expr#0#1": {
+          "desc": "L69 '/' -> mutated",
+          "unit": "7e84f6908a7ada53",
+          "verdict": "killed"
+        },
+        "join#expr#1#0": {
+          "desc": "L69 return -> None",
+          "unit": "7e84f6908a7ada53",
+          "verdict": "killed"
+        },
+        "read#del#0#0": {
+          "desc": "L64 drop With",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read#del#1#0": {
+          "desc": "L65 drop Return",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read#expr#0#0": {
+          "desc": "L64 'rb' -> empty",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read#expr#0#1": {
+          "desc": "L64 'rb' -> mutated",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read#expr#0#2": {
+          "desc": "L64 'rb' -> 'b'",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read#expr#0#3": {
+          "desc": "L64 'rb' -> 'r'",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read#expr#1#0": {
+          "desc": "L65 return -> None",
+          "unit": "e4fe8bfe7414fc12",
+          "verdict": "killed"
+        },
+        "read_sources#del#0#0": {
+          "desc": "L22 drop Assign",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#del#1#0": {
+          "desc": "L23 drop For",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#del#2#0": {
+          "desc": "L35 drop Return",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#del#3#0": {
+          "desc": "L24 drop Assign",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#del#4#0": {
+          "desc": "L25 drop Assign",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#del#5#0": {
+          "desc": "L26 drop Expr",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#0#0": {
+          "desc": "L24 '%s/%s%s' -> empty",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#0#1": {
+          "desc": "L24 '%s/%s%s' -> mutated",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#1#0": {
+          "desc": "L24 Mod -> Mult",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#2#0": {
+          "desc": "L25 '%s/%s%s' -> empty",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#2#1": {
+          "desc": "L25 '%s/%s%s' -> mutated",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#3#0": {
+          "desc": "L25 Mod -> Mult",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_sources#expr#4#0": {
+          "desc": "L35 return -> None",
+          "unit": "03b4e3af50fd7d88",
+          "verdict": "killed"
+        },
+        "read_targets#del#0#0": {
+          "desc": "L40 drop Assign",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "read_targets#del#1#0": {
+          "desc": "L41 drop For",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "read_targets#del#2#0": {
+          "desc": "L46 drop Return",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "read_targets#del#3#0": {
+          "desc": "L42 drop Try",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "read_targets#del#4#0": {
+          "desc": "L43 drop Assign",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "read_targets#del#5#0": {
+          "desc": "L45 drop Assign",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "read_targets#expr#0#0": {
+          "desc": "L46 return -> None",
+          "unit": "3ba68c6e76739653",
+          "verdict": "killed"
+        },
+        "write#del#0#0": {
+          "desc": "L56 drop For",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#del#1#0": {
+          "desc": "L57 drop Assign",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#del#2#0": {
+          "desc": "L58 drop Expr",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#del#3#0": {
+          "desc": "L59 drop With",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#del#4#0": {
+          "desc": "L60 drop Expr",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#expr#0#0": {
+          "desc": "L58 True -> False",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#expr#1#0": {
+          "desc": "L59 'wb' -> empty",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#expr#1#1": {
+          "desc": "L59 'wb' -> mutated",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#expr#1#2": {
+          "desc": "L59 'wb' -> 'b'",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        },
+        "write#expr#1#3": {
+          "desc": "L59 'wb' -> 'w'",
+          "unit": "055f238f3434e78e",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/model.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L10 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L11 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#del#2#0": {
+          "desc": "L12 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#del#3#0": {
+          "desc": "L14 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#del#4#0": {
+          "desc": "L15 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#del#5#0": {
+          "desc": "L16 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#del#6#0": {
+          "desc": "L17 drop Assign",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L10 'swarm/roles' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L10 'swarm/roles' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L11 '.claude/agents' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L11 '.claude/agents' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#0": {
+          "desc": "L12 '.github/agents' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#1": {
+          "desc": "L12 '.github/agents' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#0": {
+          "desc": "L14 '.yaml' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#1": {
+          "desc": "L14 '.yaml' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#0": {
+          "desc": "L15 '.md' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#1": {
+          "desc": "L15 '.md' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#2": {
+          "desc": "L15 '.md' -> 'md'",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#3": {
+          "desc": "L15 '.md' -> '.d'",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#4#4": {
+          "desc": "L15 '.md' -> '.m'",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#0": {
+          "desc": "L16 '.md' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#1": {
+          "desc": "L16 '.md' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#2": {
+          "desc": "L16 '.md' -> 'md'",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#3": {
+          "desc": "L16 '.md' -> '.d'",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#5#4": {
+          "desc": "L16 '.md' -> '.m'",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#6#0": {
+          "desc": "L17 '.agent.md' -> empty",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "<module>#expr#6#1": {
+          "desc": "L17 '.agent.md' -> mutated",
+          "unit": "98c18ae8402592e9",
+          "verdict": "killed"
+        },
+        "RoleSource#del#0#0": {
+          "desc": "L24 drop AnnAssign",
+          "unit": "ebc15f634aabc47a",
+          "verdict": "killed"
+        },
+        "RoleSource#del#1#0": {
+          "desc": "L25 drop AnnAssign",
+          "unit": "ebc15f634aabc47a",
+          "verdict": "killed"
+        },
+        "RoleSource#del#2#0": {
+          "desc": "L26 drop AnnAssign",
+          "unit": "ebc15f634aabc47a",
+          "verdict": "killed"
+        },
+        "RoleSource#del#3#0": {
+          "desc": "L27 drop AnnAssign",
+          "unit": "ebc15f634aabc47a",
+          "verdict": "killed"
+        },
+        "RoleSource#del#4#0": {
+          "desc": "L28 drop AnnAssign",
+          "unit": "ebc15f634aabc47a",
+          "verdict": "killed"
+        },
+        "RoleSource#expr#0#0": {
+          "desc": "L20 True -> False",
+          "unit": "ebc15f634aabc47a",
+          "verdict": "killed"
+        },
+        "TargetFile#del#0#0": {
+          "desc": "L35 drop AnnAssign",
+          "unit": "43c91ab1c4e0ff09",
+          "verdict": "killed"
+        },
+        "TargetFile#del#1#0": {
+          "desc": "L36 drop AnnAssign",
+          "unit": "43c91ab1c4e0ff09",
+          "verdict": "killed"
+        },
+        "TargetFile#expr#0#0": {
+          "desc": "L31 True -> False",
+          "unit": "43c91ab1c4e0ff09",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/report.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L8 drop Assign",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L9 drop Assign",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#del#2#0": {
+          "desc": "L10 drop Assign",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#del#3#0": {
+          "desc": "L11 drop Assign",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L8 'unchanged' -> empty",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L8 'unchanged' -> mutated",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L9 'written' -> empty",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L9 'written' -> mutated",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#0": {
+          "desc": "L10 'out of date' -> empty",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#2#1": {
+          "desc": "L10 'out of date' -> mutated",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#0": {
+          "desc": "L11 'the line endings differ, nothing else' -> empty",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "<module>#expr#3#1": {
+          "desc": "L11 'the line endings differ, nothing else' -> mutated",
+          "unit": "1839d3c7e7f157a7",
+          "verdict": "killed"
+        },
+        "duplicate_name#del#0#0": {
+          "desc": "L37 drop Return",
+          "unit": "7929a3f0a55cf1dc",
+          "verdict": "killed"
+        },
+        "duplicate_name#expr#0#0": {
+          "desc": "L37 \"%s: the field 'name' is '%s', which %s already declares.\" -> empty",
+          "unit": "7929a3f0a55cf1dc",
+          "verdict": "killed"
+        },
+        "duplicate_name#expr#0#1": {
+          "desc": "L37 \"%s: the field 'name' is '%s', which %s already declares.\" -> mutated",
+          "unit": "7929a3f0a55cf1dc",
+          "verdict": "killed"
+        },
+        "duplicate_name#expr#1#0": {
+          "desc": "L37 Mod -> Mult",
+          "unit": "7929a3f0a55cf1dc",
+          "verdict": "killed"
+        },
+        "duplicate_name#expr#2#0": {
+          "desc": "L37 return -> None",
+          "unit": "7929a3f0a55cf1dc",
+          "verdict": "killed"
+        },
+        "missing_tools#del#0#0": {
+          "desc": "L49 drop Return",
+          "unit": "bd5d56b58e089cb6",
+          "verdict": "killed"
+        },
+        "missing_tools#expr#0#0": {
+          "desc": "L50 \"%s: the field 'tools' is missing. A role with no tools line inherits every tool on Claude Code.\" -> empty",
+          "unit": "bd5d56b58e089cb6",
+          "verdict": "killed"
+        },
+        "missing_tools#expr#0#1": {
+          "desc": "L50 \"%s: the field 'tools' is missing. A role with no tools line inherits every tool on Claude Code.\" -> mutated",
+          "unit": "bd5d56b58e089cb6",
+          "verdict": "killed"
+        },
+        "missing_tools#expr#1#0": {
+          "desc": "L50 Mod -> Mult",
+          "unit": "bd5d56b58e089cb6",
+          "verdict": "killed"
+        },
+        "missing_tools#expr#2#0": {
+          "desc": "L49 return -> None",
+          "unit": "bd5d56b58e089cb6",
+          "verdict": "killed"
+        },
+        "name_mismatch#del#0#0": {
+          "desc": "L42 drop If",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#del#1#0": {
+          "desc": "L44 drop Return",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#del#2#0": {
+          "desc": "L43 drop Return",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#0#0": {
+          "desc": "L42 Is -> IsNot",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#1#0": {
+          "desc": "L43 \"%s: the field 'name' is missing, and the file is named '%s'.\" -> empty",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#1#1": {
+          "desc": "L43 \"%s: the field 'name' is missing, and the file is named '%s'.\" -> mutated",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#2#0": {
+          "desc": "L43 Mod -> Mult",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#3#0": {
+          "desc": "L43 return -> None",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#4#0": {
+          "desc": "L42 if -> True",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#4#1": {
+          "desc": "L42 if -> False",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#5#0": {
+          "desc": "L44 \"%s: the field 'name' is '%s', but the file is named '%s'.\" -> empty",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#5#1": {
+          "desc": "L44 \"%s: the field 'name' is '%s', but the file is named '%s'.\" -> mutated",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#6#0": {
+          "desc": "L44 Mod -> Mult",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "name_mismatch#expr#7#0": {
+          "desc": "L44 return -> None",
+          "unit": "62b1e30046d9771f",
+          "verdict": "killed"
+        },
+        "not_text#del#0#0": {
+          "desc": "L57 drop Return",
+          "unit": "431ecb347c78a8c6",
+          "verdict": "killed"
+        },
+        "not_text#expr#0#0": {
+          "desc": "L57 '%s: the file is not valid UTF-8.' -> empty",
+          "unit": "431ecb347c78a8c6",
+          "verdict": "killed"
+        },
+        "not_text#expr#0#1": {
+          "desc": "L57 '%s: the file is not valid UTF-8.' -> mutated",
+          "unit": "431ecb347c78a8c6",
+          "verdict": "killed"
+        },
+        "not_text#expr#1#0": {
+          "desc": "L57 Mod -> Mult",
+          "unit": "431ecb347c78a8c6",
+          "verdict": "killed"
+        },
+        "not_text#expr#2#0": {
+          "desc": "L57 return -> None",
+          "unit": "431ecb347c78a8c6",
+          "verdict": "killed"
+        },
+        "out_of_date#del#0#0": {
+          "desc": "L30 drop If",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#del#1#0": {
+          "desc": "L32 drop Return",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#del#2#0": {
+          "desc": "L31 drop Return",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#0#0": {
+          "desc": "L31 '%s %s - %s' -> empty",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#0#1": {
+          "desc": "L31 '%s %s - %s' -> mutated",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#1#0": {
+          "desc": "L31 Mod -> Mult",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#2#0": {
+          "desc": "L31 return -> None",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#3#0": {
+          "desc": "L30 if -> True",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#3#1": {
+          "desc": "L30 if -> False",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#4#0": {
+          "desc": "L32 '%s %s' -> empty",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#4#1": {
+          "desc": "L32 '%s %s' -> mutated",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#5#0": {
+          "desc": "L32 Mod -> Mult",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "out_of_date#expr#6#0": {
+          "desc": "L32 return -> None",
+          "unit": "590ef570577ec50f",
+          "verdict": "killed"
+        },
+        "unchanged#del#0#0": {
+          "desc": "L16 drop Return",
+          "unit": "cfc6db20b54cddb4",
+          "verdict": "killed"
+        },
+        "unchanged#expr#0#0": {
+          "desc": "L16 '%s %s' -> empty",
+          "unit": "cfc6db20b54cddb4",
+          "verdict": "killed"
+        },
+        "unchanged#expr#0#1": {
+          "desc": "L16 '%s %s' -> mutated",
+          "unit": "cfc6db20b54cddb4",
+          "verdict": "killed"
+        },
+        "unchanged#expr#1#0": {
+          "desc": "L16 Mod -> Mult",
+          "unit": "cfc6db20b54cddb4",
+          "verdict": "killed"
+        },
+        "unchanged#expr#2#0": {
+          "desc": "L16 return -> None",
+          "unit": "cfc6db20b54cddb4",
+          "verdict": "killed"
+        },
+        "unreadable#del#0#0": {
+          "desc": "L62 drop Return",
+          "unit": "b0e0f65596dabf58",
+          "verdict": "killed"
+        },
+        "unreadable#expr#0#0": {
+          "desc": "L62 '%s: %s' -> empty",
+          "unit": "b0e0f65596dabf58",
+          "verdict": "killed"
+        },
+        "unreadable#expr#0#1": {
+          "desc": "L62 '%s: %s' -> mutated",
+          "unit": "b0e0f65596dabf58",
+          "verdict": "killed"
+        },
+        "unreadable#expr#1#0": {
+          "desc": "L62 Mod -> Mult",
+          "unit": "b0e0f65596dabf58",
+          "verdict": "killed"
+        },
+        "unreadable#expr#2#0": {
+          "desc": "L62 return -> None",
+          "unit": "b0e0f65596dabf58",
+          "verdict": "killed"
+        },
+        "written#del#0#0": {
+          "desc": "L21 drop Return",
+          "unit": "84e7dcb8385ab2b4",
+          "verdict": "killed"
+        },
+        "written#expr#0#0": {
+          "desc": "L21 '%s %s' -> empty",
+          "unit": "84e7dcb8385ab2b4",
+          "verdict": "killed"
+        },
+        "written#expr#0#1": {
+          "desc": "L21 '%s %s' -> mutated",
+          "unit": "84e7dcb8385ab2b4",
+          "verdict": "killed"
+        },
+        "written#expr#1#0": {
+          "desc": "L21 Mod -> Mult",
+          "unit": "84e7dcb8385ab2b4",
+          "verdict": "killed"
+        },
+        "written#expr#2#0": {
+          "desc": "L21 return -> None",
+          "unit": "84e7dcb8385ab2b4",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/text.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L10 drop Assign",
+          "unit": "694aee6b73d4b33e",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L11 drop Assign",
+          "unit": "694aee6b73d4b33e",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L10 'utf-8-sig' -> empty",
+          "unit": "694aee6b73d4b33e",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L10 'utf-8-sig' -> mutated",
+          "unit": "694aee6b73d4b33e",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L11 'utf-8' -> empty",
+          "unit": "694aee6b73d4b33e",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L11 'utf-8' -> mutated",
+          "unit": "694aee6b73d4b33e",
+          "verdict": "killed"
+        },
+        "_decode#del#0#0": {
+          "desc": "L25 drop Try",
+          "unit": "86ded52888880dc6",
+          "verdict": "killed"
+        },
+        "_decode#del#1#0": {
+          "desc": "L26 drop Return",
+          "unit": "86ded52888880dc6",
+          "verdict": "killed"
+        },
+        "_decode#del#2#0": {
+          "desc": "L28 drop Return",
+          "unit": "86ded52888880dc6",
+          "verdict": "survived"
+        },
+        "_decode#expr#0#0": {
+          "desc": "L26 return -> None",
+          "unit": "86ded52888880dc6",
+          "verdict": "killed"
+        },
+        "decode_source#del#0#0": {
+          "desc": "L16 drop Return",
+          "unit": "e2c1b1b476d618e5",
+          "verdict": "killed"
+        },
+        "decode_source#expr#0#0": {
+          "desc": "L16 return -> None",
+          "unit": "e2c1b1b476d618e5",
+          "verdict": "killed"
+        },
+        "decode_target#del#0#0": {
+          "desc": "L21 drop Return",
+          "unit": "019e161fc1c0fb68",
+          "verdict": "killed"
+        },
+        "decode_target#expr#0#0": {
+          "desc": "L21 return -> None",
+          "unit": "019e161fc1c0fb68",
+          "verdict": "killed"
+        },
+        "lines#del#0#0": {
+          "desc": "L33 drop Return",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#0#0": {
+          "desc": "L33 '\\r\\n' -> empty",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#0#1": {
+          "desc": "L33 '\\r\\n' -> mutated",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#0#2": {
+          "desc": "L33 '\\r\\n' -> '\\n'",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#0#3": {
+          "desc": "L33 '\\r\\n' -> '\\r'",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#1#0": {
+          "desc": "L33 '\\n' -> empty",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#1#1": {
+          "desc": "L33 '\\n' -> mutated",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#2#0": {
+          "desc": "L33 '\\r' -> empty",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#2#1": {
+          "desc": "L33 '\\r' -> mutated",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#3#0": {
+          "desc": "L33 '\\n' -> empty",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#3#1": {
+          "desc": "L33 '\\n' -> mutated",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#4#0": {
+          "desc": "L33 '\\n' -> empty",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#4#1": {
+          "desc": "L33 '\\n' -> mutated",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        },
+        "lines#expr#5#0": {
+          "desc": "L33 return -> None",
+          "unit": "76ce0d40612cbaa7",
+          "verdict": "killed"
+        }
+      }
+    },
+    "swarm/tools/python/rolecompile/validate.py": {
+      "sites": {
+        "<module>#del#0#0": {
+          "desc": "L13 drop Assign",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#del#1#0": {
+          "desc": "L14 drop Assign",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#0": {
+          "desc": "L13 'name' -> empty",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#1": {
+          "desc": "L13 'name' -> mutated",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#2": {
+          "desc": "L13 'name' -> 'ame'",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#3": {
+          "desc": "L13 'name' -> 'nme'",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#4": {
+          "desc": "L13 'name' -> 'nae'",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#0#5": {
+          "desc": "L13 'name' -> 'nam'",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#0": {
+          "desc": "L14 'tools' -> empty",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "<module>#expr#1#1": {
+          "desc": "L14 'tools' -> mutated",
+          "unit": "0500a8d31a23e05a",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#0#0": {
+          "desc": "L28 drop Assign",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#1#0": {
+          "desc": "L29 drop For",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#2#0": {
+          "desc": "L37 drop Return",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "survived"
+        },
+        "_duplicate_name#del#3#0": {
+          "desc": "L30 drop Assign",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#4#0": {
+          "desc": "L31 drop If",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#5#0": {
+          "desc": "L33 drop If",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#6#0": {
+          "desc": "L36 drop Assign",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#7#0": {
+          "desc": "L32 drop Continue",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#8#0": {
+          "desc": "L34 drop Assign",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#del#9#0": {
+          "desc": "L35 drop Return",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#0#0": {
+          "desc": "L31 Is -> IsNot",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#1#0": {
+          "desc": "L31 if -> True",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#1#1": {
+          "desc": "L31 if -> False",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#2#0": {
+          "desc": "L33 In -> NotIn",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#3#0": {
+          "desc": "L35 return -> None",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#4#0": {
+          "desc": "L33 if -> True",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_duplicate_name#expr#4#1": {
+          "desc": "L33 if -> False",
+          "unit": "f305ca2fbac46dca",
+          "verdict": "killed"
+        },
+        "_missing_tools#del#0#0": {
+          "desc": "L57 drop For",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_missing_tools#del#1#0": {
+          "desc": "L60 drop Return",
+          "unit": "e2890ed447e081a6",
+          "verdict": "survived"
+        },
+        "_missing_tools#del#2#0": {
+          "desc": "L58 drop If",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_missing_tools#del#3#0": {
+          "desc": "L59 drop Return",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_missing_tools#expr#0#0": {
+          "desc": "L58 NotIn -> In",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_missing_tools#expr#1#0": {
+          "desc": "L59 return -> None",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_missing_tools#expr#2#0": {
+          "desc": "L58 if -> True",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_missing_tools#expr#2#1": {
+          "desc": "L58 if -> False",
+          "unit": "e2890ed447e081a6",
+          "verdict": "killed"
+        },
+        "_name_mismatch#del#0#0": {
+          "desc": "L47 drop For",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#del#1#0": {
+          "desc": "L52 drop Return",
+          "unit": "96860f2adebe0c62",
+          "verdict": "survived"
+        },
+        "_name_mismatch#del#2#0": {
+          "desc": "L48 drop Assign",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#del#3#0": {
+          "desc": "L49 drop Assign",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#del#4#0": {
+          "desc": "L50 drop If",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#del#5#0": {
+          "desc": "L51 drop Return",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#expr#0#0": {
+          "desc": "L50 NotEq -> Eq",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#expr#1#0": {
+          "desc": "L51 return -> None",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#expr#2#0": {
+          "desc": "L50 if -> True",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "_name_mismatch#expr#2#1": {
+          "desc": "L50 if -> False",
+          "unit": "96860f2adebe0c62",
+          "verdict": "killed"
+        },
+        "first_problem#del#0#0": {
+          "desc": "L19 drop Return",
+          "unit": "be0836575fbea2dd",
+          "verdict": "killed"
+        },
+        "first_problem#expr#0#0": {
+          "desc": "L20 Or -> And",
+          "unit": "be0836575fbea2dd",
+          "verdict": "killed"
+        },
+        "first_problem#expr#1#0": {
+          "desc": "L19 return -> None",
+          "unit": "be0836575fbea2dd",
+          "verdict": "killed"
+        }
+      }
     }
   },
   "tests": {
-    "tests/conftest.py::<module>": "05b5f185ff618471",
+    "tests/conftest.py::<module>": "69250f66cff17dda",
     "tests/test_mutate.py::<module>": "8a297d7905c766a5",
     "tests/test_mutate.py::manifest_with": "024b2365177776bf",
     "tests/test_mutate.py::project": "8b7e1fd94ed163b5",
@@ -6997,8 +9517,8 @@
     "tests/test_mutate.py::test_imports_are_not_deletion_sites": "f9eef4b4e0e1fe0b",
     "tests/test_mutate.py::test_list_counts_sites_without_running_anything": "b30dc2524c6325a3",
     "tests/test_mutate.py::test_list_fails_when_a_file_is_over_the_cap": "277a8401584c3a24",
-    "tests/test_mutate.py::test_load_gate_defaults_when_there_is_no_file": "654efcfe2e7301e5",
-    "tests/test_mutate.py::test_load_gate_ignores_a_non_numeric_cap": "49e6dec26bb19873",
+    "tests/test_mutate.py::test_load_gate_defaults_when_there_is_no_file": "963384718c56e454",
+    "tests/test_mutate.py::test_load_gate_ignores_a_non_numeric_cap": "05158a8178c96170",
     "tests/test_mutate.py::test_load_gate_reads_the_cap_and_the_commands": "bd2b3e678b333e19",
     "tests/test_mutate.py::test_nothing_to_mutate_is_an_error": "a3495073e84bdf0c",
     "tests/test_mutate.py::test_one_comparison_is_one_site_with_several_mutants": "aaf12ae02a066b10",
@@ -7057,7 +9577,7 @@
     "tests/test_mutate_internals.py::test_a_def_belongs_to_the_unit_around_it_not_to_itself": "69b1099856f0716e",
     "tests/test_mutate_internals.py::test_a_docstring_is_neither_mutated_nor_deleted": "bea368bbbd76e30c",
     "tests/test_mutate_internals.py::test_a_fresh_manifest_reuses_nothing": "0cd5849e1b66990e",
-    "tests/test_mutate_internals.py::test_a_gate_with_no_file_is_all_defaults": "8d8ebf60af824fa9",
+    "tests/test_mutate_internals.py::test_a_gate_with_no_file_is_all_defaults": "4c5213ace9e44dd7",
     "tests/test_mutate_internals.py::test_a_hash_is_short_and_stable": "94304281f79c158d",
     "tests/test_mutate_internals.py::test_a_helper_that_is_not_a_test_still_counts": "ebe74cb4da3f8576",
     "tests/test_mutate_internals.py::test_a_line_with_no_colon_is_dropped": "5a81f0543c779ee7",
@@ -7140,6 +9660,7 @@
     "tests/test_mutate_runner.py::project": "acd661aad3a0a4ce",
     "tests/test_mutate_runner.py::run": "8f0151e91b3dbedc",
     "tests/test_mutate_runner.py::test_a_cap_of_zero_switches_the_check_off": "25de85fac67e3f84",
+    "tests/test_mutate_runner.py::test_a_command_that_never_returns_counts_as_a_failure": "8293f985d72ce92d",
     "tests/test_mutate_runner.py::test_a_directory_is_walked_and_sorted": "1a70ec78f97d95eb",
     "tests/test_mutate_runner.py::test_a_file_over_the_cap_is_reported_and_left_alone": "274df59252d87836",
     "tests/test_mutate_runner.py::test_a_ghost_mutant_is_skipped_rather_than_run": "80454e09fea24b78",
@@ -7170,11 +9691,149 @@
     "tests/test_mutate_runner.py::test_several_paths_are_all_collected": "7984cedf37823632",
     "tests/test_mutate_runner.py::test_the_backup_flattens_the_path_and_holds_the_bytes": "2a26d85e5672a9da",
     "tests/test_mutate_runner.py::test_the_backup_is_removed_when_the_run_finishes": "d6507e277f47ed06",
+    "tests/test_mutate_runner.py::test_the_default_timeout_is_two_minutes": "fe8271b6de5dacf1",
     "tests/test_mutate_runner.py::test_the_file_comes_back_byte_for_byte": "82ab319091b70aa9",
     "tests/test_mutate_runner.py::test_the_header_names_sites_mutants_and_what_is_cached": "f5ccd5bab7d453b0",
     "tests/test_mutate_runner.py::test_the_manifest_ends_up_holding_a_verdict_for_every_mutant": "3f1754d4acbb6b97",
     "tests/test_mutate_runner.py::test_the_suite_reports_what_the_command_returned": "e1de3df3184a8393",
-    "tests/test_mutate_runner.py::test_verbose_prints_a_line_for_every_mutant": "644729324662957d"
+    "tests/test_mutate_runner.py::test_verbose_prints_a_line_for_every_mutant": "644729324662957d",
+    "tests/test_rolecompile.py::<module>": "f4a68a5e3831bcfc",
+    "tests/test_rolecompile.py::_named": "d1a89c77647b668b",
+    "tests/test_rolecompile.py::definitions": "60773f95f2b2e24f",
+    "tests/test_rolecompile.py::source": "5660b42836fed625",
+    "tests/test_rolecompile.py::target": "26d33861fceae3c6",
+    "tests/test_rolecompile.py::test_a_blank_line_and_a_line_with_no_colon_are_ignored": "dcb23a412c664e70",
+    "tests/test_rolecompile.py::test_a_byte_order_mark_on_a_source_file_is_dropped": "49d4ce21177dae8c",
+    "tests/test_rolecompile.py::test_a_byte_order_mark_on_a_target_is_a_difference": "724b2111c0c263a4",
+    "tests/test_rolecompile.py::test_a_comment_line_is_not_a_field": "674d4e22a8568c66",
+    "tests/test_rolecompile.py::test_a_content_difference_is_not_a_line_ending_difference": "526c72d6711731b2",
+    "tests/test_rolecompile.py::test_a_field_the_format_does_not_define_is_not_emitted": "8ed6e88fe9fddd0d",
+    "tests/test_rolecompile.py::test_a_hash_inside_a_value_is_part_of_the_value": "f46f7ade38bb2957",
+    "tests/test_rolecompile.py::test_a_lone_carriage_return_counts_as_a_line_ending_difference": "152fa617f5e2cf13",
+    "tests/test_rolecompile.py::test_a_long_value_is_written_on_one_line": "fa64a435505100d1",
+    "tests/test_rolecompile.py::test_a_name_that_is_not_the_filename_names_the_file_and_the_field": "ca2f73216f4180de",
+    "tests/test_rolecompile.py::test_a_prompt_with_no_final_newline_still_ends_in_one": "e8571017c0746de8",
+    "tests/test_rolecompile.py::test_a_report_line_leads_with_the_path": "fbf4a36678390e6b",
+    "tests/test_rolecompile.py::test_a_role_definition_is_frozen": "676be99fa42864b7",
+    "tests/test_rolecompile.py::test_a_role_source_is_frozen": "4c8c200920fc276d",
+    "tests/test_rolecompile.py::test_a_source_file_that_is_not_utf_8_names_itself": "9e632b9522b176e3",
+    "tests/test_rolecompile.py::test_a_target_file_is_frozen": "e71cadd9f44e32a3",
+    "tests/test_rolecompile.py::test_a_target_is_named_by_the_declared_name": "6fad7342c0f5db6f",
+    "tests/test_rolecompile.py::test_a_target_that_is_not_utf_8_differs_rather_than_raising": "80bd07189dc56bc8",
+    "tests/test_rolecompile.py::test_a_valid_set_has_no_problem": "4e2e2586cbdb8f79",
+    "tests/test_rolecompile.py::test_a_validation_problem_produces_no_targets_at_all": "0de8dffb12c80017",
+    "tests/test_rolecompile.py::test_a_value_keeps_everything_after_the_first_colon": "68376c0d77c7ee18",
+    "tests/test_rolecompile.py::test_an_absent_name_is_reported_as_the_mismatch_it_is": "77dbcfcb142c6505",
+    "tests/test_rolecompile.py::test_an_absent_optional_field_is_skipped_rather_than_written_empty": "1a97fbf499cb34c5",
+    "tests/test_rolecompile.py::test_an_omitted_tools_field_says_why_it_matters": "eee609a64299127a",
+    "tests/test_rolecompile.py::test_an_outcome_is_frozen": "9c1639609318028d",
+    "tests/test_rolecompile.py::test_an_undecodable_source_produces_no_targets_at_all": "ff84b9e85bce806b",
+    "tests/test_rolecompile.py::test_an_unknown_key_is_kept_rather_than_rejected": "53c13807aabe82d0",
+    "tests/test_rolecompile.py::test_check_mode_names_a_line_ending_difference_as_one": "1fbf502af1f30a65",
+    "tests/test_rolecompile.py::test_check_mode_never_offers_anything_to_write": "431a9ea4f4661638",
+    "tests/test_rolecompile.py::test_check_mode_reports_a_matching_file_as_unchanged_and_exits_zero": "1982720739203ffb",
+    "tests/test_rolecompile.py::test_check_mode_says_nothing_about_a_destination_that_is_not_on_disk": "cd0438fb5a389967",
+    "tests/test_rolecompile.py::test_check_mode_treats_an_absent_file_in_a_present_directory_as_out_of_date": "5066a204c7a2ad01",
+    "tests/test_rolecompile.py::test_each_role_produces_one_file_per_harness_sorted_by_path": "0c009477552ade63",
+    "tests/test_rolecompile.py::test_every_status_member_has_its_own_distinct_value": "c789b84432020de3",
+    "tests/test_rolecompile.py::test_fields_keep_the_order_they_were_read_in": "b0d671085513f485",
+    "tests/test_rolecompile.py::test_no_file_is_absent": "1e5daba004330a65",
+    "tests/test_rolecompile.py::test_no_output_narrates_what_the_github_emit_drops": "dd2e11b9dec52c65",
+    "tests/test_rolecompile.py::test_no_word_the_spec_coined_for_itself_reaches_the_terminal": "b130f94bac2ab246",
+    "tests/test_rolecompile.py::test_nothing_emitted_carries_a_byte_order_mark": "00fb3faa5aabfeed",
+    "tests/test_rolecompile.py::test_one_out_of_date_file_among_many_fails_the_whole_check": "13d5ef27fd3e91f9",
+    "tests/test_rolecompile.py::test_the_claude_file_is_exactly_these_bytes": "8df0418f2c3a7747",
+    "tests/test_rolecompile.py::test_the_duplicate_check_runs_before_the_filename_check": "c747b6e9f9bcc518",
+    "tests/test_rolecompile.py::test_the_field_order_is_fixed_and_not_the_declaration_s": "44250e6e249ec1fe",
+    "tests/test_rolecompile.py::test_the_filename_check_runs_before_the_tools_check": "294427de56122b1d",
+    "tests/test_rolecompile.py::test_the_github_file_drops_model_and_effort_and_nothing_else": "ee7c93375c2b64da",
+    "tests/test_rolecompile.py::test_the_other_line_ending_is_named_as_line_endings": "b05c83f660bff3de",
+    "tests/test_rolecompile.py::test_the_same_bytes_are_the_same": "94e4348a39991cef",
+    "tests/test_rolecompile.py::test_the_source_line_ending_never_reaches_the_output": "387834b48bb360a3",
+    "tests/test_rolecompile.py::test_the_targets_carry_the_emitted_bytes": "fbb249f8200cec3a",
+    "tests/test_rolecompile.py::test_trailing_blank_lines_collapse_to_one_newline": "c0ba5c735d93edd7",
+    "tests/test_rolecompile.py::test_two_declarations_with_no_name_are_not_duplicates_of_each_other": "5569d0eddc5d1b5d",
+    "tests/test_rolecompile.py::test_two_declarations_with_one_name_name_both_files_and_the_field": "ff6a3a109205fd10",
+    "tests/test_rolecompile.py::test_write_mode_leaves_a_matching_file_alone": "23dd3abb01401514",
+    "tests/test_rolecompile.py::test_write_mode_reports_on_a_destination_that_is_not_on_disk_yet": "9876523df23efe99",
+    "tests/test_rolecompile.py::test_write_mode_rewrites_a_file_that_differs_only_in_its_line_endings": "16832ee460bad925",
+    "tests/test_rolecompile_acceptance.py::<module>": "6a96081af7669a6e",
+    "tests/test_rolecompile_acceptance.py::Run": "e9ac3efe865f9c8f",
+    "tests/test_rolecompile_acceptance.py::Run.__init__": "71c3833cc297c735",
+    "tests/test_rolecompile_acceptance.py::Run.lines": "fbfe80b4e1dc5c18",
+    "tests/test_rolecompile_acceptance.py::claude": "a29c4ebd1634819d",
+    "tests/test_rolecompile_acceptance.py::compile_command": "4ccf515378a15e4a",
+    "tests/test_rolecompile_acceptance.py::declare": "c2e60874e64df775",
+    "tests/test_rolecompile_acceptance.py::fingerprint": "bcb9ed2165dac6bf",
+    "tests/test_rolecompile_acceptance.py::front_matter": "41c51a71918f973c",
+    "tests/test_rolecompile_acceptance.py::github": "2cee54a5aa66dc33",
+    "tests/test_rolecompile_acceptance.py::project": "687b4390e8440719",
+    "tests/test_rolecompile_acceptance.py::test_a_declared_name_that_does_not_match_its_filename_fails_the_compile": "f1524521c847518a",
+    "tests/test_rolecompile_acceptance.py::test_a_hand_edit_to_a_compiled_file_is_caught_and_there_is_no_banner": "afc2a8fc6509378c",
+    "tests/test_rolecompile_acceptance.py::test_a_line_ending_only_difference_is_named_as_one": "fcf2946eab57bf4d",
+    "tests/test_rolecompile_acceptance.py::test_a_prompt_edit_reaches_both_harnesses_from_one_place": "bde139394e49a438",
+    "tests/test_rolecompile_acceptance.py::test_a_tree_carrying_the_pinned_line_ending_compares_clean": "49d405c46aa05af7",
+    "tests/test_rolecompile_acceptance.py::test_adding_a_role_produces_both_agent_files_under_the_declared_name": "d2d116c5f6a30f31",
+    "tests/test_rolecompile_acceptance.py::test_an_omitted_tools_field_fails_the_compile_and_says_why_it_matters": "598c728958316916",
+    "tests/test_rolecompile_acceptance.py::test_check_mode_is_clean_before_the_compiler_is_allowed_to_write_anything": "7bee6244f75bfc8f",
+    "tests/test_rolecompile_acceptance.py::test_check_mode_names_a_stale_agent_file_and_writes_nothing": "d4e7f3644b605b71",
+    "tests/test_rolecompile_acceptance.py::test_everything_restores": "417492412bb9f79d",
+    "tests/test_rolecompile_acceptance.py::test_running_the_compile_twice_writes_nothing_the_second_time": "4d1bd7060351107d",
+    "tests/test_rolecompile_acceptance.py::test_the_compiled_claude_tree_is_exactly_the_twelve_roles": "815a75b0486862b5",
+    "tests/test_rolecompile_acceptance.py::test_the_compiler_is_reachable_by_the_gate_commands_the_repo_declares": "64cf3a2ec3e51256",
+    "tests/test_rolecompile_acceptance.py::test_the_first_write_produces_both_trees_and_names_every_file": "fac0054c1a49de62",
+    "tests/test_rolecompile_acceptance.py::test_the_github_agent_file_carries_four_things_and_nothing_more": "ebdc1f33ed765ea7",
+    "tests/test_rolecompile_acceptance.py::test_the_line_ending_the_compiler_emits_is_pinned_for_both_agent_directories": "6cf2eb3cf62d625d",
+    "tests/test_rolecompile_acceptance.py::test_the_researcher_description_survives_the_round_trip_on_one_line": "5259715663f91c2b",
+    "tests/test_rolecompile_acceptance.py::test_two_declarations_with_the_same_name_fail_the_compile": "67694c1a5087b030",
+    "tests/test_rolecompile_cli.py::<module>": "2fb0bf0b311bbf95",
+    "tests/test_rolecompile_cli.py::claude": "a29c4ebd1634819d",
+    "tests/test_rolecompile_cli.py::github": "2cee54a5aa66dc33",
+    "tests/test_rolecompile_cli.py::probe": "73615884f86d6457",
+    "tests/test_rolecompile_cli.py::project": "1d364508038610a9",
+    "tests/test_rolecompile_cli.py::role": "4e611583af489e24",
+    "tests/test_rolecompile_cli.py::run": "26f6094e381ce7f3",
+    "tests/test_rolecompile_cli.py::test_a_hand_edited_agent_file_is_caught": "3c5ff4f58c2733c7",
+    "tests/test_rolecompile_cli.py::test_a_missing_prompt_names_the_file_rather_than_raising": "23a5962fa62437f0",
+    "tests/test_rolecompile_cli.py::test_a_name_that_is_not_the_filename_stops_the_compile": "709aa0f95993674c",
+    "tests/test_rolecompile_cli.py::test_a_problem_writes_nothing_at_all_even_for_the_roles_that_are_fine": "95fb71ff1e6e8875",
+    "tests/test_rolecompile_cli.py::test_a_second_run_with_nothing_edited_writes_nothing": "265e37440be951a6",
+    "tests/test_rolecompile_cli.py::test_a_source_that_is_not_utf_8_names_the_file": "f5f5c44ea40e1597",
+    "tests/test_rolecompile_cli.py::test_an_edited_prompt_reaches_both_harnesses": "8b3a8a7b2a5f036f",
+    "tests/test_rolecompile_cli.py::test_an_omitted_tools_field_stops_the_compile_and_says_why": "e3923718dbd0c86e",
+    "tests/test_rolecompile_cli.py::test_check_is_a_flag_not_a_value": "0b3ca1f214840966",
+    "tests/test_rolecompile_cli.py::test_check_mode_does_not_create_a_missing_agent_file": "b4636e518f990ab5",
+    "tests/test_rolecompile_cli.py::test_check_mode_ignores_a_destination_that_does_not_exist": "ff696415fc55e83c",
+    "tests/test_rolecompile_cli.py::test_check_mode_is_clean_once_both_trees_are_current": "7de4a7789319e2b2",
+    "tests/test_rolecompile_cli.py::test_check_mode_names_a_stale_file_and_writes_nothing": "2b66e4c6c2c5d5a4",
+    "tests/test_rolecompile_cli.py::test_check_mode_says_when_line_endings_are_the_whole_difference": "849f9de20d557f34",
+    "tests/test_rolecompile_cli.py::test_no_role_directory_names_it_rather_than_raising": "5f35ffe73c6c2440",
+    "tests/test_rolecompile_cli.py::test_the_command_writes_by_default_and_runs_where_it_is_invoked": "0b16c4b3907c316e",
+    "tests/test_rolecompile_cli.py::test_the_written_claude_file_carries_all_five_fields": "5c1876a4f422f79e",
+    "tests/test_rolecompile_cli.py::test_the_written_github_file_carries_three": "e596deb921945d18",
+    "tests/test_rolecompile_cli.py::test_two_declarations_with_one_name_stop_the_compile": "e743d0fb4f29342c",
+    "tests/test_rolecompile_cli.py::test_write_mode_produces_both_agent_files_and_names_them": "eef0b8e8ba34d3d4",
+    "tests/test_rolecompile_fidelity.py::<module>": "b53e6fd43e5fd950",
+    "tests/test_rolecompile_fidelity.py::compiled": "56b917804bec0fc7",
+    "tests/test_rolecompile_fidelity.py::test_every_role_in_the_repository_compiles_to_two_agent_files": "ee65b4a541e56b91",
+    "tests/test_rolecompile_fidelity.py::test_the_twelve_tracked_claude_agent_files_are_reproduced_byte_for_byte": "7dc1b9ce66cec4c1",
+    "tests/test_rolecompile_files.py::<module>": "c662349e620a05b0",
+    "tests/test_rolecompile_files.py::project": "b5f25ff7ec7f2912",
+    "tests/test_rolecompile_files.py::test_a_declaration_with_no_prompt_beside_it_names_the_missing_file": "04713e77ce25f6e8",
+    "tests/test_rolecompile_files.py::test_a_file_where_a_destination_directory_should_be_is_not_a_destination": "c890f4596d6ad246",
+    "tests/test_rolecompile_files.py::test_a_prompt_with_no_declaration_beside_it_is_not_a_role": "5d607c4d92fa6068",
+    "tests/test_rolecompile_files.py::test_a_source_carries_repo_relative_paths_with_forward_slashes": "e61de89ec78b062b",
+    "tests/test_rolecompile_files.py::test_a_source_carries_the_bytes_on_disk_untranslated": "7a90208461cec9ef",
+    "tests/test_rolecompile_files.py::test_a_stray_file_in_the_role_directory_is_not_a_role": "7712b8ae902747bd",
+    "tests/test_rolecompile_files.py::test_destinations_present_reports_only_the_directories_that_exist": "6a533db80d82509b",
+    "tests/test_rolecompile_files.py::test_no_role_directory_at_all_raises_rather_than_compiling_nothing": "57fa8e39600352a3",
+    "tests/test_rolecompile_files.py::test_reading_targets_marks_an_absent_file_as_none": "18fbd5a6fb291491",
+    "tests/test_rolecompile_files.py::test_reading_targets_returns_the_bytes_on_disk": "4b2cc82d7f2ed0a8",
+    "tests/test_rolecompile_files.py::test_sources_come_back_in_filename_order": "a5dcc210458675b6",
+    "tests/test_rolecompile_files.py::test_writing_creates_the_directory_and_puts_the_bytes_there": "9c13c5d98598d852",
+    "tests/test_rolecompile_files.py::test_writing_does_not_translate_a_line_ending": "4b4aad53e35fc746",
+    "tests/test_rolecompile_files.py::test_writing_nothing_creates_nothing": "db64794edfc6d1a9",
+    "tests/test_rolecompile_files.py::test_writing_replaces_a_file_rather_than_appending_to_it": "44280f8f4cb6038f"
   },
   "version": 1
 }

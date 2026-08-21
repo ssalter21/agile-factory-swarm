@@ -8,7 +8,7 @@ steps:
   tests:       ".venv/Scripts/pytest.exe -q"
   coverage:    ".venv/Scripts/coverage.exe run -m pytest -q; .venv/Scripts/coverage.exe report --fail-under=0"
   duplication: missing
-  mutation:    ".venv/Scripts/python.exe swarm/gate/tools/python/mutate swarm/gate/tools/python/mutate"
+  mutation:    ".venv/Scripts/python.exe swarm/gate/tools/python/mutate swarm/gate/tools/python/mutate swarm/tools/python/rolecompile"
   crap:        missing
   acceptance:  missing
 
