@@ -49,8 +49,11 @@ Everything past this point is bound by the approved spec and nothing else. Read
 
 5. **Report what came back**, and nothing more.
 
-   - **`outcome: built`** — give the gate table, the missing steps, and the pull request. The PR
-     body is the durable record; the run directory is not.
+   - **`outcome: built`** — give the gate table, the missing steps, the inherited debt, and the
+     pull request. Each gate step carries two numbers (§2): the total, and how much of it this
+     change is accountable for. Report both — a total alone hides whose debt it is, which is how
+     158 surviving mutants stayed invisible. The PR body is the durable record; the run directory
+     is not.
    - **`outcome: halted`** — the approved spec is wrong. Name the contradiction. The human amends
      `spec.md`, bumps `revision`, and runs `/build-swarm` again; it restarts at the architect on
      this same branch, keeping the commits already made.

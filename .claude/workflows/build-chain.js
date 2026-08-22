@@ -21,6 +21,26 @@ const PLAN = '.scratch/plan.md'
 const CHAIN = ['coder', 'cleaner', 'hardener']
 const MAX_APPEALS = 3
 
+// Section 2: each step has exactly one owning role. This map is what lets the orchestrator
+// enforce "never hand work on that fails your own gate step" -- the rule that was decoration
+// through the whole Tier A proving run, because nothing read what the roles honestly reported.
+const OWNS = {
+  coder: ['tests'],
+  cleaner: ['coverage', 'duplication', 'crap'],
+  hardener: ['mutation'],
+  qa: ['acceptance'],
+  architect: [],
+}
+
+// The step this role owns and reported failing, or null. Section 2 scopes every step to the
+// change, so a failure here is the role's own by construction: there is no inherited-debt
+// defence any more, and no fifth status for one.
+function ownStepFailed(handoff, role) {
+  const owned = OWNS[role] || []
+  const bad = (handoff.gate || []).filter((g) => g.result === 'fail' && owned.indexOf(g.step) >= 0)
+  return bad.length ? bad[0].step : null
+}
+
 const LAW = [
   'You are bound by swarm/constitution.md. Read it before you act: \u00a76 is the handoff contract,',
   '\u00a72 is the quality gate, \u00a711 is the seam.',
@@ -28,6 +48,12 @@ const LAW = [
   'It is the only authority on what to build. The plan at ' + PLAN + ' is the law on where the code goes.',
   'Run gate commands in the shell .swarm/gate.yaml declares. Never substitute another shell.',
   'Report a missing step as missing. It is a debt, not a pass, and the run is degraded (\u00a72).',
+  'A gate step measures THIS CHANGE, not the repo (\u00a72): it passes when it is no worse than the',
+  'base, which is the merge-base with the branch you were cut from, read out of git. Report both',
+  'numbers for every step -- the total, and how much of it is yours. The remainder is inherited',
+  'debt: disclose it, do not pay it, and do not let it fail you.',
+  'Two things never inherit: tests, which are absolute, and any threshold on a function or file',
+  'your change touched, which becomes yours the moment you touch it.',
 ].join('\n')
 
 const HANDOFF = {
@@ -39,14 +65,16 @@ const HANDOFF = {
     changed: { type: 'array', items: { type: 'string' }, description: 'files this role touched' },
     gate: {
       type: 'array',
-      description: 'every gate step you ran: your own and every step owned by a role before you',
+      description: 'every gate step you ran: your own and every step owned by a role before you, each with the two numbers section 2 asks for',
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['step', 'result'],
+        required: ['step', 'result', 'total', 'yours'],
         properties: {
           step: { type: 'string', enum: ['tests', 'coverage', 'duplication', 'mutation', 'crap', 'acceptance'] },
           result: { type: 'string', enum: ['pass', 'fail', 'missing'] },
+          total: { type: 'integer', description: 'what the step counts across the repo: surviving mutants, uncovered lines, breaches, failing tests. 0 when it passes clean or is missing.' },
+          yours: { type: 'integer', description: 'how much of total this change is accountable for, measured against the base (section 2). total minus yours is inherited debt: disclosed at every hop, and nobody is at fault for it today.' },
         },
       },
     },
@@ -154,6 +182,12 @@ let deviations = plan.deviations.slice()
 
 let appeals = 0
 const bounced = {}
+// The own-step refusal keeps its own count, deliberately apart from appeals and bounces (\u00a76):
+// they are different failures, and a shared budget would make the human-question threshold
+// depend on which unrelated thing happened first. Keyed by role to the step it failed, because
+// \u00a76 gives one retry per step, not one per role.
+const refused = {}
+let refusal = null
 let last = plan
 let entry = 0
 
@@ -165,11 +199,19 @@ async function runChain() {
     const role = CHAIN[i]
     if (outOfBudget()) return exhausted(role)
 
+    const notice = refusal
+    refusal = null
+
     const h = await agent(
       [
         LAW,
         '',
         'Task: ' + task,
+        notice
+          ? 'You reported fail on ' + notice + ', a step you own, and you are not advancing until ' +
+            'it passes. \u00a72 scopes that step to your own change, so the failure is yours: fix it. ' +
+            'Bounce only if it genuinely belongs to an earlier role. Failing it again is a human question.'
+          : '',
         'The plan is at ' + PLAN + '. Read it, and read .scratch/restatement.md for the architect\u2019s',
         'named interpretations.',
         'Upstream asked for: ' + last.request,
@@ -182,7 +224,7 @@ async function runChain() {
         'Use appeal only when the plan blocks correct work, and bounce only when the problem is real',
         'and belongs to an earlier role. Fix inside your own remit before bouncing, and name that',
         'role in bounceTo.',
-      ].join('\n'),
+      ].filter(Boolean).join('\n'),
       { agentType: role, schema: HANDOFF, label: role, phase: 'Build' }
     )
 
@@ -223,6 +265,22 @@ async function runChain() {
       last = h
       i -= 1
       continue
+    }
+
+    // \u00a72: never hand work on that fails your own gate step. This is where that stops being
+    // decoration. The roles reported the failure honestly through the whole Tier A proving run
+    // and were forwarded regardless, because nothing read what they reported.
+    const failedOwn = ownStepFailed(h, role)
+    if (failedOwn) {
+      if (refused[role] === failedOwn) {
+        return askHuman('the ' + role + ' failed its own ' + failedOwn + ' step twice (\u00a72)', role, h)
+      }
+      refused[role] = failedOwn
+      log('the ' + role + ' reported fail on ' + failedOwn + ', which it owns \u2014 not advancing')
+      deviations = deviations.concat([role + ' failed its own ' + failedOwn + ' step and ran again'])
+      refusal = failedOwn
+      last = h
+      continue // same role, same place in the chain
     }
 
     deviations = deviations.concat(h.deviations)
@@ -299,42 +357,71 @@ while (true) {
   phase('QA')
   log('QA. Budget: ' + spend())
 
-  if (outOfBudget()) return exhausted('qa')
+  // QA owns acceptance and is the last role, so its refusal has nowhere to send the work but
+  // back to itself. One retry, then a human question, exactly as in the build chain (\u00a76).
+  let qaBounced = false
+  while (true) {
+    const notice = refusal
+    refusal = null
 
-  qa = await agent(
-    [
-      LAW,
-      '',
-      'Task: ' + task,
-      'You are the last role. Nothing downstream catches what you miss.',
-      'Exercise this through its user interface only (\u00a79). Never call an API into the project to',
-      'make a test pass.',
-      'Validate against ' + RUN + '/acceptance.feature, not against the code. Where they disagree,',
-      'the criteria win: code that fails a criterion is a defect, so bounce with the reproduction and',
-      'name the coder in bounceTo; a criterion that cannot be satisfied, or two that contradict each',
-      'other, is the spec being wrong, so halt.',
-      'Check every named interpretation in .scratch/restatement.md.',
-      'Run all six gate steps (\u00a72). Name every missing one \u2014 this run is degraded and the report says so.',
-      'The criteria survive only as something that runs (\u00a711): commit the feature file into the test',
-      'tree where a runner exists, otherwise write ordinary tests against the same criteria and let',
-      'the feature file die with the run directory. Never commit a feature file nothing executes.',
-      'Then assemble the durable record: open the pull request, its body built from the brief, the',
-      'spec, the assumption register, and the out-of-scope list, so the reviewer reads the contract',
-      'beside the diff. Where the repo has no pull request mechanism, emit the same text here.',
-      'It is the only human-facing output that outlives the run, so section 11 binds it hardest. It',
-      'is NOT a dump of four documents. Order it: what was decided at the seam and what the human',
-      'chose; what was assumed, each with its cost if wrong, marked CHOSEN or ASSUMED; what was cut,',
-      'one line each; then ONE mermaid diagram of the change. A pull request is read in a browser, so',
-      'mermaid renders there -- use it here and nowhere else. Ordinary technical English: define any',
-      'term this run invented, or drop it.',
-      'Deviations across the run: ' + (deviations.length ? deviations.join('; ') : 'none'),
-    ].join('\n'),
-    { agentType: 'qa', schema: HANDOFF, label: 'qa', phase: 'QA' }
-  )
+    if (outOfBudget()) return exhausted('qa')
 
-  if (!qa) return askHuman('QA returned nothing', 'qa', null)
-  if (qa.status === 'halt') return halted(qa, 'qa')
-  if (qa.status === 'bounce') {
+    qa = await agent(
+      [
+        LAW,
+        '',
+        'Task: ' + task,
+        notice
+          ? 'You reported fail on ' + notice + ', the step you own, and the pull request is not ' +
+            'being opened until it passes. \u00a72 scopes acceptance to this change, so the failure is ' +
+            'yours: fix it, or bounce it to the coder with the reproduction. Failing it again is a ' +
+            'human question.'
+          : '',
+        'You are the last role. Nothing downstream catches what you miss.',
+        'Exercise this through its user interface only (\u00a79). Never call an API into the project to',
+        'make a test pass.',
+        'Validate against ' + RUN + '/acceptance.feature, not against the code. Where they disagree,',
+        'the criteria win: code that fails a criterion is a defect, so bounce with the reproduction and',
+        'name the coder in bounceTo; a criterion that cannot be satisfied, or two that contradict each',
+        'other, is the spec being wrong, so halt.',
+        'Check every named interpretation in .scratch/restatement.md.',
+        'Run all six gate steps (\u00a72). Name every missing one \u2014 this run is degraded and the report says so.',
+        'The criteria survive only as something that runs (\u00a711): commit the feature file into the test',
+        'tree where a runner exists, otherwise write ordinary tests against the same criteria and let',
+        'the feature file die with the run directory. Never commit a feature file nothing executes.',
+        'Then assemble the durable record: open the pull request, its body built from the brief, the',
+        'spec, the assumption register, and the out-of-scope list, so the reviewer reads the contract',
+        'beside the diff. Where the repo has no pull request mechanism, emit the same text here.',
+        'It is the only human-facing output that outlives the run, so section 11 binds it hardest. It',
+        'is NOT a dump of four documents. Order it: what was decided at the seam and what the human',
+        'chose; what was assumed, each with its cost if wrong, marked CHOSEN or ASSUMED; what was cut,',
+        'one line each; then ONE mermaid diagram of the change. A pull request is read in a browser, so',
+        'mermaid renders there -- use it here and nowhere else. Ordinary technical English: define any',
+        'term this run invented, or drop it.',
+        'Deviations across the run: ' + (deviations.length ? deviations.join('; ') : 'none'),
+      ].filter(Boolean).join('\n'),
+      { agentType: 'qa', schema: HANDOFF, label: 'qa', phase: 'QA' }
+    )
+
+    if (!qa) return askHuman('QA returned nothing', 'qa', null)
+    if (qa.status === 'halt') return halted(qa, 'qa')
+    if (qa.status === 'bounce') {
+      qaBounced = true
+      break
+    }
+
+    const failedOwn = ownStepFailed(qa, 'qa')
+    if (!failedOwn) break
+    if (refused.qa === failedOwn) {
+      return askHuman('QA failed its own ' + failedOwn + ' step twice (\u00a72)', 'qa', qa)
+    }
+    refused.qa = failedOwn
+    log('QA reported fail on ' + failedOwn + ', which it owns \u2014 no pull request')
+    deviations = deviations.concat(['qa failed its own ' + failedOwn + ' step and ran again'])
+    refusal = failedOwn
+  }
+
+  if (qaBounced) {
     const stop = reenter(qa, 'qa')
     if (stop) return stop
     continue
@@ -346,11 +433,19 @@ while (true) {
 const degraded = qa.gate.filter((g) => g.result === 'missing').map((g) => g.step)
 if (degraded.length) log('degraded run \u2014 no tool for: ' + degraded.join(', '))
 
+// Inherited debt is disclosed here as well as at every hop. It failed nobody, and a number
+// that is red forever is a number everyone learns to ignore, so it is said out loud instead.
+const inherited = qa.gate
+  .filter((g) => (g.total || 0) > (g.yours || 0))
+  .map((g) => g.step + ': ' + ((g.total || 0) - (g.yours || 0)))
+if (inherited.length) log('inherited debt, disclosed and not paid by this run \u2014 ' + inherited.join(', '))
+
 return {
   outcome: 'built',
   task: task,
   gate: qa.gate,
   degraded: degraded,
+  inherited: inherited,
   deviations: deviations,
   summary: qa.summary,
 }

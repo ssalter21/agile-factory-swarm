@@ -50,6 +50,38 @@ checked.
 **The floor.** Whatever a project declares, steps 1 and 2 always apply. A project cannot run
 with no gate at all.
 
+**What a step measures: the change, not the repo.** A step's verdict is about what *this change*
+made worse. The **base** is the merge-base between this branch and the branch it was cut from, and
+the base numbers are read out of git — the manifests as committed at that commit. Nothing is
+materialised and nothing is recomputed, so there is no baseline file to fall out of date.
+
+A step passes when it is no worse than the base, and reports two numbers rather than one: the
+total, and **yours** — the part this change is accountable for. The remainder is **inherited**:
+real, disclosed at every hop, and nobody's fault today.
+
+The reason is a run that could not pass however good its own tests were. The Tier A proving run
+faced 166 surviving mutants of which 158 belonged to a different change, because
+`.swarm/mutation.json` is one repo-wide manifest. A role told to refuse in that situation stops
+all work forever — so it handed on instead, at every hop, and the rule below became decoration.
+
+**Every countable step commits a manifest.** Mutation already does, which is why its base costs
+nothing to read. Coverage, duplication and CRAP owe the same: a committed record at the grain the
+metric is measured at, so a base number is always a git read and never a second run of the tool. A
+step with no manifest at the base has an **empty base** — everything is yours, said plainly rather
+than passed silently. Initiation (§4) is where a repo without one is set up.
+
+**Two things never inherit.**
+
+- **Tests.** A red base is not a debt to build on. Step 1 is absolute: if the suite is failing the
+  chain stops, whoever broke it.
+- **What you touched.** The thresholds below become absolute the moment your change reaches what
+  they measure, at the metric's own grain: a CRAP breach in a function whose code you changed, a
+  site-cap breach in a file you changed. An untouched breach stays inherited. This is what stops a
+  file sitting at 300 sites forever because every individual change to it is a small one.
+
+Acceptance is delta-shaped by construction: a spec's criteria did not exist at the base, so all of
+it is yours.
+
 **Who owns a step.** Each step has exactly one owning role: the role that runs it, fixes what
 it finds, and is accountable for the number. A role owns **at most** one kind of step — some
 own none, and earn their place another way.
@@ -66,10 +98,15 @@ own none, and earn their place another way.
 - Run every step you own **and every step owned by a role before you in the chain**, in the
   order above. Skip only steps a later role owns. The last role in a chain therefore runs all
   six. A number nobody re-establishes is a number nobody is accountable for.
-- Never hand work on that fails your own gate step. Fix it or escalate.
+- **Never hand work on that fails your own gate step.** A step measures only your own change, so
+  a failure of your own step is yours by construction: fix it. If the problem is real and belongs
+  to an earlier role, that is a `bounce` (§6). This is no longer left to memory — the orchestrator
+  refuses to advance a role that reports `fail` on a step it owns, and sends it back once. A second
+  failure of the same step is a human question (§6).
 - Run gate commands in the shell `.swarm/gate.yaml` declares. Never substitute another shell.
-- Never hand-edit mutation or acceptance manifests. Let the tools update them. Commit them: a
-  manifest is what stops the next run paying for work this one already did.
+- Never hand-edit a gate manifest. Let the tools update them. Commit them: a manifest is what
+  stops the next run paying for work this one already did, and it is where the next run reads its
+  base from.
 - Keep property tests out of normal verification — out of coverage, mutation, CRAP, and unit
   runs — unless your role owns property testing or the task explicitly asks for them.
 
@@ -179,7 +216,7 @@ not finished:
 | `task` | the stable task name, preserved across every hop |
 | `plan` | the architect's plan, as amended by any appeal |
 | `changed` | the files this role touched |
-| `gate` | every step this role ran, each `pass` / `fail` / `missing` |
+| `gate` | every step this role ran: its result `pass` / `fail` / `missing`, and the two numbers §2 asks for — the total, and how much of it is yours |
 | `deviations` | appeals made, and how the architect ruled |
 | `request` | what the next role is being asked for |
 | `status` | `forward`, `appeal`, `bounce`, or `halt` |
@@ -199,6 +236,22 @@ not finished:
 - `halt` — the approved spec is wrong: it contradicts itself, or it cannot be satisfied as
   written (§5, §11). Only the human can settle it. The chain stops and names the contradiction.
 
+**Failing your own step is not a status — it is a refusal.** There is no fifth status for a role
+to return when its own gate step fails, because §2 makes such a failure the role's own by
+construction. `forward` is simply withheld: the orchestrator reads the `gate` field, and a role
+reporting `fail` on a step it owns goes back to itself, **once**, with the failing step named. A
+second failure of the same step is a human question.
+
+That retry keeps **its own count**, separate from appeals and from bounces. The three are
+different failures — the plan is wrong, the problem is someone else's, the work is not good enough
+yet — and sharing a budget would make the human-question threshold depend on which unrelated thing
+happened first.
+
+The refusal lives in the orchestrator rather than in a role's prompt, deliberately. A rule an
+agent must remember is the thing that failed: the Tier A proving run reported `fail` honestly at
+every hop from the hardener onward and was forwarded regardless, because nothing read what it
+reported.
+
 **The builder chain.**
 
 ```text
@@ -215,6 +268,10 @@ not finished:
             resumes. Three per task, then it becomes a human question.
   bounce    back one role, once, carrying the reproduction.
   halt      out of the chain, to the human. The run ends.
+
+  Not a status: forward is withheld from a role whose own gate step failed. Back to
+  that same role once, with the step named, then a human question. Counted apart
+  from appeals and bounces.
 ```
 
 The architect runs twice: first to plan, last to check conformance. Its first action on the first
