@@ -246,8 +246,8 @@ machine's git configuration: a correct compiler would fail on the first clone ta
 
 ### R6 — The GitHub compile emits four things and nothing else
 
-`.github/agents/<name>.agent.md` for all twelve roles, carrying `name`, `description`, `tools`,
-`model`, and the prompt as the body. `model` and `effort` are **dropped** — there is no correct value to write
+`.github/agents/<name>.agent.md` for all twelve roles, carrying `name`, `description`, `tools`, and
+the prompt as the body. `model` and `effort` are **dropped** — there is no correct value to write
 (Opus does not appear in the Copilot CLI's model list at all, and no short alias is documented on
 any GitHub surface), and the one field name that could carry effort appears on one GitHub surface
 while being absent from the schema that claims to cover it.
@@ -281,6 +281,7 @@ language behind it, are the architect's.
 - **Write mode** brings both trees up to date.
 - **Check mode** compiles, compares against the agent files on disk, **writes nothing** to
   `.claude/agents/` or `.github/agents/`, and exits non-zero naming every file that differs.
+- A **pre-commit hook** runs check mode, so a stale tree cannot be committed.
 
 Where the compiler needs somewhere to put intermediate output, `.scratch/` is that place (§8). Check
 mode is not a staging path: it writes nothing to either destination, so it satisfies both of the
