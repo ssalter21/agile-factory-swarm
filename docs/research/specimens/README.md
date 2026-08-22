@@ -23,3 +23,12 @@ that is not copied here is destroyed. The `swarm doctor` spec — the one whose 
 
 Add a specimen when a run produces something an open effort needs to study. Do not add one
 speculatively: an unused specimen is prose accumulating in a repo.
+
+## Prototypes
+
+Not specimens. A prototype here is throwaway material written *about* a specimen, to answer one
+ticket's question by making something concrete to react to. It dies with the ticket.
+
+| prototype | question it answers |
+|---|---|
+| `prototype-orientation-README.md` and the `prototype-orientation-*` / `prototype-coldread-*` files | [#16](https://github.com/ssalter21/agile-factory-swarm/issues/16) — what does the orientation block at the top of a spec actually look like, and does five minutes buy a cold reader enough? Start at the README. |
