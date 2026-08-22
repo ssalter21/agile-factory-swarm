@@ -449,7 +449,7 @@ between them.
 | `questions.md` | every question the swarm could not settle, and every contested cut (§10). Deleted once they are all answered. |
 | `answers.md` | the human's answers, written by hand, in prose |
 | `brief.md` | the human's brief, verbatim and unedited |
-| `spec.md` | front matter, the gate warning if the run is degraded, the requirements, the assumption register, out of scope, and links to research |
+| `spec.md` | front matter, the orientation, the gate warning if the run is degraded, the requirements, the assumption register, out of scope, and links to research |
 | `acceptance.feature` | the acceptance criteria, in Gherkin |
 | `.work/` | the passes — drafts, critiques, rebuttals, the research sweep, the register's full text |
 
@@ -493,6 +493,57 @@ Where an idea is a graph — a chain, a fork, a set of states — draw it rather
 Diagrams are for human readers, so they appear only in what a human reads, and in the form that
 renders where that human is: **plain-text box drawings** in files read in an editor or a terminal,
 **mermaid** in a pull request body, where a browser will render it.
+
+**The orientation.** The first section of `spec.md`, and the one that tells a cold reader what the
+change is. It sits under the front matter and above the degraded-run warning, because a warning
+about a change nobody can picture yet is noise. The reader it is written for is the human three
+months later — not the human who commissioned the run, and not a reviewer hunting errors.
+Comprehension first; verification is available on drilling in. Without this section the only account
+of the change is the requirements themselves, and reconstructing a change from a numbered list is
+the failure it exists to stop.
+
+It answers six things, one heading each, in this order:
+
+```text
+  1  what this document is         the change in a sentence, and where it stands
+  2  the change                    what it does, carried by a figure
+  3  why it exists, and the cost   the forces, and what is paid for the fix
+  4  what can go wrong             the failure states, once this is merged
+  5  what this does not decide     what is left to the architect (§1)
+  6  how to read the rest          the map of the document, and the cuts
+```
+
+The Spec Writer may reword a heading to fit the change — *the change* becomes *what `swarm-gate`
+does* — but all six are present, in that order, and none is dropped. A slot with nothing under it
+says so in one line. *Nothing was cut* is information, and on a merged document it is alarming
+information: a run that vetoed nothing had nothing cutting scope.
+
+**A figure, or the reason there is none.** Slot 2 carries at least one captioned plain-text figure of
+the mechanism, walked immediately in prose. A change with nothing graph-shaped in it says so in one
+line instead. This is not decoration. Read cold, two orientations over the same spec differed in
+little but their figures, and the reader named the figures as what oriented him and their absence as
+what he missed.
+
+**Length is a guideline, not a cap.** Roughly a tenth of the spec, and under a thousand words. The
+Spec Writer may exceed it and says why. The standing position that length is not the enemy is about
+the spec; the orientation fails if it is long.
+
+**The cuts arrive early, not just as a pointer.** Slot 6 carries at most five of the uncontested cuts
+and states how many were left behind and where they are. A reader who is oriented stops reading, and
+the out-of-scope list is the only material that exposes a vetoed requirement surviving into the
+requirements — so some of it has to arrive before the reader stops, and a count tells them the list
+is long even if they never reach it. Which five is the Spec Writer's selection (§10). Contested cuts
+are never here: they are questions (§10).
+
+**What the swarm could not do here.** The orientation closes with one line naming anything that made
+it weaker than usual — no figure and why, voices that supplied little, a slot nobody could fill —
+and, where the run is degraded, pointing at the warning immediately below it. A thin orientation
+ships: it is a signal, of a thin change or of a chain that did not do its job, and those two are
+indistinguishable from outside, so the line is what lets the human tell them apart. It may not be
+silent, and it may not block — approval is the human's (below).
+
+**On a fold, the orientation is rewritten, not appended to.** An answer that changes the change
+changes what the reader has to be told first.
 
 **The front matter.** `spec.md` opens with:
 

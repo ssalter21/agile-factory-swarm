@@ -71,6 +71,14 @@ swarm's only authority on what to build. Approval is `status: approved` in its f
 the human's judgement and theirs to delegate, but no agent inside the run may write it — a run does
 not approve its own output. `approved_by` records whether it was considered or delegated.
 
+**Orientation**:
+The section `spec.md` opens with, above the degraded-run warning, that tells a cold reader what the
+change is before they meet a requirement. Six headings — what this document is, the change, why and
+what it costs, what can go wrong, what it does not decide, how to read the rest — with a figure of
+the mechanism and a few of the cuts promoted into it. Written for the human three months later, not
+the one who commissioned the run. The spec writer holds the pen alone.
+_Avoid_: summary, abstract, overview, executive summary, TL;DR
+
 **Disposition**:
 What the human does to every open question at the seam: answer it in `answers.md`, in prose. The
 spec writer then folds the answers into the spec and deletes `questions.md`. A spec with an
